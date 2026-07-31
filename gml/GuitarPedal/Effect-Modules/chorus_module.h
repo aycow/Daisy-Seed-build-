@@ -1,0 +1,43 @@
+#pragma once
+#ifndef CHORUS_MODULE_H
+#define CHORUS_MODULE_H
+
+#include <stdint.h>
+#include "daisysp.h"
+#include "base_effect_module.h"
+#ifdef __cplusplus
+
+/** @file chorus_module.h */
+
+using namespace daisysp;
+
+namespace bkshepherd
+{
+
+class ChorusModule : public BaseEffectModule
+{
+  public:
+    ChorusModule();
+    ~ChorusModule();
+
+    void Init(float sample_rate) override;
+    void ProcessMono(float in) override;
+    void ProcessStereo(float inL, float inR) override;
+    float GetBrightnessForLED(int led_id) override;
+
+  protected:
+    void ParameterChanged(int parameter_id) override;
+
+  private:
+    Chorus m_chorus;
+    float m_lfoFreqMin;
+    float m_lfoFreqMax;
+    float m_wet;
+    float m_delay;
+    float m_lfoFreq;
+    float m_lfoDepth;
+    float m_feedback;
+};
+} // namespace bkshepherd
+#endif
+#endif

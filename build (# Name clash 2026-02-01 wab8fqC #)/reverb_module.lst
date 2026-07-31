@@ -1,0 +1,1191 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"reverb_module.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN10bkshepherd12ReverbModuleD2Ev,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN10bkshepherd12ReverbModuleD2Ev
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN10bkshepherd12ReverbModuleD2Ev:
+  27              	.LVL0:
+  28              	.LFB4739:
+  29              		.file 1 "gml/GuitarPedal/Effect-Modules/reverb_module.cpp"
+   1:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** #include "reverb_module.h"
+   2:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+   3:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** using namespace bkshepherd;
+   4:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+   5:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** static const int s_paramCount = 3;
+   6:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** static const ParameterMetaData s_metaData[s_paramCount] = {{name: "Time", valueType: ParameterValue
+   7:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                                            {name: "Damp", valueType: ParameterValue
+   8:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                                            {name: "Mix", valueType: ParameterValueT
+   9:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  10:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** // Default Constructor
+  11:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** ReverbModule::ReverbModule() : BaseEffectModule(),
+  12:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_timeMin(0.6f),
+  13:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_timeMax(1.0f),
+  14:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_lpFreqMin(600.0f),
+  15:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_lpFreqMax(16000.0f)
+  16:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  17:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+  18:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Set the name of the effect
+  19:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_name = "Reverb";
+  20:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  21:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Setup the meta data reference for this Effect
+  22:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_paramMetaData = s_metaData;
+  23:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  24:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Initialize Parameters for this Effect
+  25:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     this->InitParams(s_paramCount);
+  26:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+  27:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  28:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** // Destructor
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** ReverbModule::~ReverbModule()
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 2
+
+
+  30              		.loc 1 29 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              	.LBB22:
+  35              		.loc 1 29 29 is_stmt 0 view .LVU1
+  36 0000 034B     		ldr	r3, .L4
+  37              	.LBE22:
+  38              		.loc 1 29 1 view .LVU2
+  39 0002 10B5     		push	{r4, lr}
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 4, -8
+  42              		.cfi_offset 14, -4
+  43              		.loc 1 29 1 view .LVU3
+  44 0004 0446     		mov	r4, r0
+  45              	.LBB24:
+  46              		.loc 1 29 29 view .LVU4
+  47 0006 0360     		str	r3, [r0]
+  48              	.LVL1:
+  49              	.LBB23:
+  50              	.LBI23:
+  51              		.file 2 "../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h"
+   1:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** /*
+   2:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** Copyright (c) 2023 Electrosmith, Corp, Sean Costello, Istvan Varga, Paul Batchelor
+   3:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+   4:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** Use of this source code is governed by the LGPL V2.1
+   5:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** license that can be found in the LICENSE file or at
+   6:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** https://opensource.org/license/lgpl-2-1/
+   7:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** */
+   8:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+   9:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** #pragma once
+  10:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** #ifndef DSYSP_REVERBSC_H
+  11:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** #define DSYSP_REVERBSC_H
+  12:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+  13:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** #define DSY_REVERBSC_MAX_SIZE 98936
+  14:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+  15:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** namespace daisysp
+  16:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** {
+  17:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** /**Delay line for internal reverb use
+  18:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** */
+  19:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** typedef struct
+  20:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** {
+  21:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    write_pos;         /**< write position */
+  22:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    buffer_size;       /**< buffer size */
+  23:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    read_pos;          /**< read position */
+  24:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    read_pos_frac;     /**< fractional component of read pos */
+  25:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    read_pos_frac_inc; /**< increment for fractional */
+  26:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    dummy;             /**<  dummy var */
+  27:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    seed_val;          /**< randseed */
+  28:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int    rand_line_cnt;     /**< number of random lines */
+  29:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     float  filter_state;      /**< state of filter */
+  30:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     float *buf;               /**< buffer ptr */
+  31:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** } ReverbScDl;
+  32:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+  33:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** /** Stereo Reverb */
+  34:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** class ReverbSc
+  35:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 3
+
+
+  36:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****   public:
+  37:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ReverbSc() {}
+  38:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ~ReverbSc() {}
+  52              		.loc 2 38 5 is_stmt 1 view .LVU5
+  53              		.loc 2 38 5 is_stmt 0 view .LVU6
+  54              	.LBE23:
+  55              		.loc 1 29 29 view .LVU7
+  56 0008 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModuleD2Ev
+  57              	.LVL2:
+  58              		.loc 1 29 29 view .LVU8
+  59              	.LBE24:
+  30:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+  31:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // No Code Needed
+  32:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+  60              		.loc 1 32 1 view .LVU9
+  61 000c 2046     		mov	r0, r4
+  62 000e 10BD     		pop	{r4, pc}
+  63              	.LVL3:
+  64              	.L5:
+  65              		.loc 1 32 1 view .LVU10
+  66              		.align	2
+  67              	.L4:
+  68 0010 08000000 		.word	.LANCHOR0+8
+  69              		.cfi_endproc
+  70              	.LFE4739:
+  72              		.global	_ZN10bkshepherd12ReverbModuleD1Ev
+  73              		.thumb_set _ZN10bkshepherd12ReverbModuleD1Ev,_ZN10bkshepherd12ReverbModuleD2Ev
+  74              		.section	.text._ZN10bkshepherd12ReverbModuleD0Ev,"ax",%progbits
+  75              		.align	1
+  76              		.p2align 2,,3
+  77              		.global	_ZN10bkshepherd12ReverbModuleD0Ev
+  78              		.syntax unified
+  79              		.thumb
+  80              		.thumb_func
+  81              		.fpu fpv5-d16
+  83              	_ZN10bkshepherd12ReverbModuleD0Ev:
+  84              	.LVL4:
+  85              	.LFB4741:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+  86              		.loc 1 29 1 is_stmt 1 view -0
+  87              		.cfi_startproc
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90              	.LBB25:
+  91              	.LBB26:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+  92              		.loc 1 29 29 is_stmt 0 view .LVU12
+  93 0000 054B     		ldr	r3, .L8
+  94              	.LBE26:
+  95              	.LBE25:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+  96              		.loc 1 29 1 view .LVU13
+  97 0002 10B5     		push	{r4, lr}
+  98              		.cfi_def_cfa_offset 8
+  99              		.cfi_offset 4, -8
+ 100              		.cfi_offset 14, -4
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 4
+
+
+ 101              		.loc 1 29 1 view .LVU14
+ 102 0004 0446     		mov	r4, r0
+ 103              	.LVL5:
+ 104              	.LBB29:
+ 105              	.LBI25:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ 106              		.loc 1 29 1 is_stmt 1 view .LVU15
+ 107              	.LBB28:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ 108              		.loc 1 29 29 is_stmt 0 view .LVU16
+ 109 0006 0360     		str	r3, [r0]
+ 110              	.LVL6:
+ 111              	.LBB27:
+ 112              	.LBI27:
+ 113              		.loc 2 38 5 is_stmt 1 view .LVU17
+ 114              		.loc 2 38 5 is_stmt 0 view .LVU18
+ 115              	.LBE27:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ 116              		.loc 1 29 29 view .LVU19
+ 117 0008 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModuleD2Ev
+ 118              	.LVL7:
+  29:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ 119              		.loc 1 29 29 view .LVU20
+ 120              	.LBE28:
+ 121              	.LBE29:
+ 122              		.loc 1 32 1 view .LVU21
+ 123 000c 0349     		ldr	r1, .L8+4
+ 124 000e 2046     		mov	r0, r4
+ 125 0010 FFF7FEFF 		bl	_ZdlPvj
+ 126              	.LVL8:
+ 127 0014 2046     		mov	r0, r4
+ 128 0016 10BD     		pop	{r4, pc}
+ 129              	.LVL9:
+ 130              	.L9:
+ 131              		.loc 1 32 1 view .LVU22
+ 132              		.align	2
+ 133              	.L8:
+ 134 0018 08000000 		.word	.LANCHOR0+8
+ 135 001c 780B0600 		.word	396152
+ 136              		.cfi_endproc
+ 137              	.LFE4741:
+ 139              		.section	.rodata._ZN10bkshepherd12ReverbModuleC2Ev.str1.4,"aMS",%progbits,1
+ 140              		.align	2
+ 141              	.LC0:
+ 142 0000 52657665 		.ascii	"Reverb\000"
+ 142      726200
+ 143              		.section	.text._ZN10bkshepherd12ReverbModuleC2Ev,"ax",%progbits
+ 144              		.align	1
+ 145              		.p2align 2,,3
+ 146              		.global	_ZN10bkshepherd12ReverbModuleC2Ev
+ 147              		.syntax unified
+ 148              		.thumb
+ 149              		.thumb_func
+ 150              		.fpu fpv5-d16
+ 152              	_ZN10bkshepherd12ReverbModuleC2Ev:
+ 153              	.LVL10:
+ 154              	.LFB4736:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 5
+
+
+  11:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_timeMin(0.6f),
+ 155              		.loc 1 11 1 is_stmt 1 view -0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+  11:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_timeMin(0.6f),
+ 159              		.loc 1 11 1 is_stmt 0 view .LVU24
+ 160 0000 10B5     		push	{r4, lr}
+ 161              		.cfi_def_cfa_offset 8
+ 162              		.cfi_offset 4, -8
+ 163              		.cfi_offset 14, -4
+  11:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****                                         m_timeMin(0.6f),
+ 164              		.loc 1 11 1 view .LVU25
+ 165 0002 0446     		mov	r4, r0
+ 166              	.LBB30:
+  15:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 167              		.loc 1 15 61 view .LVU26
+ 168 0004 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModuleC2Ev
+ 169              	.LVL11:
+  15:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 170              		.loc 1 15 61 view .LVU27
+ 171 0008 0F4A     		ldr	r2, .L12
+ 172 000a 4FF07E50 		mov	r0, #1065353216
+ 173 000e 04F5C023 		add	r3, r4, #393216
+ 174 0012 0E49     		ldr	r1, .L12+4
+ 175 0014 2260     		str	r2, [r4]
+ 176              	.LVL12:
+ 177              	.LBB31:
+ 178              	.LBI31:
+  37:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ~ReverbSc() {}
+ 179              		.loc 2 37 5 is_stmt 1 view .LVU28
+  37:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ~ReverbSc() {}
+ 180              		.loc 2 37 5 is_stmt 0 view .LVU29
+ 181              	.LBE31:
+  15:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 182              		.loc 1 15 61 view .LVU30
+ 183 0016 03F66832 		addw	r2, r3, #2920
+ 184 001a 1160     		str	r1, [r2]	@ float
+ 185 001c 03F66C31 		addw	r1, r3, #2924
+ 186 0020 03F53762 		add	r2, r3, #2928
+ 187 0024 03F67433 		addw	r3, r3, #2932
+ 188 0028 0860     		str	r0, [r1]	@ float
+ 189 002a 0949     		ldr	r1, .L12+8
+ 190 002c 0948     		ldr	r0, .L12+12
+ 191 002e 1160     		str	r1, [r2]	@ float
+  22:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 192              		.loc 1 22 21 view .LVU31
+ 193 0030 094A     		ldr	r2, .L12+16
+  19:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 194              		.loc 1 19 12 view .LVU32
+ 195 0032 0A49     		ldr	r1, .L12+20
+  15:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 196              		.loc 1 15 61 view .LVU33
+ 197 0034 1860     		str	r0, [r3]	@ float
+  19:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 198              		.loc 1 19 5 is_stmt 1 view .LVU34
+  25:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 6
+
+
+ 199              		.loc 1 25 21 is_stmt 0 view .LVU35
+ 200 0036 2046     		mov	r0, r4
+  19:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 201              		.loc 1 19 12 view .LVU36
+ 202 0038 6160     		str	r1, [r4, #4]
+  22:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 203              		.loc 1 22 5 is_stmt 1 view .LVU37
+  25:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ 204              		.loc 1 25 21 is_stmt 0 view .LVU38
+ 205 003a 0321     		movs	r1, #3
+  22:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 206              		.loc 1 22 21 view .LVU39
+ 207 003c 2261     		str	r2, [r4, #16]
+  25:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ 208              		.loc 1 25 5 is_stmt 1 view .LVU40
+  25:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ 209              		.loc 1 25 21 is_stmt 0 view .LVU41
+ 210 003e FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule10InitParamsEi
+ 211              	.LVL13:
+ 212              	.LBE30:
+  26:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 213              		.loc 1 26 1 view .LVU42
+ 214 0042 2046     		mov	r0, r4
+ 215 0044 10BD     		pop	{r4, pc}
+ 216              	.LVL14:
+ 217              	.L13:
+  26:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 218              		.loc 1 26 1 view .LVU43
+ 219 0046 00BF     		.align	2
+ 220              	.L12:
+ 221 0048 08000000 		.word	.LANCHOR0+8
+ 222 004c 9A99193F 		.word	1058642330
+ 223 0050 00001644 		.word	1142292480
+ 224 0054 00007A46 		.word	1182400512
+ 225 0058 00000000 		.word	.LANCHOR1
+ 226 005c 00000000 		.word	.LC0
+ 227              		.cfi_endproc
+ 228              	.LFE4736:
+ 230              		.global	_ZN10bkshepherd12ReverbModuleC1Ev
+ 231              		.thumb_set _ZN10bkshepherd12ReverbModuleC1Ev,_ZN10bkshepherd12ReverbModuleC2Ev
+ 232              		.section	.text._ZN10bkshepherd12ReverbModule4InitEf,"ax",%progbits
+ 233              		.align	1
+ 234              		.p2align 2,,3
+ 235              		.global	_ZN10bkshepherd12ReverbModule4InitEf
+ 236              		.syntax unified
+ 237              		.thumb
+ 238              		.thumb_func
+ 239              		.fpu fpv5-d16
+ 241              	_ZN10bkshepherd12ReverbModule4InitEf:
+ 242              	.LVL15:
+ 243              	.LFB4742:
+  33:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  34:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** void ReverbModule::Init(float sample_rate)
+  35:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ 244              		.loc 1 35 1 is_stmt 1 view -0
+ 245              		.cfi_startproc
+ 246              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 7
+
+
+ 247              		@ frame_needed = 0, uses_anonymous_args = 0
+  36:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::Init(sample_rate);
+ 248              		.loc 1 36 5 view .LVU45
+  35:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::Init(sample_rate);
+ 249              		.loc 1 35 1 is_stmt 0 view .LVU46
+ 250 0000 10B5     		push	{r4, lr}
+ 251              		.cfi_def_cfa_offset 8
+ 252              		.cfi_offset 4, -8
+ 253              		.cfi_offset 14, -4
+ 254 0002 2DED028B 		vpush.64	{d8}
+ 255              		.cfi_def_cfa_offset 16
+ 256              		.cfi_offset 80, -16
+ 257              		.cfi_offset 81, -12
+  35:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::Init(sample_rate);
+ 258              		.loc 1 35 1 view .LVU47
+ 259 0006 B0EE408A 		vmov.f32	s16, s0
+ 260 000a 0446     		mov	r4, r0
+ 261              		.loc 1 36 27 view .LVU48
+ 262 000c FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule4InitEf
+ 263              	.LVL16:
+  37:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  38:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.Init(sample_rate);
+ 264              		.loc 1 38 5 is_stmt 1 view .LVU49
+ 265              		.loc 1 38 24 is_stmt 0 view .LVU50
+ 266 0010 04F12400 		add	r0, r4, #36
+ 267 0014 B0EE480A 		vmov.f32	s0, s16
+  39:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  40:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ 268              		.loc 1 40 1 view .LVU51
+ 269 0018 BDEC028B 		vldm	sp!, {d8}
+ 270              		.cfi_restore 80
+ 271              		.cfi_restore 81
+ 272              		.cfi_def_cfa_offset 8
+ 273              	.LVL17:
+ 274              		.loc 1 40 1 view .LVU52
+ 275 001c BDE81040 		pop	{r4, lr}
+ 276              		.cfi_restore 14
+ 277              		.cfi_restore 4
+ 278              		.cfi_def_cfa_offset 0
+ 279              	.LVL18:
+  38:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 280              		.loc 1 38 24 view .LVU53
+ 281 0020 FFF7FEBF 		b	_ZN7daisysp8ReverbSc4InitEf
+ 282              	.LVL19:
+  38:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 283              		.loc 1 38 24 view .LVU54
+ 284              		.cfi_endproc
+ 285              	.LFE4742:
+ 287              		.section	.text._ZN10bkshepherd12ReverbModule11ProcessMonoEf,"ax",%progbits
+ 288              		.align	1
+ 289              		.p2align 2,,3
+ 290              		.global	_ZN10bkshepherd12ReverbModule11ProcessMonoEf
+ 291              		.syntax unified
+ 292              		.thumb
+ 293              		.thumb_func
+ 294              		.fpu fpv5-d16
+ 296              	_ZN10bkshepherd12ReverbModule11ProcessMonoEf:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 8
+
+
+ 297              	.LVL20:
+ 298              	.LFB4743:
+  41:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  42:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** void ReverbModule::ProcessMono(float in)
+  43:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
+ 299              		.loc 1 43 1 is_stmt 1 view -0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 16
+ 302              		@ frame_needed = 0, uses_anonymous_args = 0
+  44:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::ProcessMono(in);
+ 303              		.loc 1 44 5 view .LVU56
+  43:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::ProcessMono(in);
+ 304              		.loc 1 43 1 is_stmt 0 view .LVU57
+ 305 0000 70B5     		push	{r4, r5, r6, lr}
+ 306              		.cfi_def_cfa_offset 16
+ 307              		.cfi_offset 4, -16
+ 308              		.cfi_offset 5, -12
+ 309              		.cfi_offset 6, -8
+ 310              		.cfi_offset 14, -4
+ 311 0002 0446     		mov	r4, r0
+  45:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  46:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float sendl, sendr, wetl, wetr;  // Reverb Inputs/Outputs
+  47:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendl = m_audioLeft;
+  48:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+  49:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  50:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Calculate the effect
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetFeedback(m_timeMin + GetParameterAsMagnitude(0) * (m_timeMax - m_timeMin));
+ 312              		.loc 1 51 32 view .LVU58
+ 313 0004 04F5C025 		add	r5, r4, #393216
+  43:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::ProcessMono(in);
+ 314              		.loc 1 43 1 view .LVU59
+ 315 0008 2DED068B 		vpush.64	{d8, d9, d10}
+ 316              		.cfi_def_cfa_offset 40
+ 317              		.cfi_offset 80, -40
+ 318              		.cfi_offset 81, -36
+ 319              		.cfi_offset 82, -32
+ 320              		.cfi_offset 83, -28
+ 321              		.cfi_offset 84, -24
+ 322              		.cfi_offset 85, -20
+ 323 000c 86B0     		sub	sp, sp, #24
+ 324              		.cfi_def_cfa_offset 64
+ 325              		.loc 1 51 32 view .LVU60
+ 326 000e 05F66836 		addw	r6, r5, #2920
+  44:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 327              		.loc 1 44 34 view .LVU61
+ 328 0012 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule11ProcessMonoEf
+ 329              	.LVL21:
+  46:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendl = m_audioLeft;
+ 330              		.loc 1 46 5 is_stmt 1 view .LVU62
+  47:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+ 331              		.loc 1 47 5 view .LVU63
+  47:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+ 332              		.loc 1 47 11 is_stmt 0 view .LVU64
+ 333 0016 6269     		ldr	r2, [r4, #20]	@ float
+  48:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 334              		.loc 1 48 11 view .LVU65
+ 335 0018 A369     		ldr	r3, [r4, #24]	@ float
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 9
+
+
+ 336              		.loc 1 51 67 view .LVU66
+ 337 001a 2046     		mov	r0, r4
+ 338 001c 0021     		movs	r1, #0
+  47:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+ 339              		.loc 1 47 11 view .LVU67
+ 340 001e 0292     		str	r2, [sp, #8]	@ float
+  48:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 341              		.loc 1 48 5 is_stmt 1 view .LVU68
+ 342              		.loc 1 51 32 is_stmt 0 view .LVU69
+ 343 0020 96ED008A 		vldr.32	s16, [r6]
+  52:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+  53:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     invertedFreq = invertedFreq * invertedFreq; // also square it for exponential taper (more contr
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetLpFreq(m_lpFreqMin + invertedFreq * (m_lpFreqMax - m_lpFreqMin));
+  55:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  56:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.Process(sendl, sendr, &wetl, &wetr);
+  57:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + sendl * (1.0 - GetParameterAsMagnitude(2));
+ 344              		.loc 1 57 68 view .LVU70
+ 345 0024 B7EE009B 		vmov.f64	d9, #1.0e+0
+  48:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 346              		.loc 1 48 11 view .LVU71
+ 347 0028 0393     		str	r3, [sp, #12]	@ float
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 348              		.loc 1 51 5 is_stmt 1 view .LVU72
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 349              		.loc 1 51 67 is_stmt 0 view .LVU73
+ 350 002a FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 351              	.LVL22:
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 352              		.loc 1 51 74 view .LVU74
+ 353 002e 05F66C33 		addw	r3, r5, #2924
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 354              		.loc 1 51 84 view .LVU75
+ 355 0032 96ED007A 		vldr.32	s14, [r6]
+  52:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 356              		.loc 1 52 55 view .LVU76
+ 357 0036 2046     		mov	r0, r4
+ 358 0038 0121     		movs	r1, #1
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 359              		.loc 1 51 84 view .LVU77
+ 360 003a D3ED007A 		vldr.32	s15, [r3]
+ 361 003e 77EEC77A 		vsub.f32	s15, s15, s14
+  51:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 362              		.loc 1 51 42 view .LVU78
+ 363 0042 A0EE278A 		vfma.f32	s16, s0, s15
+ 364              	.LVL23:
+ 365              	.LBB32:
+ 366              	.LBI32:
+  39:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** Initializes the reverb module, and sets the sample_rate at which the Process function will 
+  40:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****         Returns 0 if all good, or 1 if it runs out of delay times exceed maximum allowed.
+  41:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     */
+  42:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int Init(float sample_rate);
+  43:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+  44:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** Process the input through the reverb, and updates values of out1, and out2 with the new pro
+  45:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     */
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     int Process(const float &in1, const float &in2, float *out1, float *out2);
+  47:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h **** 
+  48:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** controls the reverb time. reverb tail becomes infinite when set to 1.0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 10
+
+
+  49:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****         \param fb - sets reverb time. range: 0.0 to 1.0
+  50:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     */
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     inline void SetFeedback(const float &fb) { feedback_ = fb; }
+ 367              		.loc 2 51 17 is_stmt 1 view .LVU79
+ 368              	.LBB33:
+ 369              		.loc 2 51 48 view .LVU80
+ 370              		.loc 2 51 58 is_stmt 0 view .LVU81
+ 371 0046 84ED098A 		vstr.32	s16, [r4, #36]
+ 372              	.LVL24:
+ 373              		.loc 2 51 58 view .LVU82
+ 374              	.LBE33:
+ 375              	.LBE32:
+  52:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     invertedFreq = invertedFreq * invertedFreq; // also square it for exponential taper (more contr
+ 376              		.loc 1 52 5 is_stmt 1 view .LVU83
+  52:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     invertedFreq = invertedFreq * invertedFreq; // also square it for exponential taper (more contr
+ 377              		.loc 1 52 55 is_stmt 0 view .LVU84
+ 378 004a FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 379              	.LVL25:
+ 380 004e F7EE007A 		vmov.f32	s15, #1.0e+0
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 381              		.loc 1 54 30 view .LVU85
+ 382 0052 05F53763 		add	r3, r5, #2928
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 383              		.loc 1 54 60 view .LVU86
+ 384 0056 05F67435 		addw	r5, r5, #2932
+  56:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + sendl * (1.0 - GetParameterAsMagnitude(2));
+ 385              		.loc 1 56 27 view .LVU87
+ 386 005a 05A8     		add	r0, sp, #20
+ 387 005c 03AA     		add	r2, sp, #12
+ 388 005e 37EEC00A 		vsub.f32	s0, s15, s0
+ 389              	.LVL26:
+  53:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetLpFreq(m_lpFreqMin + invertedFreq * (m_lpFreqMax - m_lpFreqMin));
+ 390              		.loc 1 53 5 is_stmt 1 view .LVU88
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 391              		.loc 1 54 5 view .LVU89
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 392              		.loc 1 54 30 is_stmt 0 view .LVU90
+ 393 0062 93ED007A 		vldr.32	s14, [r3]
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 394              		.loc 1 54 72 view .LVU91
+ 395 0066 D5ED007A 		vldr.32	s15, [r5]
+  56:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + sendl * (1.0 - GetParameterAsMagnitude(2));
+ 396              		.loc 1 56 27 view .LVU92
+ 397 006a 04AB     		add	r3, sp, #16
+ 398 006c 0090     		str	r0, [sp]
+ 399 006e 02A9     		add	r1, sp, #8
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 400              		.loc 1 54 72 view .LVU93
+ 401 0070 77EEC77A 		vsub.f32	s15, s15, s14
+  56:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + sendl * (1.0 - GetParameterAsMagnitude(2));
+ 402              		.loc 1 56 27 view .LVU94
+ 403 0074 04F12400 		add	r0, r4, #36
+  53:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetLpFreq(m_lpFreqMin + invertedFreq * (m_lpFreqMax - m_lpFreqMin));
+ 404              		.loc 1 53 18 view .LVU95
+ 405 0078 20EE000A 		vmul.f32	s0, s0, s0
+ 406              	.LVL27:
+  54:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 11
+
+
+ 407              		.loc 1 54 42 view .LVU96
+ 408 007c A7EE807A 		vfma.f32	s14, s15, s0
+ 409              	.LVL28:
+ 410              	.LBB34:
+ 411              	.LBI34:
+  52:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** controls the internal dampening filter's cutoff frequency.
+  53:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****         \param freq - low pass frequency. range: 0.0 to sample_rate / 2
+  54:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     */
+  55:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     inline void SetLpFreq(const float &freq) { lpfreq_ = freq; }
+ 412              		.loc 2 55 17 is_stmt 1 view .LVU97
+ 413              	.LBB35:
+ 414              		.loc 2 55 48 view .LVU98
+ 415              		.loc 2 55 56 is_stmt 0 view .LVU99
+ 416 0080 84ED0A7A 		vstr.32	s14, [r4, #40]
+ 417              	.LVL29:
+ 418              		.loc 2 55 56 view .LVU100
+ 419              	.LBE35:
+ 420              	.LBE34:
+  56:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + sendl * (1.0 - GetParameterAsMagnitude(2));
+ 421              		.loc 1 56 5 is_stmt 1 view .LVU101
+  56:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + sendl * (1.0 - GetParameterAsMagnitude(2));
+ 422              		.loc 1 56 27 is_stmt 0 view .LVU102
+ 423 0084 FFF7FEFF 		bl	_ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_
+ 424              	.LVL30:
+ 425              		.loc 1 57 5 is_stmt 1 view .LVU103
+ 426              		.loc 1 57 49 is_stmt 0 view .LVU104
+ 427 0088 2046     		mov	r0, r4
+ 428 008a 0221     		movs	r1, #2
+ 429 008c FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 430              	.LVL31:
+ 431              		.loc 1 57 24 view .LVU105
+ 432 0090 9DED048A 		vldr.32	s16, [sp, #16]
+ 433              		.loc 1 57 93 view .LVU106
+ 434 0094 2046     		mov	r0, r4
+ 435 0096 0221     		movs	r1, #2
+ 436              		.loc 1 57 24 view .LVU107
+ 437 0098 20EE080A 		vmul.f32	s0, s0, s16
+ 438              		.loc 1 57 55 view .LVU108
+ 439 009c 9DED02AA 		vldr.32	s20, [sp, #8]
+ 440 00a0 B7EECAAA 		vcvt.f64.f32	d10, s20
+ 441              		.loc 1 57 24 view .LVU109
+ 442 00a4 B7EEC08A 		vcvt.f64.f32	d8, s0
+ 443              		.loc 1 57 93 view .LVU110
+ 444 00a8 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 445              	.LVL32:
+ 446 00ac B7EEC00A 		vcvt.f64.f32	d0, s0
+  58:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + sendr * (1.0 - GetParameterAsMagnitude(2));
+ 447              		.loc 1 58 50 view .LVU111
+ 448 00b0 2046     		mov	r0, r4
+ 449 00b2 0221     		movs	r1, #2
+  57:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + sendr * (1.0 - GetParameterAsMagnitude(2));
+ 450              		.loc 1 57 68 view .LVU112
+ 451 00b4 39EE400B 		vsub.f64	d0, d9, d0
+  57:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + sendr * (1.0 - GetParameterAsMagnitude(2));
+ 452              		.loc 1 57 53 view .LVU113
+ 453 00b8 AAEE008B 		vfma.f64	d8, d10, d0
+ 454 00bc B7EEC88B 		vcvt.f32.f64	s16, d8
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 12
+
+
+ 455 00c0 84ED058A 		vstr.32	s16, [r4, #20]
+ 456              		.loc 1 58 5 is_stmt 1 view .LVU114
+ 457              		.loc 1 58 50 is_stmt 0 view .LVU115
+ 458 00c4 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 459              	.LVL33:
+ 460              		.loc 1 58 25 view .LVU116
+ 461 00c8 9DED058A 		vldr.32	s16, [sp, #20]
+ 462              		.loc 1 58 94 view .LVU117
+ 463 00cc 0221     		movs	r1, #2
+ 464 00ce 2046     		mov	r0, r4
+ 465              		.loc 1 58 25 view .LVU118
+ 466 00d0 20EE080A 		vmul.f32	s0, s0, s16
+ 467              		.loc 1 58 56 view .LVU119
+ 468 00d4 9DED03AA 		vldr.32	s20, [sp, #12]
+ 469 00d8 B7EECAAA 		vcvt.f64.f32	d10, s20
+ 470              		.loc 1 58 25 view .LVU120
+ 471 00dc B7EEC08A 		vcvt.f64.f32	d8, s0
+ 472              		.loc 1 58 94 view .LVU121
+ 473 00e0 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 474              	.LVL34:
+ 475 00e4 B7EEC00A 		vcvt.f64.f32	d0, s0
+ 476              		.loc 1 58 69 view .LVU122
+ 477 00e8 39EE409B 		vsub.f64	d9, d9, d0
+ 478              		.loc 1 58 54 view .LVU123
+ 479 00ec AAEE098B 		vfma.f64	d8, d10, d9
+ 480 00f0 B7EEC88B 		vcvt.f32.f64	s16, d8
+ 481 00f4 84ED068A 		vstr.32	s16, [r4, #24]
+  59:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  60:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ 482              		.loc 1 60 1 view .LVU124
+ 483 00f8 06B0     		add	sp, sp, #24
+ 484              		.cfi_def_cfa_offset 40
+ 485              		@ sp needed
+ 486 00fa BDEC068B 		vldm	sp!, {d8-d10}
+ 487              		.cfi_restore 84
+ 488              		.cfi_restore 85
+ 489              		.cfi_restore 82
+ 490              		.cfi_restore 83
+ 491              		.cfi_restore 80
+ 492              		.cfi_restore 81
+ 493              		.cfi_def_cfa_offset 16
+ 494 00fe 70BD     		pop	{r4, r5, r6, pc}
+ 495              		.loc 1 60 1 view .LVU125
+ 496              		.cfi_endproc
+ 497              	.LFE4743:
+ 499              		.section	.text._ZN10bkshepherd12ReverbModule13ProcessStereoEff,"ax",%progbits
+ 500              		.align	1
+ 501              		.p2align 2,,3
+ 502              		.global	_ZN10bkshepherd12ReverbModule13ProcessStereoEff
+ 503              		.syntax unified
+ 504              		.thumb
+ 505              		.thumb_func
+ 506              		.fpu fpv5-d16
+ 508              	_ZN10bkshepherd12ReverbModule13ProcessStereoEff:
+ 509              	.LVL35:
+ 510              	.LFB4744:
+  61:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 13
+
+
+  62:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** void ReverbModule::ProcessStereo(float inL, float inR)
+  63:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {    
+ 511              		.loc 1 63 1 is_stmt 1 view -0
+ 512              		.cfi_startproc
+ 513              		@ args = 0, pretend = 0, frame = 16
+ 514              		@ frame_needed = 0, uses_anonymous_args = 0
+  64:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Do the base stereo calculation (which resets the right signal to be the inputR instead of co
+  65:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     BaseEffectModule::ProcessStereo(inL, inR);
+ 515              		.loc 1 65 5 view .LVU127
+  63:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Do the base stereo calculation (which resets the right signal to be the inputR instead of co
+ 516              		.loc 1 63 1 is_stmt 0 view .LVU128
+ 517 0000 70B5     		push	{r4, r5, r6, lr}
+ 518              		.cfi_def_cfa_offset 16
+ 519              		.cfi_offset 4, -16
+ 520              		.cfi_offset 5, -12
+ 521              		.cfi_offset 6, -8
+ 522              		.cfi_offset 14, -4
+ 523 0002 0446     		mov	r4, r0
+  66:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  67:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float sendl, sendr, wetl, wetr;  // Reverb Inputs/Outputs
+  68:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendl = m_audioLeft;
+  69:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+  70:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  71:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Calculate the effect
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetFeedback(m_timeMin + GetParameterAsMagnitude(0) * (m_timeMax - m_timeMin));
+ 524              		.loc 1 72 32 view .LVU129
+ 525 0004 04F5C025 		add	r5, r4, #393216
+  63:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Do the base stereo calculation (which resets the right signal to be the inputR instead of co
+ 526              		.loc 1 63 1 view .LVU130
+ 527 0008 2DED068B 		vpush.64	{d8, d9, d10}
+ 528              		.cfi_def_cfa_offset 40
+ 529              		.cfi_offset 80, -40
+ 530              		.cfi_offset 81, -36
+ 531              		.cfi_offset 82, -32
+ 532              		.cfi_offset 83, -28
+ 533              		.cfi_offset 84, -24
+ 534              		.cfi_offset 85, -20
+ 535 000c 86B0     		sub	sp, sp, #24
+ 536              		.cfi_def_cfa_offset 64
+  63:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     // Do the base stereo calculation (which resets the right signal to be the inputR instead of co
+ 537              		.loc 1 63 1 view .LVU131
+ 538 000e F0EE60AA 		vmov.f32	s21, s1
+ 539 0012 B0EE40AA 		vmov.f32	s20, s0
+ 540              		.loc 1 72 32 view .LVU132
+ 541 0016 05F66836 		addw	r6, r5, #2920
+  65:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 542              		.loc 1 65 36 view .LVU133
+ 543 001a FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule13ProcessStereoEff
+ 544              	.LVL36:
+  67:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendl = m_audioLeft;
+ 545              		.loc 1 67 5 is_stmt 1 view .LVU134
+  68:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+ 546              		.loc 1 68 5 view .LVU135
+  68:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+ 547              		.loc 1 68 11 is_stmt 0 view .LVU136
+ 548 001e 6269     		ldr	r2, [r4, #20]	@ float
+  69:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 14
+
+
+ 549              		.loc 1 69 11 view .LVU137
+ 550 0020 A369     		ldr	r3, [r4, #24]	@ float
+ 551              		.loc 1 72 67 view .LVU138
+ 552 0022 2046     		mov	r0, r4
+ 553 0024 0021     		movs	r1, #0
+  68:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     sendr = m_audioRight;
+ 554              		.loc 1 68 11 view .LVU139
+ 555 0026 0292     		str	r2, [sp, #8]	@ float
+  69:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 556              		.loc 1 69 5 is_stmt 1 view .LVU140
+ 557              		.loc 1 72 32 is_stmt 0 view .LVU141
+ 558 0028 96ED008A 		vldr.32	s16, [r6]
+  73:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+  74:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     invertedFreq = invertedFreq * invertedFreq; // also square it for exponential taper (more contr
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetLpFreq(m_lpFreqMin + invertedFreq * (m_lpFreqMax - m_lpFreqMin));
+  76:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  77:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.Process(sendl, sendr, &wetl, &wetr);
+  78:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + inL * (1.0 - GetParameterAsMagnitude(2));
+ 559              		.loc 1 78 66 view .LVU142
+ 560 002c B7EE009B 		vmov.f64	d9, #1.0e+0
+  69:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 561              		.loc 1 69 11 view .LVU143
+ 562 0030 0393     		str	r3, [sp, #12]	@ float
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 563              		.loc 1 72 5 is_stmt 1 view .LVU144
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 564              		.loc 1 72 67 is_stmt 0 view .LVU145
+ 565 0032 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 566              	.LVL37:
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 567              		.loc 1 72 74 view .LVU146
+ 568 0036 05F66C33 		addw	r3, r5, #2924
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 569              		.loc 1 72 84 view .LVU147
+ 570 003a 96ED007A 		vldr.32	s14, [r6]
+  73:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 571              		.loc 1 73 55 view .LVU148
+ 572 003e 2046     		mov	r0, r4
+ 573 0040 0121     		movs	r1, #1
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 574              		.loc 1 72 84 view .LVU149
+ 575 0042 D3ED007A 		vldr.32	s15, [r3]
+ 576 0046 77EEC77A 		vsub.f32	s15, s15, s14
+  72:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 577              		.loc 1 72 42 view .LVU150
+ 578 004a A0EE278A 		vfma.f32	s16, s0, s15
+ 579              	.LVL38:
+ 580              	.LBB36:
+ 581              	.LBI36:
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** controls the internal dampening filter's cutoff frequency.
+ 582              		.loc 2 51 17 is_stmt 1 view .LVU151
+ 583              	.LBB37:
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** controls the internal dampening filter's cutoff frequency.
+ 584              		.loc 2 51 48 view .LVU152
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** controls the internal dampening filter's cutoff frequency.
+ 585              		.loc 2 51 58 is_stmt 0 view .LVU153
+ 586 004e 84ED098A 		vstr.32	s16, [r4, #36]
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 15
+
+
+ 587              	.LVL39:
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     /** controls the internal dampening filter's cutoff frequency.
+ 588              		.loc 2 51 58 view .LVU154
+ 589              	.LBE37:
+ 590              	.LBE36:
+  73:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 591              		.loc 1 73 5 is_stmt 1 view .LVU155
+  73:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0 - GetParameterAsMagnitude(1); // Invert the damping param so that knob
+ 592              		.loc 1 73 55 is_stmt 0 view .LVU156
+ 593 0052 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 594              	.LVL40:
+ 595 0056 B7EE007A 		vmov.f32	s14, #1.0e+0
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 596              		.loc 1 75 30 view .LVU157
+ 597 005a 05F53763 		add	r3, r5, #2928
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 598              		.loc 1 75 60 view .LVU158
+ 599 005e 05F67435 		addw	r5, r5, #2932
+  77:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + inL * (1.0 - GetParameterAsMagnitude(2));
+ 600              		.loc 1 77 27 view .LVU159
+ 601 0062 05A8     		add	r0, sp, #20
+ 602 0064 03AA     		add	r2, sp, #12
+ 603 0066 77EE407A 		vsub.f32	s15, s14, s0
+ 604              	.LVL41:
+  74:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetLpFreq(m_lpFreqMin + invertedFreq * (m_lpFreqMax - m_lpFreqMin));
+ 605              		.loc 1 74 5 is_stmt 1 view .LVU160
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 606              		.loc 1 75 5 view .LVU161
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 607              		.loc 1 75 30 is_stmt 0 view .LVU162
+ 608 006a D3ED006A 		vldr.32	s13, [r3]
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 609              		.loc 1 75 72 view .LVU163
+ 610 006e 95ED007A 		vldr.32	s14, [r5]
+  77:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + inL * (1.0 - GetParameterAsMagnitude(2));
+ 611              		.loc 1 77 27 view .LVU164
+ 612 0072 04AB     		add	r3, sp, #16
+ 613 0074 0090     		str	r0, [sp]
+ 614 0076 02A9     		add	r1, sp, #8
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 615              		.loc 1 75 72 view .LVU165
+ 616 0078 37EE667A 		vsub.f32	s14, s14, s13
+  77:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + inL * (1.0 - GetParameterAsMagnitude(2));
+ 617              		.loc 1 77 27 view .LVU166
+ 618 007c 04F12400 		add	r0, r4, #36
+  74:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_reverbStereo.SetLpFreq(m_lpFreqMin + invertedFreq * (m_lpFreqMax - m_lpFreqMin));
+ 619              		.loc 1 74 18 view .LVU167
+ 620 0080 67EEA77A 		vmul.f32	s15, s15, s15
+ 621              	.LVL42:
+  75:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+ 622              		.loc 1 75 42 view .LVU168
+ 623 0084 E7EE276A 		vfma.f32	s13, s14, s15
+ 624              	.LVL43:
+ 625              	.LBB38:
+ 626              	.LBI38:
+ 627              		.loc 2 55 17 is_stmt 1 view .LVU169
+ 628              	.LBB39:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 16
+
+
+ 629              		.loc 2 55 48 view .LVU170
+ 630              		.loc 2 55 56 is_stmt 0 view .LVU171
+ 631 0088 C4ED0A6A 		vstr.32	s13, [r4, #40]
+ 632              	.LVL44:
+ 633              		.loc 2 55 56 view .LVU172
+ 634              	.LBE39:
+ 635              	.LBE38:
+  77:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + inL * (1.0 - GetParameterAsMagnitude(2));
+ 636              		.loc 1 77 5 is_stmt 1 view .LVU173
+  77:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioLeft = wetl * GetParameterAsMagnitude(2) + inL * (1.0 - GetParameterAsMagnitude(2));
+ 637              		.loc 1 77 27 is_stmt 0 view .LVU174
+ 638 008c FFF7FEFF 		bl	_ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_
+ 639              	.LVL45:
+ 640              		.loc 1 78 5 is_stmt 1 view .LVU175
+ 641              		.loc 1 78 49 is_stmt 0 view .LVU176
+ 642 0090 2046     		mov	r0, r4
+ 643 0092 0221     		movs	r1, #2
+ 644 0094 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 645              	.LVL46:
+ 646              		.loc 1 78 24 view .LVU177
+ 647 0098 9DED048A 		vldr.32	s16, [sp, #16]
+ 648              		.loc 1 78 91 view .LVU178
+ 649 009c 2046     		mov	r0, r4
+ 650 009e 0221     		movs	r1, #2
+ 651              		.loc 1 78 24 view .LVU179
+ 652 00a0 20EE088A 		vmul.f32	s16, s0, s16
+ 653              		.loc 1 78 91 view .LVU180
+ 654 00a4 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 655              	.LVL47:
+ 656 00a8 B7EEC00A 		vcvt.f64.f32	d0, s0
+  79:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + inR * (1.0 - GetParameterAsMagnitude(2));
+ 657              		.loc 1 79 50 view .LVU181
+ 658 00ac 2046     		mov	r0, r4
+  78:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + inR * (1.0 - GetParameterAsMagnitude(2));
+ 659              		.loc 1 78 55 view .LVU182
+ 660 00ae B7EECA7A 		vcvt.f64.f32	d7, s20
+ 661              		.loc 1 79 50 view .LVU183
+ 662 00b2 0221     		movs	r1, #2
+  78:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + inR * (1.0 - GetParameterAsMagnitude(2));
+ 663              		.loc 1 78 24 view .LVU184
+ 664 00b4 B7EEC88A 		vcvt.f64.f32	d8, s16
+  78:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + inR * (1.0 - GetParameterAsMagnitude(2));
+ 665              		.loc 1 78 66 view .LVU185
+ 666 00b8 39EE400B 		vsub.f64	d0, d9, d0
+  78:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     m_audioRight = wetr * GetParameterAsMagnitude(2) + inR * (1.0 - GetParameterAsMagnitude(2));
+ 667              		.loc 1 78 53 view .LVU186
+ 668 00bc A7EE008B 		vfma.f64	d8, d7, d0
+ 669 00c0 B7EEC88B 		vcvt.f32.f64	s16, d8
+ 670 00c4 84ED058A 		vstr.32	s16, [r4, #20]
+ 671              		.loc 1 79 5 is_stmt 1 view .LVU187
+ 672              		.loc 1 79 50 is_stmt 0 view .LVU188
+ 673 00c8 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 674              	.LVL48:
+ 675              		.loc 1 79 25 view .LVU189
+ 676 00cc 9DED058A 		vldr.32	s16, [sp, #20]
+ 677              		.loc 1 79 92 view .LVU190
+ 678 00d0 0221     		movs	r1, #2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 17
+
+
+ 679 00d2 2046     		mov	r0, r4
+ 680              		.loc 1 79 25 view .LVU191
+ 681 00d4 20EE080A 		vmul.f32	s0, s0, s16
+ 682 00d8 B7EEC08A 		vcvt.f64.f32	d8, s0
+ 683              		.loc 1 79 92 view .LVU192
+ 684 00dc FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 685              	.LVL49:
+ 686 00e0 B7EEC00A 		vcvt.f64.f32	d0, s0
+ 687              		.loc 1 79 56 view .LVU193
+ 688 00e4 B7EEEA7A 		vcvt.f64.f32	d7, s21
+ 689              		.loc 1 79 67 view .LVU194
+ 690 00e8 39EE409B 		vsub.f64	d9, d9, d0
+ 691              		.loc 1 79 54 view .LVU195
+ 692 00ec A7EE098B 		vfma.f64	d8, d7, d9
+ 693 00f0 B7EEC88B 		vcvt.f32.f64	s16, d8
+ 694 00f4 84ED068A 		vstr.32	s16, [r4, #24]
+  80:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
+ 695              		.loc 1 80 1 view .LVU196
+ 696 00f8 06B0     		add	sp, sp, #24
+ 697              		.cfi_def_cfa_offset 40
+ 698              		@ sp needed
+ 699 00fa BDEC068B 		vldm	sp!, {d8-d10}
+ 700              		.cfi_restore 84
+ 701              		.cfi_restore 85
+ 702              		.cfi_restore 82
+ 703              		.cfi_restore 83
+ 704              		.cfi_restore 80
+ 705              		.cfi_restore 81
+ 706              		.cfi_def_cfa_offset 16
+ 707              	.LVL50:
+ 708              		.loc 1 80 1 view .LVU197
+ 709 00fe 70BD     		pop	{r4, r5, r6, pc}
+ 710              		.loc 1 80 1 view .LVU198
+ 711              		.cfi_endproc
+ 712              	.LFE4744:
+ 714              		.section	.text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi,"ax",%progbits
+ 715              		.align	1
+ 716              		.p2align 2,,3
+ 717              		.global	_ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi
+ 718              		.syntax unified
+ 719              		.thumb
+ 720              		.thumb_func
+ 721              		.fpu fpv5-d16
+ 723              	_ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:
+ 724              	.LVL51:
+ 725              	.LFB4745:
+  81:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
+  82:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** float ReverbModule::GetBrightnessForLED(int led_id)
+  83:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {    
+ 726              		.loc 1 83 1 is_stmt 1 view -0
+ 727              		.cfi_startproc
+ 728              		@ args = 0, pretend = 0, frame = 0
+ 729              		@ frame_needed = 0, uses_anonymous_args = 0
+ 730              		@ link register save eliminated.
+  84:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float value = BaseEffectModule::GetBrightnessForLED(led_id);
+ 731              		.loc 1 84 5 view .LVU200
+ 732              		.loc 1 84 56 is_stmt 0 view .LVU201
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 18
+
+
+ 733 0000 FFF7FEBF 		b	_ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi
+ 734              	.LVL52:
+ 735              		.loc 1 84 56 view .LVU202
+ 736              		.cfi_endproc
+ 737              	.LFE4745:
+ 739              		.global	_ZTVN10bkshepherd12ReverbModuleE
+ 740              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 741              		.align	2
+ 742              	.LC1:
+ 743 0000 54696D65 		.ascii	"Time\000"
+ 743      00
+ 744 0005 000000   		.align	2
+ 745              	.LC2:
+ 746 0008 44616D70 		.ascii	"Damp\000"
+ 746      00
+ 747 000d 000000   		.align	2
+ 748              	.LC3:
+ 749 0010 4D697800 		.ascii	"Mix\000"
+ 750              		.section	.rodata._ZL10s_metaData,"a"
+ 751              		.align	2
+ 752              		.set	.LANCHOR1,. + 0
+ 755              	_ZL10s_metaData:
+ 756 0000 00000000 		.word	.LC1
+ 757 0004 01       		.byte	1
+ 758 0005 000000   		.space	3
+ 759 0008 00000000 		.word	0
+ 760 000c 00000000 		.space	4
+ 761 0010 39       		.byte	57
+ 762 0011 000000   		.space	3
+ 763 0014 00000000 		.word	0
+ 764 0018 01000000 		.word	1
+ 765 001c 08000000 		.word	.LC2
+ 766 0020 01       		.byte	1
+ 767 0021 000000   		.space	3
+ 768 0024 00000000 		.word	0
+ 769 0028 00000000 		.space	4
+ 770 002c 28       		.byte	40
+ 771 002d 000000   		.space	3
+ 772 0030 01000000 		.word	1
+ 773 0034 15000000 		.word	21
+ 774 0038 10000000 		.word	.LC3
+ 775 003c 01       		.byte	1
+ 776 003d 000000   		.space	3
+ 777 0040 00000000 		.word	0
+ 778 0044 00000000 		.space	4
+ 779 0048 39       		.byte	57
+ 780 0049 000000   		.space	3
+ 781 004c 02000000 		.word	2
+ 782 0050 16000000 		.word	22
+ 783              		.section	.rodata._ZTVN10bkshepherd12ReverbModuleE,"a"
+ 784              		.align	2
+ 785              		.set	.LANCHOR0,. + 0
+ 788              	_ZTVN10bkshepherd12ReverbModuleE:
+ 789 0000 00000000 		.word	0
+ 790 0004 00000000 		.word	0
+ 791 0008 00000000 		.word	_ZN10bkshepherd12ReverbModuleD1Ev
+ 792 000c 00000000 		.word	_ZN10bkshepherd12ReverbModuleD0Ev
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 19
+
+
+ 793 0010 00000000 		.word	_ZN10bkshepherd12ReverbModule4InitEf
+ 794 0014 00000000 		.word	_ZN10bkshepherd12ReverbModule11ProcessMonoEf
+ 795 0018 00000000 		.word	_ZN10bkshepherd12ReverbModule13ProcessStereoEff
+ 796 001c 00000000 		.word	_ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi
+ 797 0020 00000000 		.word	_ZN10bkshepherd16BaseEffectModule10SetEnabledEb
+ 798 0024 00000000 		.word	_ZN10bkshepherd16BaseEffectModule8SetTempoEm
+ 799 0028 00000000 		.word	_ZN10bkshepherd16BaseEffectModule8UpdateUIEf
+ 800 002c 00000000 		.word	_ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb
+ 801 0030 00000000 		.word	_ZN10bkshepherd16BaseEffectModule10InitParamsEi
+ 802 0034 00000000 		.word	_ZN10bkshepherd16BaseEffectModule16ParameterChangedEi
+ 803              		.text
+ 804              	.Letext0:
+ 805              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 806              		.file 4 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 807              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 808              		.file 6 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 809              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 810              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 811              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 812              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 813              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 814              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 815              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cwchar"
+ 816              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 817              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 818              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 819              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\clocale"
+ 820              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 821              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\basic_stri
+ 822              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\charconv.h
+ 823              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 824              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 825              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+ 826              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 827              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 828              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 829              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 830              		.file 28 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 831              		.file 29 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 832              		.file 30 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 833              		.file 31 "../../DaisySP/Source/Control/adenv.h"
+ 834              		.file 32 "../../DaisySP/Source/Utility/dsp.h"
+ 835              		.file 33 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 836              		.file 34 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\wchar.h"
+ 837              		.file 35 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\locale.h"
+ 838              		.file 36 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 839              		.file 37 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 840              		.file 38 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 841              		.file 39 "../../libDaisy/src/daisy_core.h"
+ 842              		.file 40 "../../libDaisy/src/util/wav_format.h"
+ 843              		.file 41 "../../libDaisy/src/dev/max11300.h"
+ 844              		.file 42 "../../libDaisy/src/daisy_seed.h"
+ 845              		.file 43 "gml/GuitarPedal/Effect-Modules/base_effect_module.h"
+ 846              		.file 44 "gml/GuitarPedal/Effect-Modules/reverb_module.h"
+ 847              		.file 45 "../../libDaisy/src/dev/sr_595.h"
+ 848              		.file 46 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\new"
+ 849              		.file 47 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 20
+
+
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 reverb_module.cpp
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:17     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:26     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 _ZN10bkshepherd12ReverbModuleD2Ev
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:68     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000010 $d
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:26     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 _ZN10bkshepherd12ReverbModuleD1Ev
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:75     .text._ZN10bkshepherd12ReverbModuleD0Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:83     .text._ZN10bkshepherd12ReverbModuleD0Ev:00000000 _ZN10bkshepherd12ReverbModuleD0Ev
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:134    .text._ZN10bkshepherd12ReverbModuleD0Ev:00000018 $d
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:140    .rodata._ZN10bkshepherd12ReverbModuleC2Ev.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:144    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:152    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 _ZN10bkshepherd12ReverbModuleC2Ev
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:221    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000048 $d
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:152    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 _ZN10bkshepherd12ReverbModuleC1Ev
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:233    .text._ZN10bkshepherd12ReverbModule4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:241    .text._ZN10bkshepherd12ReverbModule4InitEf:00000000 _ZN10bkshepherd12ReverbModule4InitEf
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:288    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:296    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000000 _ZN10bkshepherd12ReverbModule11ProcessMonoEf
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:500    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:508    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000000 _ZN10bkshepherd12ReverbModule13ProcessStereoEff
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:715    .text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:723    .text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:00000000 _ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:788    .rodata._ZTVN10bkshepherd12ReverbModuleE:00000000 _ZTVN10bkshepherd12ReverbModuleE
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:741    .rodata.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:751    .rodata._ZL10s_metaData:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:755    .rodata._ZL10s_metaData:00000000 _ZL10s_metaData
+C:\Users\aydan\AppData\Local\Temp\cc9REsXI.s:784    .rodata._ZTVN10bkshepherd12ReverbModuleE:00000000 $d
+
+UNDEFINED SYMBOLS
+_ZN10bkshepherd16BaseEffectModuleD2Ev
+_ZdlPvj
+_ZN10bkshepherd16BaseEffectModuleC2Ev
+_ZN10bkshepherd16BaseEffectModule10InitParamsEi
+_ZN10bkshepherd16BaseEffectModule4InitEf
+_ZN7daisysp8ReverbSc4InitEf
+_ZN10bkshepherd16BaseEffectModule11ProcessMonoEf
+_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+_ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_
+_ZN10bkshepherd16BaseEffectModule13ProcessStereoEff
+_ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi
+_ZN10bkshepherd16BaseEffectModule10SetEnabledEb
+_ZN10bkshepherd16BaseEffectModule8SetTempoEm
+_ZN10bkshepherd16BaseEffectModule8UpdateUIEf
+_ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb
+_ZN10bkshepherd16BaseEffectModule16ParameterChangedEi

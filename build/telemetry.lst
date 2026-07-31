@@ -1,0 +1,1981 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"telemetry.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN3app9TelemetryC2Ev,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN3app9TelemetryC2Ev
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN3app9TelemetryC2Ev:
+  27              	.LVL0:
+  28              	.LFB2571:
+  29              		.file 1 "src/telemetry.cpp"
+   1:src/telemetry.cpp **** #include "telemetry.h"
+   2:src/telemetry.cpp **** 
+   3:src/telemetry.cpp **** #include <cstdio>
+   4:src/telemetry.cpp **** #include <cstring>
+   5:src/telemetry.cpp **** 
+   6:src/telemetry.cpp **** namespace app
+   7:src/telemetry.cpp **** {
+   8:src/telemetry.cpp **** 
+   9:src/telemetry.cpp **** Telemetry::Telemetry()
+  30              		.loc 1 9 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              	.LBB31:
+  36              	.LBB32:
+  37              	.LBB33:
+  38              		.file 2 "../../libDaisy/src/per/uart.h"
+   1:../../libDaisy/src/per/uart.h **** /* 
+   2:../../libDaisy/src/per/uart.h **** TODO
+   3:../../libDaisy/src/per/uart.h **** - Overflow handling, etc. for Rx Queue.
+   4:../../libDaisy/src/per/uart.h **** */
+   5:../../libDaisy/src/per/uart.h **** 
+   6:../../libDaisy/src/per/uart.h **** #pragma once
+   7:../../libDaisy/src/per/uart.h **** #ifndef DSY_UART_H
+   8:../../libDaisy/src/per/uart.h **** #define DSY_UART_H /**< macro */
+   9:../../libDaisy/src/per/uart.h **** #include "daisy_core.h"
+  10:../../libDaisy/src/per/uart.h **** 
+  11:../../libDaisy/src/per/uart.h **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 2
+
+
+  12:../../libDaisy/src/per/uart.h **** namespace daisy
+  13:../../libDaisy/src/per/uart.h **** {
+  14:../../libDaisy/src/per/uart.h **** /** @addtogroup serial
+  15:../../libDaisy/src/per/uart.h ****     @{
+  16:../../libDaisy/src/per/uart.h ****     */
+  17:../../libDaisy/src/per/uart.h **** 
+  18:../../libDaisy/src/per/uart.h **** /** 
+  19:../../libDaisy/src/per/uart.h ****     Uart Peripheral
+  20:../../libDaisy/src/per/uart.h ****     @author shensley
+  21:../../libDaisy/src/per/uart.h ****     @date March 2020
+  22:../../libDaisy/src/per/uart.h ****     */
+  23:../../libDaisy/src/per/uart.h **** class UartHandler
+  24:../../libDaisy/src/per/uart.h **** {
+  25:../../libDaisy/src/per/uart.h ****   public:
+  26:../../libDaisy/src/per/uart.h ****     struct Config
+  27:../../libDaisy/src/per/uart.h ****     {
+  28:../../libDaisy/src/per/uart.h ****         enum class Peripheral
+  29:../../libDaisy/src/per/uart.h ****         {
+  30:../../libDaisy/src/per/uart.h ****             USART_1,
+  31:../../libDaisy/src/per/uart.h ****             USART_2,
+  32:../../libDaisy/src/per/uart.h ****             USART_3,
+  33:../../libDaisy/src/per/uart.h ****             UART_4,
+  34:../../libDaisy/src/per/uart.h ****             UART_5,
+  35:../../libDaisy/src/per/uart.h ****             USART_6,
+  36:../../libDaisy/src/per/uart.h ****             UART_7,
+  37:../../libDaisy/src/per/uart.h ****             UART_8,
+  38:../../libDaisy/src/per/uart.h ****             LPUART_1,
+  39:../../libDaisy/src/per/uart.h ****         };
+  40:../../libDaisy/src/per/uart.h **** 
+  41:../../libDaisy/src/per/uart.h ****         enum class StopBits
+  42:../../libDaisy/src/per/uart.h ****         {
+  43:../../libDaisy/src/per/uart.h ****             BITS_0_5,
+  44:../../libDaisy/src/per/uart.h ****             BITS_1,
+  45:../../libDaisy/src/per/uart.h ****             BITS_1_5,
+  46:../../libDaisy/src/per/uart.h ****             BITS_2,
+  47:../../libDaisy/src/per/uart.h ****         };
+  48:../../libDaisy/src/per/uart.h **** 
+  49:../../libDaisy/src/per/uart.h ****         enum class Parity
+  50:../../libDaisy/src/per/uart.h ****         {
+  51:../../libDaisy/src/per/uart.h ****             NONE,
+  52:../../libDaisy/src/per/uart.h ****             EVEN,
+  53:../../libDaisy/src/per/uart.h ****             ODD,
+  54:../../libDaisy/src/per/uart.h ****         };
+  55:../../libDaisy/src/per/uart.h **** 
+  56:../../libDaisy/src/per/uart.h ****         enum class Mode
+  57:../../libDaisy/src/per/uart.h ****         {
+  58:../../libDaisy/src/per/uart.h ****             RX,
+  59:../../libDaisy/src/per/uart.h ****             TX,
+  60:../../libDaisy/src/per/uart.h ****             TX_RX,
+  61:../../libDaisy/src/per/uart.h ****         };
+  62:../../libDaisy/src/per/uart.h **** 
+  63:../../libDaisy/src/per/uart.h ****         enum class WordLength
+  64:../../libDaisy/src/per/uart.h ****         {
+  65:../../libDaisy/src/per/uart.h ****             BITS_7,
+  66:../../libDaisy/src/per/uart.h ****             BITS_8,
+  67:../../libDaisy/src/per/uart.h ****             BITS_9,
+  68:../../libDaisy/src/per/uart.h ****         };
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 3
+
+
+  69:../../libDaisy/src/per/uart.h **** 
+  70:../../libDaisy/src/per/uart.h ****         struct
+  71:../../libDaisy/src/per/uart.h ****         {
+  72:../../libDaisy/src/per/uart.h ****             dsy_gpio_pin tx; /**< & */
+  73:../../libDaisy/src/per/uart.h ****             dsy_gpio_pin rx; /**< & */
+  74:../../libDaisy/src/per/uart.h ****         } pin_config;        /**< & */
+  75:../../libDaisy/src/per/uart.h **** 
+  76:../../libDaisy/src/per/uart.h ****         Config()
+  77:../../libDaisy/src/per/uart.h ****         {
+  78:../../libDaisy/src/per/uart.h ****             // user must init periph, pin_config, and mode
+  79:../../libDaisy/src/per/uart.h ****             stopbits   = StopBits::BITS_1;
+  80:../../libDaisy/src/per/uart.h ****             parity     = Parity::NONE;
+  81:../../libDaisy/src/per/uart.h ****             wordlength = WordLength::BITS_8;
+  82:../../libDaisy/src/per/uart.h ****             baudrate   = 31250;
+  83:../../libDaisy/src/per/uart.h ****         }
+  84:../../libDaisy/src/per/uart.h **** 
+  85:../../libDaisy/src/per/uart.h ****         Peripheral periph;
+  86:../../libDaisy/src/per/uart.h ****         StopBits   stopbits;
+  87:../../libDaisy/src/per/uart.h ****         Parity     parity;
+  88:../../libDaisy/src/per/uart.h ****         Mode       mode;
+  89:../../libDaisy/src/per/uart.h ****         WordLength wordlength;
+  90:../../libDaisy/src/per/uart.h ****         uint32_t   baudrate;
+  91:../../libDaisy/src/per/uart.h ****     };
+  92:../../libDaisy/src/per/uart.h **** 
+  93:../../libDaisy/src/per/uart.h **** 
+  94:../../libDaisy/src/per/uart.h ****     UartHandler() : pimpl_(nullptr) {}
+  39              		.loc 2 94 35 is_stmt 0 view .LVU1
+  40 0000 0022     		movs	r2, #0
+  41              	.LVL1:
+  42              		.loc 2 94 35 view .LVU2
+  43              	.LBE33:
+  44              	.LBI32:
+  45              		.loc 2 94 5 is_stmt 1 view .LVU3
+  46              	.LBE32:
+  10:src/telemetry.cpp **** : uart_(),
+  11:src/telemetry.cpp ****   drop_count_(0)
+  47              		.loc 1 11 16 is_stmt 0 view .LVU4
+  48 0002 C0E90022 		strd	r2, r2, [r0]
+  49              	.LBE31:
+  12:src/telemetry.cpp **** {
+  13:src/telemetry.cpp **** }
+  50              		.loc 1 13 1 view .LVU5
+  51 0006 7047     		bx	lr
+  52              		.cfi_endproc
+  53              	.LFE2571:
+  55              		.global	_ZN3app9TelemetryC1Ev
+  56              		.thumb_set _ZN3app9TelemetryC1Ev,_ZN3app9TelemetryC2Ev
+  57              		.section	.text._ZN3app9Telemetry4InitEv,"ax",%progbits
+  58              		.align	1
+  59              		.p2align 2,,3
+  60              		.global	_ZN3app9Telemetry4InitEv
+  61              		.syntax unified
+  62              		.thumb
+  63              		.thumb_func
+  64              		.fpu fpv5-d16
+  66              	_ZN3app9Telemetry4InitEv:
+  67              	.LVL2:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 4
+
+
+  68              	.LFB2573:
+  14:src/telemetry.cpp **** 
+  15:src/telemetry.cpp **** // Telemetry stays in the main loop. The audio callback never touches UART, so
+  16:src/telemetry.cpp **** // transmit timing and failures cannot interfere with real-time audio.
+  17:src/telemetry.cpp **** void Telemetry::Init()
+  18:src/telemetry.cpp **** {
+  69              		.loc 1 18 1 is_stmt 1 view -0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 32
+  72              		@ frame_needed = 0, uses_anonymous_args = 0
+  19:src/telemetry.cpp ****     daisy::UartHandler::Config cfg;
+  73              		.loc 1 19 5 view .LVU7
+  18:src/telemetry.cpp ****     daisy::UartHandler::Config cfg;
+  74              		.loc 1 18 1 is_stmt 0 view .LVU8
+  75 0000 10B5     		push	{r4, lr}
+  76              		.cfi_def_cfa_offset 8
+  77              		.cfi_offset 4, -8
+  78              		.cfi_offset 14, -4
+  20:src/telemetry.cpp ****     cfg.periph = daisy::UartHandler::Config::Peripheral::USART_1;
+  21:src/telemetry.cpp ****     cfg.mode = daisy::UartHandler::Config::Mode::TX;
+  22:src/telemetry.cpp ****     cfg.baudrate = config::kUartBaudrate;
+  23:src/telemetry.cpp ****     cfg.pin_config.tx = config::kUartTxPin;
+  79              		.loc 1 23 23 view .LVU9
+  80 0002 0C4A     		ldr	r2, .L5
+  18:src/telemetry.cpp ****     daisy::UartHandler::Config cfg;
+  81              		.loc 1 18 1 view .LVU10
+  82 0004 88B0     		sub	sp, sp, #32
+  83              		.cfi_def_cfa_offset 40
+  84              	.LVL3:
+  85              	.LBB34:
+  86              	.LBI34:
+  76:../../libDaisy/src/per/uart.h ****         {
+  87              		.loc 2 76 9 is_stmt 1 view .LVU11
+  88              	.LBB35:
+  89              	.LBB36:
+  79:../../libDaisy/src/per/uart.h ****             parity     = Parity::NONE;
+  90              		.loc 2 79 13 view .LVU12
+  79:../../libDaisy/src/per/uart.h ****             parity     = Parity::NONE;
+  91              		.loc 2 79 24 is_stmt 0 view .LVU13
+  92 0006 0123     		movs	r3, #1
+  80:../../libDaisy/src/per/uart.h ****             wordlength = WordLength::BITS_8;
+  93              		.loc 2 80 24 view .LVU14
+  94 0008 0021     		movs	r1, #0
+  95              	.LBE36:
+  96              	.LBE35:
+  97              	.LBE34:
+  98              		.loc 1 23 23 view .LVU15
+  99 000a B2F800C0 		ldrh	ip, [r2]
+  22:src/telemetry.cpp ****     cfg.pin_config.tx = config::kUartTxPin;
+ 100              		.loc 1 22 18 view .LVU16
+ 101 000e 4FF4E134 		mov	r4, #115200
+ 102              	.LBB39:
+ 103              	.LBB38:
+ 104              	.LBB37:
+  79:../../libDaisy/src/per/uart.h ****             parity     = Parity::NONE;
+ 105              		.loc 2 79 24 view .LVU17
+ 106 0012 0393     		str	r3, [sp, #12]
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 5
+
+
+  80:../../libDaisy/src/per/uart.h ****             wordlength = WordLength::BITS_8;
+ 107              		.loc 2 80 13 is_stmt 1 view .LVU18
+  81:../../libDaisy/src/per/uart.h ****             baudrate   = 31250;
+ 108              		.loc 2 81 24 is_stmt 0 view .LVU19
+ 109 0014 0693     		str	r3, [sp, #24]
+  80:../../libDaisy/src/per/uart.h ****             wordlength = WordLength::BITS_8;
+ 110              		.loc 2 80 24 view .LVU20
+ 111 0016 0491     		str	r1, [sp, #16]
+  81:../../libDaisy/src/per/uart.h ****             baudrate   = 31250;
+ 112              		.loc 2 81 13 is_stmt 1 view .LVU21
+  82:../../libDaisy/src/per/uart.h ****         }
+ 113              		.loc 2 82 13 view .LVU22
+ 114              	.LVL4:
+  82:../../libDaisy/src/per/uart.h ****         }
+ 115              		.loc 2 82 13 is_stmt 0 view .LVU23
+ 116              	.LBE37:
+ 117              	.LBE38:
+ 118              	.LBE39:
+  20:src/telemetry.cpp ****     cfg.mode = daisy::UartHandler::Config::Mode::TX;
+ 119              		.loc 1 20 5 is_stmt 1 view .LVU24
+  20:src/telemetry.cpp ****     cfg.mode = daisy::UartHandler::Config::Mode::TX;
+ 120              		.loc 1 20 16 is_stmt 0 view .LVU25
+ 121 0018 0291     		str	r1, [sp, #8]
+  21:src/telemetry.cpp ****     cfg.baudrate = config::kUartBaudrate;
+ 122              		.loc 1 21 5 is_stmt 1 view .LVU26
+  24:src/telemetry.cpp ****     cfg.pin_config.rx = config::kUartRxPin;
+  25:src/telemetry.cpp ****     uart_.Init(cfg);
+ 123              		.loc 1 25 15 is_stmt 0 view .LVU27
+ 124 001a 01A9     		add	r1, sp, #4
+  21:src/telemetry.cpp ****     cfg.baudrate = config::kUartBaudrate;
+ 125              		.loc 1 21 14 view .LVU28
+ 126 001c 0593     		str	r3, [sp, #20]
+  22:src/telemetry.cpp ****     cfg.pin_config.tx = config::kUartTxPin;
+ 127              		.loc 1 22 5 is_stmt 1 view .LVU29
+  24:src/telemetry.cpp ****     cfg.pin_config.rx = config::kUartRxPin;
+ 128              		.loc 1 24 23 is_stmt 0 view .LVU30
+ 129 001e 9388     		ldrh	r3, [r2, #4]
+  22:src/telemetry.cpp ****     cfg.pin_config.tx = config::kUartTxPin;
+ 130              		.loc 1 22 18 view .LVU31
+ 131 0020 0794     		str	r4, [sp, #28]
+  23:src/telemetry.cpp ****     cfg.pin_config.rx = config::kUartRxPin;
+ 132              		.loc 1 23 5 is_stmt 1 view .LVU32
+  23:src/telemetry.cpp ****     cfg.pin_config.rx = config::kUartRxPin;
+ 133              		.loc 1 23 23 is_stmt 0 view .LVU33
+ 134 0022 ADF804C0 		strh	ip, [sp, #4]	@ movhi
+  24:src/telemetry.cpp ****     cfg.pin_config.rx = config::kUartRxPin;
+ 135              		.loc 1 24 5 is_stmt 1 view .LVU34
+  24:src/telemetry.cpp ****     cfg.pin_config.rx = config::kUartRxPin;
+ 136              		.loc 1 24 23 is_stmt 0 view .LVU35
+ 137 0026 ADF80630 		strh	r3, [sp, #6]	@ movhi
+ 138              		.loc 1 25 5 is_stmt 1 view .LVU36
+ 139              		.loc 1 25 15 is_stmt 0 view .LVU37
+ 140 002a FFF7FEFF 		bl	_ZN5daisy11UartHandler4InitERKNS0_6ConfigE
+ 141              	.LVL5:
+  26:src/telemetry.cpp **** }
+ 142              		.loc 1 26 1 view .LVU38
+ 143 002e 08B0     		add	sp, sp, #32
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 6
+
+
+ 144              		.cfi_def_cfa_offset 8
+ 145              		@ sp needed
+ 146 0030 10BD     		pop	{r4, pc}
+ 147              	.L6:
+ 148 0032 00BF     		.align	2
+ 149              	.L5:
+ 150 0034 00000000 		.word	.LANCHOR0
+ 151              		.cfi_endproc
+ 152              	.LFE2573:
+ 154              		.section	.rodata._ZN3app9Telemetry10SendEffectEi.str1.4,"aMS",%progbits,1
+ 155              		.align	2
+ 156              	.LC2:
+ 157 0000 452C2564 		.ascii	"E,%d\012\000"
+ 157      0A00
+ 158              		.section	.text._ZN3app9Telemetry10SendEffectEi,"ax",%progbits
+ 159              		.align	1
+ 160              		.p2align 2,,3
+ 161              		.global	_ZN3app9Telemetry10SendEffectEi
+ 162              		.syntax unified
+ 163              		.thumb
+ 164              		.thumb_func
+ 165              		.fpu fpv5-d16
+ 167              	_ZN3app9Telemetry10SendEffectEi:
+ 168              	.LVL6:
+ 169              	.LFB2574:
+  27:src/telemetry.cpp **** 
+  28:src/telemetry.cpp **** // Effect selection is a compact integer protocol field: E,<fx>.
+  29:src/telemetry.cpp **** void Telemetry::SendEffect(int effect)
+  30:src/telemetry.cpp **** {
+ 170              		.loc 1 30 1 is_stmt 1 view -0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 32
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+  31:src/telemetry.cpp ****     char buf[32];
+ 174              		.loc 1 31 5 view .LVU40
+  32:src/telemetry.cpp ****     std::snprintf(buf, sizeof(buf), "E,%d\n", effect);
+ 175              		.loc 1 32 5 view .LVU41
+  30:src/telemetry.cpp ****     char buf[32];
+ 176              		.loc 1 30 1 is_stmt 0 view .LVU42
+ 177 0000 10B5     		push	{r4, lr}
+ 178              		.cfi_def_cfa_offset 8
+ 179              		.cfi_offset 4, -8
+ 180              		.cfi_offset 14, -4
+ 181 0002 88B0     		sub	sp, sp, #32
+ 182              		.cfi_def_cfa_offset 40
+  30:src/telemetry.cpp ****     char buf[32];
+ 183              		.loc 1 30 1 view .LVU43
+ 184 0004 0B46     		mov	r3, r1
+ 185              		.loc 1 32 18 view .LVU44
+ 186 0006 0A4A     		ldr	r2, .L13
+ 187 0008 2021     		movs	r1, #32
+ 188              	.LVL7:
+  30:src/telemetry.cpp ****     char buf[32];
+ 189              		.loc 1 30 1 view .LVU45
+ 190 000a 0446     		mov	r4, r0
+ 191              		.loc 1 32 18 view .LVU46
+ 192 000c 6846     		mov	r0, sp
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 7
+
+
+ 193              	.LVL8:
+ 194              		.loc 1 32 18 view .LVU47
+ 195 000e FFF7FEFF 		bl	snprintf
+ 196              	.LVL9:
+  33:src/telemetry.cpp ****     Send(buf);
+ 197              		.loc 1 33 5 is_stmt 1 view .LVU48
+ 198              	.LBB42:
+ 199              	.LBI42:
+  34:src/telemetry.cpp **** }
+  35:src/telemetry.cpp **** 
+  36:src/telemetry.cpp **** // Pot telemetry uses integer 0..10000 scaling to avoid float formatting on the UART protocol.
+  37:src/telemetry.cpp **** void Telemetry::SendPots(const float* pots)
+  38:src/telemetry.cpp **** {
+  39:src/telemetry.cpp ****     char buf[96];
+  40:src/telemetry.cpp ****     std::snprintf(buf,
+  41:src/telemetry.cpp ****                   sizeof(buf),
+  42:src/telemetry.cpp ****                   "P,%d,%d,%d,%d\n",
+  43:src/telemetry.cpp ****                   PotToU10k(pots[0]),
+  44:src/telemetry.cpp ****                   PotToU10k(pots[1]),
+  45:src/telemetry.cpp ****                   PotToU10k(pots[2]),
+  46:src/telemetry.cpp ****                   PotToU10k(pots[3]));
+  47:src/telemetry.cpp ****     Send(buf);
+  48:src/telemetry.cpp **** }
+  49:src/telemetry.cpp **** 
+  50:src/telemetry.cpp **** // Footswitch telemetry reports both level and edge text so the Pi can update latch and event UI.
+  51:src/telemetry.cpp **** void Telemetry::SendFootswitch(bool down, const char* edge, int press_count)
+  52:src/telemetry.cpp **** {
+  53:src/telemetry.cpp ****     char buf[96];
+  54:src/telemetry.cpp ****     std::snprintf(buf, sizeof(buf), "S,%d,%s,%d\n", down ? 1 : 0, edge, press_count);
+  55:src/telemetry.cpp ****     Send(buf);
+  56:src/telemetry.cpp **** }
+  57:src/telemetry.cpp **** 
+  58:src/telemetry.cpp **** // Tuner telemetry preserves the production fields and scales frequency/cents/confidence as integer
+  59:src/telemetry.cpp **** void Telemetry::SendTuner(const TunerResult& result)
+  60:src/telemetry.cpp **** {
+  61:src/telemetry.cpp ****     const float freq_hz = result.freq_hz < 0.0f ? 0.0f : result.freq_hz;
+  62:src/telemetry.cpp ****     const int freq_mhz = (int)(freq_hz * 1000.0f + 0.5f);
+  63:src/telemetry.cpp ****     const float cents_scaled = result.cents * 100.0f;
+  64:src/telemetry.cpp ****     const int cents_c = (int)(cents_scaled + (cents_scaled >= 0.0f ? 0.5f : -0.5f));
+  65:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+  66:src/telemetry.cpp **** 
+  67:src/telemetry.cpp ****     char buf[128];
+  68:src/telemetry.cpp ****     std::snprintf(buf,
+  69:src/telemetry.cpp ****                   sizeof(buf),
+  70:src/telemetry.cpp ****                   "T,%d,%d,%s,%d,%d\n",
+  71:src/telemetry.cpp ****                   result.valid ? 1 : 0,
+  72:src/telemetry.cpp ****                   freq_mhz,
+  73:src/telemetry.cpp ****                   result.note,
+  74:src/telemetry.cpp ****                   cents_c,
+  75:src/telemetry.cpp ****                   conf_m);
+  76:src/telemetry.cpp ****     Send(buf);
+  77:src/telemetry.cpp **** }
+  78:src/telemetry.cpp **** 
+  79:src/telemetry.cpp **** // A disabled tuner packet is an explicit invalid result, not a stale last pitch.
+  80:src/telemetry.cpp **** void Telemetry::SendTunerDisabled()
+  81:src/telemetry.cpp **** {
+  82:src/telemetry.cpp ****     TunerResult result = {};
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 8
+
+
+  83:src/telemetry.cpp ****     std::snprintf(result.note, sizeof(result.note), "--");
+  84:src/telemetry.cpp ****     SendTuner(result);
+  85:src/telemetry.cpp **** }
+  86:src/telemetry.cpp **** 
+  87:src/telemetry.cpp **** void Telemetry::SendRotaryCalibration(uint16_t raw_u16, int position)
+  88:src/telemetry.cpp **** {
+  89:src/telemetry.cpp **** #if ROTARY_CALIBRATION_MODE
+  90:src/telemetry.cpp ****     char buf[64];
+  91:src/telemetry.cpp ****     std::snprintf(buf, sizeof(buf), "R,%u,%d\n", (unsigned)raw_u16, position);
+  92:src/telemetry.cpp ****     Send(buf);
+  93:src/telemetry.cpp **** #else
+  94:src/telemetry.cpp ****     (void)raw_u16;
+  95:src/telemetry.cpp ****     (void)position;
+  96:src/telemetry.cpp **** #endif
+  97:src/telemetry.cpp **** }
+  98:src/telemetry.cpp **** 
+  99:src/telemetry.cpp **** int Telemetry::ClampInt(int value, int lo, int hi)
+ 100:src/telemetry.cpp **** {
+ 101:src/telemetry.cpp ****     return value < lo ? lo : (value > hi ? hi : value);
+ 102:src/telemetry.cpp **** }
+ 103:src/telemetry.cpp **** 
+ 104:src/telemetry.cpp **** float Telemetry::ClampFloat(float value, float lo, float hi)
+ 105:src/telemetry.cpp **** {
+ 106:src/telemetry.cpp ****     return value < lo ? lo : (value > hi ? hi : value);
+ 107:src/telemetry.cpp **** }
+ 108:src/telemetry.cpp **** 
+ 109:src/telemetry.cpp **** // Convert normalized pot values into the UART protocol range while clamping noise or bad inputs.
+ 110:src/telemetry.cpp **** int Telemetry::PotToU10k(float value)
+ 111:src/telemetry.cpp **** {
+ 112:src/telemetry.cpp ****     value = ClampFloat(value, 0.0f, 1.0f);
+ 113:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 114:src/telemetry.cpp **** }
+ 115:src/telemetry.cpp **** 
+ 116:src/telemetry.cpp **** // Use a short bounded transmit timeout and count drops instead of blocking the
+ 117:src/telemetry.cpp **** // firmware if the UART or Pi side is slow.
+ 118:src/telemetry.cpp **** void Telemetry::Send(const char* message)
+ 200              		.loc 1 118 6 view .LVU49
+ 201              	.LBB43:
+ 119:src/telemetry.cpp **** {
+ 120:src/telemetry.cpp ****     const size_t len = std::strlen(message);
+ 202              		.loc 1 120 5 view .LVU50
+ 203              		.loc 1 120 35 is_stmt 0 view .LVU51
+ 204 0012 6846     		mov	r0, sp
+ 205 0014 FFF7FEFF 		bl	strlen
+ 206              	.LVL10:
+ 121:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 207              		.loc 1 121 69 view .LVU52
+ 208 0018 0A23     		movs	r3, #10
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 209              		.loc 1 120 35 view .LVU53
+ 210 001a 0246     		mov	r2, r0
+ 211              	.LVL11:
+ 212              		.loc 1 121 5 is_stmt 1 view .LVU54
+ 213              		.loc 1 121 69 is_stmt 0 view .LVU55
+ 214 001c 6946     		mov	r1, sp
+ 215 001e 2046     		mov	r0, r4
+ 216              	.LVL12:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 9
+
+
+ 217              		.loc 1 121 69 view .LVU56
+ 218 0020 FFF7FEFF 		bl	_ZN5daisy11UartHandler16BlockingTransmitEPhjm
+ 219              	.LVL13:
+ 122:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 220              		.loc 1 122 5 is_stmt 1 view .LVU57
+ 221 0024 10B1     		cbz	r0, .L7
+ 123:src/telemetry.cpp ****         ++drop_count_;
+ 222              		.loc 1 123 9 view .LVU58
+ 223 0026 6368     		ldr	r3, [r4, #4]
+ 224 0028 0133     		adds	r3, r3, #1
+ 225 002a 6360     		str	r3, [r4, #4]
+ 226              	.LVL14:
+ 227              	.L7:
+ 228              		.loc 1 123 9 is_stmt 0 view .LVU59
+ 229              	.LBE43:
+ 230              	.LBE42:
+  34:src/telemetry.cpp **** 
+ 231              		.loc 1 34 1 view .LVU60
+ 232 002c 08B0     		add	sp, sp, #32
+ 233              		.cfi_def_cfa_offset 8
+ 234              		@ sp needed
+ 235 002e 10BD     		pop	{r4, pc}
+ 236              	.LVL15:
+ 237              	.L14:
+  34:src/telemetry.cpp **** 
+ 238              		.loc 1 34 1 view .LVU61
+ 239              		.align	2
+ 240              	.L13:
+ 241 0030 00000000 		.word	.LC2
+ 242              		.cfi_endproc
+ 243              	.LFE2574:
+ 245              		.section	.rodata._ZN3app9Telemetry8SendPotsEPKf.str1.4,"aMS",%progbits,1
+ 246              		.align	2
+ 247              	.LC3:
+ 248 0000 502C2564 		.ascii	"P,%d,%d,%d,%d\012\000"
+ 248      2C25642C 
+ 248      25642C25 
+ 248      640A00
+ 249              		.section	.text._ZN3app9Telemetry8SendPotsEPKf,"ax",%progbits
+ 250              		.align	1
+ 251              		.p2align 2,,3
+ 252              		.global	_ZN3app9Telemetry8SendPotsEPKf
+ 253              		.syntax unified
+ 254              		.thumb
+ 255              		.thumb_func
+ 256              		.fpu fpv5-d16
+ 258              	_ZN3app9Telemetry8SendPotsEPKf:
+ 259              	.LVL16:
+ 260              	.LFB2575:
+  38:src/telemetry.cpp ****     char buf[96];
+ 261              		.loc 1 38 1 is_stmt 1 view -0
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 96
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+  39:src/telemetry.cpp ****     std::snprintf(buf,
+ 265              		.loc 1 39 5 view .LVU63
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 10
+
+
+ 266              		.loc 1 40 5 view .LVU64
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 267              		.loc 1 40 18 is_stmt 0 view .LVU65
+ 268 0000 91ED007A 		vldr.32	s14, [r1]
+ 269              	.LVL17:
+ 270              	.LBB62:
+ 271              	.LBI62:
+ 110:src/telemetry.cpp **** {
+ 272              		.loc 1 110 5 is_stmt 1 view .LVU66
+ 273              	.LBB63:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 274              		.loc 1 112 5 view .LVU67
+ 275              	.LBB64:
+ 276              	.LBI64:
+ 104:src/telemetry.cpp **** {
+ 277              		.loc 1 104 7 view .LVU68
+ 278              	.LBB65:
+ 106:src/telemetry.cpp **** }
+ 279              		.loc 1 106 5 view .LVU69
+ 106:src/telemetry.cpp **** }
+ 280              		.loc 1 106 23 is_stmt 0 view .LVU70
+ 281 0004 B5EEC07A 		vcmpe.f32	s14, #0
+ 282              	.LBE65:
+ 283              	.LBE64:
+ 284              	.LBE63:
+ 285              	.LBE62:
+  38:src/telemetry.cpp ****     char buf[96];
+ 286              		.loc 1 38 1 view .LVU71
+ 287 0008 30B5     		push	{r4, r5, lr}
+ 288              		.cfi_def_cfa_offset 12
+ 289              		.cfi_offset 4, -12
+ 290              		.cfi_offset 5, -8
+ 291              		.cfi_offset 14, -4
+ 292              	.LBB79:
+ 293              	.LBB74:
+ 294              	.LBB70:
+ 295              	.LBB66:
+ 106:src/telemetry.cpp **** }
+ 296              		.loc 1 106 23 view .LVU72
+ 297 000a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 298              	.LBE66:
+ 299              	.LBE70:
+ 300              	.LBE74:
+ 301              	.LBE79:
+  38:src/telemetry.cpp ****     char buf[96];
+ 302              		.loc 1 38 1 view .LVU73
+ 303 000e 9DB0     		sub	sp, sp, #116
+ 304              		.cfi_def_cfa_offset 128
+  38:src/telemetry.cpp ****     char buf[96];
+ 305              		.loc 1 38 1 view .LVU74
+ 306 0010 0446     		mov	r4, r0
+ 307              	.LBB80:
+ 308              	.LBB75:
+ 309              	.LBB71:
+ 310              	.LBB67:
+ 106:src/telemetry.cpp **** }
+ 311              		.loc 1 106 23 view .LVU75
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 11
+
+
+ 312 0012 40D4     		bmi	.L21
+ 106:src/telemetry.cpp **** }
+ 313              		.loc 1 106 42 view .LVU76
+ 314 0014 F7EE007A 		vmov.f32	s15, #1.0e+0
+ 315 0018 B4EEE77A 		vcmpe.f32	s14, s15
+ 316 001c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 317 0020 40F39980 		ble	.L33
+ 318              	.LBE67:
+ 319              	.LBE71:
+ 320              	.LBE75:
+ 321              	.LBE80:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 322              		.loc 1 40 18 view .LVU77
+ 323 0024 91ED017A 		vldr.32	s14, [r1, #4]
+ 324              	.LVL18:
+ 325              	.LBB81:
+ 326              	.LBB76:
+ 327              	.LBB72:
+ 328              	.LBB68:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 329              		.loc 1 40 18 view .LVU78
+ 330 0028 42F21073 		movw	r3, #10000
+ 331              	.LVL19:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 332              		.loc 1 40 18 view .LVU79
+ 333              	.LBE68:
+ 334              	.LBE72:
+ 113:src/telemetry.cpp **** }
+ 335              		.loc 1 113 5 is_stmt 1 view .LVU80
+ 113:src/telemetry.cpp **** }
+ 336              		.loc 1 113 5 is_stmt 0 view .LVU81
+ 337              	.LBE76:
+ 338              	.LBE81:
+ 101:src/telemetry.cpp **** }
+ 339              		.loc 1 101 5 is_stmt 1 view .LVU82
+ 340              	.LBB82:
+ 341              	.LBI82:
+ 110:src/telemetry.cpp **** {
+ 342              		.loc 1 110 5 view .LVU83
+ 343              	.LBB83:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 344              		.loc 1 112 5 view .LVU84
+ 345              	.LBB84:
+ 346              	.LBI84:
+ 104:src/telemetry.cpp **** {
+ 347              		.loc 1 104 7 view .LVU85
+ 348              	.LBB85:
+ 106:src/telemetry.cpp **** }
+ 349              		.loc 1 106 5 view .LVU86
+ 106:src/telemetry.cpp **** }
+ 350              		.loc 1 106 23 is_stmt 0 view .LVU87
+ 351 002c B5EEC07A 		vcmpe.f32	s14, #0
+ 352 0030 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 353 0034 37D5     		bpl	.L34
+ 354              	.L23:
+ 106:src/telemetry.cpp **** }
+ 355              		.loc 1 106 23 view .LVU88
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 12
+
+
+ 356 0036 0020     		movs	r0, #0
+ 357              	.LVL20:
+ 358              	.L17:
+ 106:src/telemetry.cpp **** }
+ 359              		.loc 1 106 23 view .LVU89
+ 360              	.LBE85:
+ 361              	.LBE84:
+ 113:src/telemetry.cpp **** }
+ 362              		.loc 1 113 5 is_stmt 1 view .LVU90
+ 113:src/telemetry.cpp **** }
+ 363              		.loc 1 113 5 is_stmt 0 view .LVU91
+ 364              	.LBE83:
+ 365              	.LBE82:
+ 101:src/telemetry.cpp **** }
+ 366              		.loc 1 101 5 is_stmt 1 view .LVU92
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 367              		.loc 1 40 18 is_stmt 0 view .LVU93
+ 368 0038 91ED027A 		vldr.32	s14, [r1, #8]
+ 369              	.LVL21:
+ 370              	.LBB93:
+ 371              	.LBI93:
+ 110:src/telemetry.cpp **** {
+ 372              		.loc 1 110 5 is_stmt 1 view .LVU94
+ 373              	.LBB94:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 374              		.loc 1 112 5 view .LVU95
+ 375              	.LBB95:
+ 376              	.LBI95:
+ 104:src/telemetry.cpp **** {
+ 377              		.loc 1 104 7 view .LVU96
+ 378              	.LBB96:
+ 106:src/telemetry.cpp **** }
+ 379              		.loc 1 106 5 view .LVU97
+ 106:src/telemetry.cpp **** }
+ 380              		.loc 1 106 23 is_stmt 0 view .LVU98
+ 381 003c B5EEC07A 		vcmpe.f32	s14, #0
+ 382 0040 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 383 0044 3FD4     		bmi	.L25
+ 384              	.L38:
+ 106:src/telemetry.cpp **** }
+ 385              		.loc 1 106 42 view .LVU99
+ 386 0046 F7EE007A 		vmov.f32	s15, #1.0e+0
+ 387 004a B4EEE77A 		vcmpe.f32	s14, s15
+ 388 004e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 389 0052 5CDD     		ble	.L35
+ 106:src/telemetry.cpp **** }
+ 390              		.loc 1 106 42 view .LVU100
+ 391              	.LBE96:
+ 392              	.LBE95:
+ 393              	.LBE94:
+ 394              	.LBE93:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 395              		.loc 1 40 18 view .LVU101
+ 396 0054 91ED037A 		vldr.32	s14, [r1, #12]
+ 397              	.LVL22:
+ 398              	.LBB104:
+ 399              	.LBB101:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 13
+
+
+ 400              	.LBB99:
+ 401              	.LBB97:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 402              		.loc 1 40 18 view .LVU102
+ 403 0058 42F21075 		movw	r5, #10000
+ 404              	.LVL23:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 405              		.loc 1 40 18 view .LVU103
+ 406              	.LBE97:
+ 407              	.LBE99:
+ 113:src/telemetry.cpp **** }
+ 408              		.loc 1 113 5 is_stmt 1 view .LVU104
+ 113:src/telemetry.cpp **** }
+ 409              		.loc 1 113 5 is_stmt 0 view .LVU105
+ 410              	.LBE101:
+ 411              	.LBE104:
+ 101:src/telemetry.cpp **** }
+ 412              		.loc 1 101 5 is_stmt 1 view .LVU106
+ 413              	.LBB105:
+ 414              	.LBI105:
+ 110:src/telemetry.cpp **** {
+ 415              		.loc 1 110 5 view .LVU107
+ 416              	.LBB106:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 417              		.loc 1 112 5 view .LVU108
+ 418              	.LBB107:
+ 419              	.LBI107:
+ 104:src/telemetry.cpp **** {
+ 420              		.loc 1 104 7 view .LVU109
+ 421              	.LBB108:
+ 106:src/telemetry.cpp **** }
+ 422              		.loc 1 106 5 view .LVU110
+ 106:src/telemetry.cpp **** }
+ 423              		.loc 1 106 23 is_stmt 0 view .LVU111
+ 424 005c B5EEC07A 		vcmpe.f32	s14, #0
+ 425 0060 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 426 0064 37D5     		bpl	.L36
+ 427              	.L27:
+ 106:src/telemetry.cpp **** }
+ 428              		.loc 1 106 23 view .LVU112
+ 429 0066 0022     		movs	r2, #0
+ 430              	.LVL24:
+ 431              	.L19:
+ 106:src/telemetry.cpp **** }
+ 432              		.loc 1 106 23 view .LVU113
+ 433              	.LBE108:
+ 434              	.LBE107:
+ 113:src/telemetry.cpp **** }
+ 435              		.loc 1 113 5 is_stmt 1 view .LVU114
+ 113:src/telemetry.cpp **** }
+ 436              		.loc 1 113 5 is_stmt 0 view .LVU115
+ 437              	.LBE106:
+ 438              	.LBE105:
+ 101:src/telemetry.cpp **** }
+ 439              		.loc 1 101 5 is_stmt 1 view .LVU116
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 440              		.loc 1 40 18 is_stmt 0 view .LVU117
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 14
+
+
+ 441 0068 6021     		movs	r1, #96
+ 442 006a 0292     		str	r2, [sp, #8]
+ 443 006c 434A     		ldr	r2, .L40
+ 444 006e CDE90005 		strd	r0, r5, [sp]
+ 445 0072 04A8     		add	r0, sp, #16
+ 446 0074 FFF7FEFF 		bl	snprintf
+ 447              	.LVL25:
+  47:src/telemetry.cpp **** }
+ 448              		.loc 1 47 5 is_stmt 1 view .LVU118
+ 449              	.LBB112:
+ 450              	.LBI112:
+ 118:src/telemetry.cpp **** {
+ 451              		.loc 1 118 6 view .LVU119
+ 452              	.LBB113:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 453              		.loc 1 120 5 view .LVU120
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 454              		.loc 1 120 35 is_stmt 0 view .LVU121
+ 455 0078 04A8     		add	r0, sp, #16
+ 456              	.LVL26:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 457              		.loc 1 120 35 view .LVU122
+ 458 007a FFF7FEFF 		bl	strlen
+ 459              	.LVL27:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 460              		.loc 1 121 69 view .LVU123
+ 461 007e 0A23     		movs	r3, #10
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 462              		.loc 1 120 35 view .LVU124
+ 463 0080 0246     		mov	r2, r0
+ 464              	.LVL28:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 465              		.loc 1 121 5 is_stmt 1 view .LVU125
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 466              		.loc 1 121 69 is_stmt 0 view .LVU126
+ 467 0082 04A9     		add	r1, sp, #16
+ 468              	.LVL29:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 469              		.loc 1 121 69 view .LVU127
+ 470 0084 2046     		mov	r0, r4
+ 471              	.LVL30:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 472              		.loc 1 121 69 view .LVU128
+ 473 0086 FFF7FEFF 		bl	_ZN5daisy11UartHandler16BlockingTransmitEPhjm
+ 474              	.LVL31:
+ 122:src/telemetry.cpp ****         ++drop_count_;
+ 475              		.loc 1 122 5 is_stmt 1 view .LVU129
+ 476 008a 10B1     		cbz	r0, .L15
+ 477              		.loc 1 123 9 view .LVU130
+ 478 008c 6368     		ldr	r3, [r4, #4]
+ 479 008e 0133     		adds	r3, r3, #1
+ 480 0090 6360     		str	r3, [r4, #4]
+ 481              	.LVL32:
+ 482              	.L15:
+ 483              		.loc 1 123 9 is_stmt 0 view .LVU131
+ 484              	.LBE113:
+ 485              	.LBE112:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 15
+
+
+  48:src/telemetry.cpp **** 
+ 486              		.loc 1 48 1 view .LVU132
+ 487 0092 1DB0     		add	sp, sp, #116
+ 488              		.cfi_remember_state
+ 489              		.cfi_def_cfa_offset 12
+ 490              		@ sp needed
+ 491 0094 30BD     		pop	{r4, r5, pc}
+ 492              	.LVL33:
+ 493              	.L21:
+ 494              		.cfi_restore_state
+ 495              	.LBB114:
+ 496              	.LBB77:
+ 497              	.LBB73:
+ 498              	.LBB69:
+  48:src/telemetry.cpp **** 
+ 499              		.loc 1 48 1 view .LVU133
+ 500 0096 0023     		movs	r3, #0
+ 501              	.L16:
+ 502              	.LVL34:
+  48:src/telemetry.cpp **** 
+ 503              		.loc 1 48 1 view .LVU134
+ 504              	.LBE69:
+ 505              	.LBE73:
+ 113:src/telemetry.cpp **** }
+ 506              		.loc 1 113 5 is_stmt 1 view .LVU135
+ 113:src/telemetry.cpp **** }
+ 507              		.loc 1 113 5 is_stmt 0 view .LVU136
+ 508              	.LBE77:
+ 509              	.LBE114:
+ 101:src/telemetry.cpp **** }
+ 510              		.loc 1 101 5 is_stmt 1 view .LVU137
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 511              		.loc 1 40 18 is_stmt 0 view .LVU138
+ 512 0098 91ED017A 		vldr.32	s14, [r1, #4]
+ 513              	.LVL35:
+ 514              	.LBB115:
+ 110:src/telemetry.cpp **** {
+ 515              		.loc 1 110 5 is_stmt 1 view .LVU139
+ 516              	.LBB90:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 517              		.loc 1 112 5 view .LVU140
+ 518              	.LBB88:
+ 104:src/telemetry.cpp **** {
+ 519              		.loc 1 104 7 view .LVU141
+ 520              	.LBB86:
+ 106:src/telemetry.cpp **** }
+ 521              		.loc 1 106 5 view .LVU142
+ 106:src/telemetry.cpp **** }
+ 522              		.loc 1 106 23 is_stmt 0 view .LVU143
+ 523 009c B5EEC07A 		vcmpe.f32	s14, #0
+ 524 00a0 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 525 00a4 C7D4     		bmi	.L23
+ 526              	.L34:
+ 106:src/telemetry.cpp **** }
+ 527              		.loc 1 106 42 view .LVU144
+ 528 00a6 F7EE007A 		vmov.f32	s15, #1.0e+0
+ 529 00aa B4EEE77A 		vcmpe.f32	s14, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 16
+
+
+ 530 00ae F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 531 00b2 3EDD     		ble	.L37
+ 106:src/telemetry.cpp **** }
+ 532              		.loc 1 106 42 view .LVU145
+ 533              	.LBE86:
+ 534              	.LBE88:
+ 535              	.LBE90:
+ 536              	.LBE115:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 537              		.loc 1 40 18 view .LVU146
+ 538 00b4 91ED027A 		vldr.32	s14, [r1, #8]
+ 539              	.LVL36:
+ 540              	.LBB116:
+ 541              	.LBB91:
+ 542              	.LBB89:
+ 543              	.LBB87:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 544              		.loc 1 40 18 view .LVU147
+ 545 00b8 42F21070 		movw	r0, #10000
+ 546              	.LVL37:
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 547              		.loc 1 40 18 view .LVU148
+ 548              	.LBE87:
+ 549              	.LBE89:
+ 113:src/telemetry.cpp **** }
+ 550              		.loc 1 113 5 is_stmt 1 view .LVU149
+ 113:src/telemetry.cpp **** }
+ 551              		.loc 1 113 5 is_stmt 0 view .LVU150
+ 552              	.LBE91:
+ 553              	.LBE116:
+ 101:src/telemetry.cpp **** }
+ 554              		.loc 1 101 5 is_stmt 1 view .LVU151
+ 555              	.LBB117:
+ 110:src/telemetry.cpp **** {
+ 556              		.loc 1 110 5 view .LVU152
+ 557              	.LBB102:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 558              		.loc 1 112 5 view .LVU153
+ 559              	.LBB100:
+ 104:src/telemetry.cpp **** {
+ 560              		.loc 1 104 7 view .LVU154
+ 561              	.LBB98:
+ 106:src/telemetry.cpp **** }
+ 562              		.loc 1 106 5 view .LVU155
+ 106:src/telemetry.cpp **** }
+ 563              		.loc 1 106 23 is_stmt 0 view .LVU156
+ 564 00bc B5EEC07A 		vcmpe.f32	s14, #0
+ 565 00c0 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 566 00c4 BFD5     		bpl	.L38
+ 567              	.L25:
+ 106:src/telemetry.cpp **** }
+ 568              		.loc 1 106 23 view .LVU157
+ 569 00c6 0025     		movs	r5, #0
+ 570              	.L18:
+ 571              	.LVL38:
+ 106:src/telemetry.cpp **** }
+ 572              		.loc 1 106 23 view .LVU158
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 17
+
+
+ 573              	.LBE98:
+ 574              	.LBE100:
+ 113:src/telemetry.cpp **** }
+ 575              		.loc 1 113 5 is_stmt 1 view .LVU159
+ 113:src/telemetry.cpp **** }
+ 576              		.loc 1 113 5 is_stmt 0 view .LVU160
+ 577              	.LBE102:
+ 578              	.LBE117:
+ 101:src/telemetry.cpp **** }
+ 579              		.loc 1 101 5 is_stmt 1 view .LVU161
+  40:src/telemetry.cpp ****                   sizeof(buf),
+ 580              		.loc 1 40 18 is_stmt 0 view .LVU162
+ 581 00c8 91ED037A 		vldr.32	s14, [r1, #12]
+ 582              	.LVL39:
+ 583              	.LBB118:
+ 110:src/telemetry.cpp **** {
+ 584              		.loc 1 110 5 is_stmt 1 view .LVU163
+ 585              	.LBB111:
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 586              		.loc 1 112 5 view .LVU164
+ 587              	.LBB110:
+ 104:src/telemetry.cpp **** {
+ 588              		.loc 1 104 7 view .LVU165
+ 589              	.LBB109:
+ 106:src/telemetry.cpp **** }
+ 590              		.loc 1 106 5 view .LVU166
+ 106:src/telemetry.cpp **** }
+ 591              		.loc 1 106 23 is_stmt 0 view .LVU167
+ 592 00cc B5EEC07A 		vcmpe.f32	s14, #0
+ 593 00d0 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 594 00d4 C7D4     		bmi	.L27
+ 595              	.L36:
+ 106:src/telemetry.cpp **** }
+ 596              		.loc 1 106 42 view .LVU168
+ 597 00d6 F7EE007A 		vmov.f32	s15, #1.0e+0
+ 598 00da B4EEE77A 		vcmpe.f32	s14, s15
+ 599 00de F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 600 00e2 02DD     		ble	.L39
+ 106:src/telemetry.cpp **** }
+ 601              		.loc 1 106 42 view .LVU169
+ 602 00e4 42F21072 		movw	r2, #10000
+ 603 00e8 BEE7     		b	.L19
+ 604              	.L39:
+ 605              	.LBE109:
+ 606              	.LBE110:
+ 113:src/telemetry.cpp **** }
+ 607              		.loc 1 113 44 view .LVU170
+ 608 00ea F6EE007A 		vmov.f32	s15, #5.0e-1
+ 609 00ee DFED246A 		vldr.32	s13, .L40+4
+ 610 00f2 42F21071 		movw	r1, #10000
+ 611              	.LVL40:
+ 113:src/telemetry.cpp **** }
+ 612              		.loc 1 113 44 view .LVU171
+ 613 00f6 E7EE267A 		vfma.f32	s15, s14, s13
+ 113:src/telemetry.cpp **** }
+ 614              		.loc 1 113 20 view .LVU172
+ 615 00fa FDEEE77A 		vcvt.s32.f32	s15, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 18
+
+
+ 616 00fe 17EE902A 		vmov	r2, s15	@ int
+ 617 0102 8A42     		cmp	r2, r1
+ 618 0104 A8BF     		it	ge
+ 619 0106 0A46     		movge	r2, r1
+ 620 0108 22EAE272 		bic	r2, r2, r2, asr #31
+ 621 010c ACE7     		b	.L19
+ 622              	.LVL41:
+ 623              	.L35:
+ 113:src/telemetry.cpp **** }
+ 624              		.loc 1 113 20 view .LVU173
+ 625              	.LBE111:
+ 626              	.LBE118:
+ 627              	.LBB119:
+ 628              	.LBB103:
+ 113:src/telemetry.cpp **** }
+ 629              		.loc 1 113 44 view .LVU174
+ 630 010e F6EE007A 		vmov.f32	s15, #5.0e-1
+ 631 0112 DFED1B6A 		vldr.32	s13, .L40+4
+ 632 0116 42F21072 		movw	r2, #10000
+ 633 011a E7EE267A 		vfma.f32	s15, s14, s13
+ 113:src/telemetry.cpp **** }
+ 634              		.loc 1 113 20 view .LVU175
+ 635 011e FDEEE77A 		vcvt.s32.f32	s15, s15
+ 636 0122 17EE905A 		vmov	r5, s15	@ int
+ 637 0126 9542     		cmp	r5, r2
+ 638 0128 A8BF     		it	ge
+ 639 012a 1546     		movge	r5, r2
+ 640 012c 25EAE575 		bic	r5, r5, r5, asr #31
+ 641 0130 CAE7     		b	.L18
+ 642              	.LVL42:
+ 643              	.L37:
+ 113:src/telemetry.cpp **** }
+ 644              		.loc 1 113 20 view .LVU176
+ 645              	.LBE103:
+ 646              	.LBE119:
+ 647              	.LBB120:
+ 648              	.LBB92:
+ 113:src/telemetry.cpp **** }
+ 649              		.loc 1 113 44 view .LVU177
+ 650 0132 F6EE007A 		vmov.f32	s15, #5.0e-1
+ 651 0136 DFED126A 		vldr.32	s13, .L40+4
+ 652 013a 42F21072 		movw	r2, #10000
+ 653 013e E7EE267A 		vfma.f32	s15, s14, s13
+ 113:src/telemetry.cpp **** }
+ 654              		.loc 1 113 20 view .LVU178
+ 655 0142 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 656 0146 17EE900A 		vmov	r0, s15	@ int
+ 657              	.LVL43:
+ 113:src/telemetry.cpp **** }
+ 658              		.loc 1 113 20 view .LVU179
+ 659 014a 9042     		cmp	r0, r2
+ 660 014c A8BF     		it	ge
+ 661 014e 1046     		movge	r0, r2
+ 662 0150 20EAE070 		bic	r0, r0, r0, asr #31
+ 663 0154 70E7     		b	.L17
+ 664              	.LVL44:
+ 665              	.L33:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 19
+
+
+ 113:src/telemetry.cpp **** }
+ 666              		.loc 1 113 20 view .LVU180
+ 667              	.LBE92:
+ 668              	.LBE120:
+ 669              	.LBB121:
+ 670              	.LBB78:
+ 113:src/telemetry.cpp **** }
+ 671              		.loc 1 113 44 view .LVU181
+ 672 0156 F6EE007A 		vmov.f32	s15, #5.0e-1
+ 673 015a DFED096A 		vldr.32	s13, .L40+4
+ 674 015e 42F21072 		movw	r2, #10000
+ 675 0162 E7EE267A 		vfma.f32	s15, s14, s13
+ 113:src/telemetry.cpp **** }
+ 676              		.loc 1 113 20 view .LVU182
+ 677 0166 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 678 016a 17EE903A 		vmov	r3, s15	@ int
+ 679 016e 9342     		cmp	r3, r2
+ 680 0170 A8BF     		it	ge
+ 681 0172 1346     		movge	r3, r2
+ 682 0174 23EAE373 		bic	r3, r3, r3, asr #31
+ 683 0178 8EE7     		b	.L16
+ 684              	.L41:
+ 685 017a 00BF     		.align	2
+ 686              	.L40:
+ 687 017c 00000000 		.word	.LC3
+ 688 0180 00401C46 		.word	1176256512
+ 689              	.LBE78:
+ 690              	.LBE121:
+ 691              		.cfi_endproc
+ 692              	.LFE2575:
+ 694              		.section	.rodata._ZN3app9Telemetry14SendFootswitchEbPKci.str1.4,"aMS",%progbits,1
+ 695              		.align	2
+ 696              	.LC4:
+ 697 0000 532C2564 		.ascii	"S,%d,%s,%d\012\000"
+ 697      2C25732C 
+ 697      25640A00 
+ 698              		.section	.text._ZN3app9Telemetry14SendFootswitchEbPKci,"ax",%progbits
+ 699              		.align	1
+ 700              		.p2align 2,,3
+ 701              		.global	_ZN3app9Telemetry14SendFootswitchEbPKci
+ 702              		.syntax unified
+ 703              		.thumb
+ 704              		.thumb_func
+ 705              		.fpu fpv5-d16
+ 707              	_ZN3app9Telemetry14SendFootswitchEbPKci:
+ 708              	.LVL45:
+ 709              	.LFB2576:
+  52:src/telemetry.cpp ****     char buf[96];
+ 710              		.loc 1 52 1 is_stmt 1 view -0
+ 711              		.cfi_startproc
+ 712              		@ args = 0, pretend = 0, frame = 96
+ 713              		@ frame_needed = 0, uses_anonymous_args = 0
+  53:src/telemetry.cpp ****     std::snprintf(buf, sizeof(buf), "S,%d,%s,%d\n", down ? 1 : 0, edge, press_count);
+ 714              		.loc 1 53 5 view .LVU184
+  54:src/telemetry.cpp ****     Send(buf);
+ 715              		.loc 1 54 5 view .LVU185
+  52:src/telemetry.cpp ****     char buf[96];
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 20
+
+
+ 716              		.loc 1 52 1 is_stmt 0 view .LVU186
+ 717 0000 10B5     		push	{r4, lr}
+ 718              		.cfi_def_cfa_offset 8
+ 719              		.cfi_offset 4, -8
+ 720              		.cfi_offset 14, -4
+ 721 0002 1446     		mov	r4, r2
+ 722 0004 9AB0     		sub	sp, sp, #104
+ 723              		.cfi_def_cfa_offset 112
+  52:src/telemetry.cpp ****     char buf[96];
+ 724              		.loc 1 52 1 view .LVU187
+ 725 0006 1A46     		mov	r2, r3
+ 726              	.LVL46:
+  54:src/telemetry.cpp ****     Send(buf);
+ 727              		.loc 1 54 18 view .LVU188
+ 728 0008 0B46     		mov	r3, r1
+ 729              	.LVL47:
+  54:src/telemetry.cpp ****     Send(buf);
+ 730              		.loc 1 54 18 view .LVU189
+ 731 000a 0094     		str	r4, [sp]
+ 732 000c 6021     		movs	r1, #96
+ 733              	.LVL48:
+  52:src/telemetry.cpp ****     char buf[96];
+ 734              		.loc 1 52 1 view .LVU190
+ 735 000e 0446     		mov	r4, r0
+ 736              	.LVL49:
+  54:src/telemetry.cpp ****     Send(buf);
+ 737              		.loc 1 54 18 view .LVU191
+ 738 0010 0192     		str	r2, [sp, #4]
+ 739 0012 02A8     		add	r0, sp, #8
+ 740              	.LVL50:
+  54:src/telemetry.cpp ****     Send(buf);
+ 741              		.loc 1 54 18 view .LVU192
+ 742 0014 084A     		ldr	r2, .L48
+ 743              	.LVL51:
+  54:src/telemetry.cpp ****     Send(buf);
+ 744              		.loc 1 54 18 view .LVU193
+ 745 0016 FFF7FEFF 		bl	snprintf
+ 746              	.LVL52:
+  55:src/telemetry.cpp **** }
+ 747              		.loc 1 55 5 is_stmt 1 view .LVU194
+ 748              	.LBB124:
+ 749              	.LBI124:
+ 118:src/telemetry.cpp **** {
+ 750              		.loc 1 118 6 view .LVU195
+ 751              	.LBB125:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 752              		.loc 1 120 5 view .LVU196
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 753              		.loc 1 120 35 is_stmt 0 view .LVU197
+ 754 001a 02A8     		add	r0, sp, #8
+ 755              	.LVL53:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 756              		.loc 1 120 35 view .LVU198
+ 757 001c FFF7FEFF 		bl	strlen
+ 758              	.LVL54:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 759              		.loc 1 121 69 view .LVU199
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 21
+
+
+ 760 0020 0A23     		movs	r3, #10
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 761              		.loc 1 120 35 view .LVU200
+ 762 0022 0246     		mov	r2, r0
+ 763              	.LVL55:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 764              		.loc 1 121 5 is_stmt 1 view .LVU201
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 765              		.loc 1 121 69 is_stmt 0 view .LVU202
+ 766 0024 02A9     		add	r1, sp, #8
+ 767              	.LVL56:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 768              		.loc 1 121 69 view .LVU203
+ 769 0026 2046     		mov	r0, r4
+ 770              	.LVL57:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 771              		.loc 1 121 69 view .LVU204
+ 772 0028 FFF7FEFF 		bl	_ZN5daisy11UartHandler16BlockingTransmitEPhjm
+ 773              	.LVL58:
+ 122:src/telemetry.cpp ****         ++drop_count_;
+ 774              		.loc 1 122 5 is_stmt 1 view .LVU205
+ 775 002c 10B1     		cbz	r0, .L42
+ 776              		.loc 1 123 9 view .LVU206
+ 777 002e 6368     		ldr	r3, [r4, #4]
+ 778 0030 0133     		adds	r3, r3, #1
+ 779 0032 6360     		str	r3, [r4, #4]
+ 780              	.LVL59:
+ 781              	.L42:
+ 782              		.loc 1 123 9 is_stmt 0 view .LVU207
+ 783              	.LBE125:
+ 784              	.LBE124:
+  56:src/telemetry.cpp **** 
+ 785              		.loc 1 56 1 view .LVU208
+ 786 0034 1AB0     		add	sp, sp, #104
+ 787              		.cfi_def_cfa_offset 8
+ 788              		@ sp needed
+ 789 0036 10BD     		pop	{r4, pc}
+ 790              	.LVL60:
+ 791              	.L49:
+  56:src/telemetry.cpp **** 
+ 792              		.loc 1 56 1 view .LVU209
+ 793              		.align	2
+ 794              	.L48:
+ 795 0038 00000000 		.word	.LC4
+ 796              		.cfi_endproc
+ 797              	.LFE2576:
+ 799              		.section	.rodata._ZN3app9Telemetry9SendTunerERKNS_11TunerResultE.str1.4,"aMS",%progbits,1
+ 800              		.align	2
+ 801              	.LC5:
+ 802 0000 542C2564 		.ascii	"T,%d,%d,%s,%d,%d\012\000"
+ 802      2C25642C 
+ 802      25732C25 
+ 802      642C2564 
+ 802      0A00
+ 803              		.section	.text._ZN3app9Telemetry9SendTunerERKNS_11TunerResultE,"ax",%progbits
+ 804              		.align	1
+ 805              		.p2align 2,,3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 22
+
+
+ 806              		.global	_ZN3app9Telemetry9SendTunerERKNS_11TunerResultE
+ 807              		.syntax unified
+ 808              		.thumb
+ 809              		.thumb_func
+ 810              		.fpu fpv5-d16
+ 812              	_ZN3app9Telemetry9SendTunerERKNS_11TunerResultE:
+ 813              	.LVL61:
+ 814              	.LFB2577:
+  60:src/telemetry.cpp ****     const float freq_hz = result.freq_hz < 0.0f ? 0.0f : result.freq_hz;
+ 815              		.loc 1 60 1 is_stmt 1 view -0
+ 816              		.cfi_startproc
+ 817              		@ args = 0, pretend = 0, frame = 128
+ 818              		@ frame_needed = 0, uses_anonymous_args = 0
+  61:src/telemetry.cpp ****     const int freq_mhz = (int)(freq_hz * 1000.0f + 0.5f);
+ 819              		.loc 1 61 5 view .LVU211
+  61:src/telemetry.cpp ****     const int freq_mhz = (int)(freq_hz * 1000.0f + 0.5f);
+ 820              		.loc 1 61 34 is_stmt 0 view .LVU212
+ 821 0000 91ED017A 		vldr.32	s14, [r1, #4]
+  61:src/telemetry.cpp ****     const int freq_mhz = (int)(freq_hz * 1000.0f + 0.5f);
+ 822              		.loc 1 61 49 view .LVU213
+ 823 0004 B5EEC07A 		vcmpe.f32	s14, #0
+  60:src/telemetry.cpp ****     const float freq_hz = result.freq_hz < 0.0f ? 0.0f : result.freq_hz;
+ 824              		.loc 1 60 1 view .LVU214
+ 825 0008 10B5     		push	{r4, lr}
+ 826              		.cfi_def_cfa_offset 8
+ 827              		.cfi_offset 4, -8
+ 828              		.cfi_offset 14, -4
+  61:src/telemetry.cpp ****     const int freq_mhz = (int)(freq_hz * 1000.0f + 0.5f);
+ 829              		.loc 1 61 49 view .LVU215
+ 830 000a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+  60:src/telemetry.cpp ****     const float freq_hz = result.freq_hz < 0.0f ? 0.0f : result.freq_hz;
+ 831              		.loc 1 60 1 view .LVU216
+ 832 000e A4B0     		sub	sp, sp, #144
+ 833              		.cfi_def_cfa_offset 152
+  60:src/telemetry.cpp ****     const float freq_hz = result.freq_hz < 0.0f ? 0.0f : result.freq_hz;
+ 834              		.loc 1 60 1 view .LVU217
+ 835 0010 0446     		mov	r4, r0
+  61:src/telemetry.cpp ****     const int freq_mhz = (int)(freq_hz * 1000.0f + 0.5f);
+ 836              		.loc 1 61 49 view .LVU218
+ 837 0012 53D4     		bmi	.L55
+  62:src/telemetry.cpp ****     const float cents_scaled = result.cents * 100.0f;
+ 838              		.loc 1 62 50 discriminator 2 view .LVU219
+ 839 0014 F6EE007A 		vmov.f32	s15, #5.0e-1
+ 840 0018 DFED296A 		vldr.32	s13, .L64
+ 841 001c E7EE267A 		vfma.f32	s15, s14, s13
+  62:src/telemetry.cpp ****     const float cents_scaled = result.cents * 100.0f;
+ 842              		.loc 1 62 15 discriminator 2 view .LVU220
+ 843 0020 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 844 0024 17EE900A 		vmov	r0, s15	@ int
+ 845              	.LVL62:
+ 846              	.L51:
+  62:src/telemetry.cpp ****     const float cents_scaled = result.cents * 100.0f;
+ 847              		.loc 1 62 5 is_stmt 1 discriminator 4 view .LVU221
+  63:src/telemetry.cpp ****     const int cents_c = (int)(cents_scaled + (cents_scaled >= 0.0f ? 0.5f : -0.5f));
+ 848              		.loc 1 63 5 discriminator 4 view .LVU222
+  63:src/telemetry.cpp ****     const int cents_c = (int)(cents_scaled + (cents_scaled >= 0.0f ? 0.5f : -0.5f));
+ 849              		.loc 1 63 17 is_stmt 0 discriminator 4 view .LVU223
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 23
+
+
+ 850 0028 9FED266A 		vldr.32	s12, .L64+4
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 851              		.loc 1 64 68 discriminator 4 view .LVU224
+ 852 002c F6EE006A 		vmov.f32	s13, #5.0e-1
+  63:src/telemetry.cpp ****     const int cents_c = (int)(cents_scaled + (cents_scaled >= 0.0f ? 0.5f : -0.5f));
+ 853              		.loc 1 63 17 discriminator 4 view .LVU225
+ 854 0030 91ED037A 		vldr.32	s14, [r1, #12]
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 855              		.loc 1 64 68 discriminator 4 view .LVU226
+ 856 0034 FEEE007A 		vmov.f32	s15, #-5.0e-1
+  63:src/telemetry.cpp ****     const int cents_c = (int)(cents_scaled + (cents_scaled >= 0.0f ? 0.5f : -0.5f));
+ 857              		.loc 1 63 17 discriminator 4 view .LVU227
+ 858 0038 27EE067A 		vmul.f32	s14, s14, s12
+ 859              	.LVL63:
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 860              		.loc 1 64 5 is_stmt 1 discriminator 4 view .LVU228
+  65:src/telemetry.cpp **** 
+ 861              		.loc 1 65 48 is_stmt 0 discriminator 4 view .LVU229
+ 862 003c 91ED026A 		vldr.32	s12, [r1, #8]
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 863              		.loc 1 64 68 discriminator 4 view .LVU230
+ 864 0040 B5EEC07A 		vcmpe.f32	s14, #0
+ 865 0044 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 866              	.LBB130:
+ 867              	.LBB131:
+ 106:src/telemetry.cpp **** }
+ 868              		.loc 1 106 23 discriminator 4 view .LVU231
+ 869 0048 B5EEC06A 		vcmpe.f32	s12, #0
+ 870              	.LBE131:
+ 871              	.LBE130:
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 872              		.loc 1 64 68 discriminator 4 view .LVU232
+ 873 004c 66FEA77A 		vselge.f32	s15, s13, s15
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 874              		.loc 1 64 44 discriminator 4 view .LVU233
+ 875 0050 77EE877A 		vadd.f32	s15, s15, s14
+ 876              	.LBB134:
+ 877              	.LBB132:
+ 106:src/telemetry.cpp **** }
+ 878              		.loc 1 106 23 discriminator 4 view .LVU234
+ 879 0054 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 880              	.LBE132:
+ 881              	.LBE134:
+  64:src/telemetry.cpp ****     const int conf_m = (int)(ClampFloat(result.confidence, 0.0f, 1.0f) * 1000.0f + 0.5f);
+ 882              		.loc 1 64 15 discriminator 4 view .LVU235
+ 883 0058 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 884              	.LVL64:
+  65:src/telemetry.cpp **** 
+ 885              		.loc 1 65 5 is_stmt 1 discriminator 4 view .LVU236
+ 886              	.LBB135:
+ 887              	.LBI130:
+ 104:src/telemetry.cpp **** {
+ 888              		.loc 1 104 7 discriminator 4 view .LVU237
+ 889              	.LBB133:
+ 106:src/telemetry.cpp **** }
+ 890              		.loc 1 106 5 discriminator 4 view .LVU238
+ 106:src/telemetry.cpp **** }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 24
+
+
+ 891              		.loc 1 106 23 is_stmt 0 discriminator 4 view .LVU239
+ 892 005c 09D4     		bmi	.L57
+ 106:src/telemetry.cpp **** }
+ 893              		.loc 1 106 42 view .LVU240
+ 894 005e B7EE007A 		vmov.f32	s14, #1.0e+0
+ 895              	.LVL65:
+ 106:src/telemetry.cpp **** }
+ 896              		.loc 1 106 42 view .LVU241
+ 897 0062 B4EEC76A 		vcmpe.f32	s12, s14
+ 898 0066 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 899 006a 1EDD     		ble	.L63
+ 900 006c 4FF47A73 		mov	r3, #1000
+ 901 0070 00E0     		b	.L53
+ 902              	.LVL66:
+ 903              	.L57:
+ 106:src/telemetry.cpp **** }
+ 904              		.loc 1 106 42 view .LVU242
+ 905 0072 0023     		movs	r3, #0
+ 906              	.LVL67:
+ 907              	.L53:
+ 106:src/telemetry.cpp **** }
+ 908              		.loc 1 106 42 view .LVU243
+ 909              	.LBE133:
+ 910              	.LBE135:
+  67:src/telemetry.cpp ****     std::snprintf(buf,
+ 911              		.loc 1 67 5 is_stmt 1 view .LVU244
+  68:src/telemetry.cpp ****                   sizeof(buf),
+ 912              		.loc 1 68 5 view .LVU245
+  68:src/telemetry.cpp ****                   sizeof(buf),
+ 913              		.loc 1 68 18 is_stmt 0 view .LVU246
+ 914 0074 CDED027A 		vstr.32	s15, [sp, #8]	@ int
+ 915              	.LVL68:
+  68:src/telemetry.cpp ****                   sizeof(buf),
+ 916              		.loc 1 68 18 view .LVU247
+ 917 0078 0090     		str	r0, [sp]
+ 918 007a 04A8     		add	r0, sp, #16
+ 919 007c 0393     		str	r3, [sp, #12]
+ 920 007e 11F8103B 		ldrb	r3, [r1], #16	@ zero_extendqisi2
+ 921              	.LVL69:
+  68:src/telemetry.cpp ****                   sizeof(buf),
+ 922              		.loc 1 68 18 view .LVU248
+ 923 0082 114A     		ldr	r2, .L64+8
+ 924 0084 0191     		str	r1, [sp, #4]
+ 925 0086 8021     		movs	r1, #128
+ 926              	.LVL70:
+  68:src/telemetry.cpp ****                   sizeof(buf),
+ 927              		.loc 1 68 18 view .LVU249
+ 928 0088 FFF7FEFF 		bl	snprintf
+ 929              	.LVL71:
+  76:src/telemetry.cpp **** }
+ 930              		.loc 1 76 5 is_stmt 1 view .LVU250
+ 931              	.LBB136:
+ 932              	.LBI136:
+ 118:src/telemetry.cpp **** {
+ 933              		.loc 1 118 6 view .LVU251
+ 934              	.LBB137:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 25
+
+
+ 935              		.loc 1 120 5 view .LVU252
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 936              		.loc 1 120 35 is_stmt 0 view .LVU253
+ 937 008c 04A8     		add	r0, sp, #16
+ 938              	.LVL72:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 939              		.loc 1 120 35 view .LVU254
+ 940 008e FFF7FEFF 		bl	strlen
+ 941              	.LVL73:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 942              		.loc 1 121 69 view .LVU255
+ 943 0092 0A23     		movs	r3, #10
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 944              		.loc 1 120 35 view .LVU256
+ 945 0094 0246     		mov	r2, r0
+ 946              	.LVL74:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 947              		.loc 1 121 5 is_stmt 1 view .LVU257
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 948              		.loc 1 121 69 is_stmt 0 view .LVU258
+ 949 0096 04A9     		add	r1, sp, #16
+ 950              	.LVL75:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 951              		.loc 1 121 69 view .LVU259
+ 952 0098 2046     		mov	r0, r4
+ 953              	.LVL76:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 954              		.loc 1 121 69 view .LVU260
+ 955 009a FFF7FEFF 		bl	_ZN5daisy11UartHandler16BlockingTransmitEPhjm
+ 956              	.LVL77:
+ 122:src/telemetry.cpp ****         ++drop_count_;
+ 957              		.loc 1 122 5 is_stmt 1 view .LVU261
+ 958 009e 10B1     		cbz	r0, .L50
+ 959              		.loc 1 123 9 view .LVU262
+ 960 00a0 6368     		ldr	r3, [r4, #4]
+ 961 00a2 0133     		adds	r3, r3, #1
+ 962 00a4 6360     		str	r3, [r4, #4]
+ 963              	.LVL78:
+ 964              	.L50:
+ 965              		.loc 1 123 9 is_stmt 0 view .LVU263
+ 966              	.LBE137:
+ 967              	.LBE136:
+  77:src/telemetry.cpp **** 
+ 968              		.loc 1 77 1 view .LVU264
+ 969 00a6 24B0     		add	sp, sp, #144
+ 970              		.cfi_remember_state
+ 971              		.cfi_def_cfa_offset 8
+ 972              		@ sp needed
+ 973 00a8 10BD     		pop	{r4, pc}
+ 974              	.LVL79:
+ 975              	.L63:
+ 976              		.cfi_restore_state
+  65:src/telemetry.cpp **** 
+ 977              		.loc 1 65 82 view .LVU265
+ 978 00aa 9FED057A 		vldr.32	s14, .L64
+ 979 00ae E6EE076A 		vfma.f32	s13, s12, s14
+  65:src/telemetry.cpp **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 26
+
+
+ 980              		.loc 1 65 88 view .LVU266
+ 981 00b2 BDEEE67A 		vcvt.s32.f32	s14, s13
+ 982 00b6 17EE103A 		vmov	r3, s14	@ int
+ 983 00ba DBE7     		b	.L53
+ 984              	.LVL80:
+ 985              	.L55:
+  65:src/telemetry.cpp **** 
+ 986              		.loc 1 65 88 view .LVU267
+ 987 00bc 0020     		movs	r0, #0
+ 988              	.LVL81:
+  65:src/telemetry.cpp **** 
+ 989              		.loc 1 65 88 view .LVU268
+ 990 00be B3E7     		b	.L51
+ 991              	.L65:
+ 992              		.align	2
+ 993              	.L64:
+ 994 00c0 00007A44 		.word	1148846080
+ 995 00c4 0000C842 		.word	1120403456
+ 996 00c8 00000000 		.word	.LC5
+ 997              		.cfi_endproc
+ 998              	.LFE2577:
+ 1000              		.section	.rodata._ZN3app9Telemetry17SendTunerDisabledEv.str1.4,"aMS",%progbits,1
+ 1001              		.align	2
+ 1002              	.LC6:
+ 1003 0000 2D2D00   		.ascii	"--\000"
+ 1004              		.section	.text._ZN3app9Telemetry17SendTunerDisabledEv,"ax",%progbits
+ 1005              		.align	1
+ 1006              		.p2align 2,,3
+ 1007              		.global	_ZN3app9Telemetry17SendTunerDisabledEv
+ 1008              		.syntax unified
+ 1009              		.thumb
+ 1010              		.thumb_func
+ 1011              		.fpu fpv5-d16
+ 1013              	_ZN3app9Telemetry17SendTunerDisabledEv:
+ 1014              	.LVL82:
+ 1015              	.LFB2578:
+  81:src/telemetry.cpp ****     TunerResult result = {};
+ 1016              		.loc 1 81 1 is_stmt 1 view -0
+ 1017              		.cfi_startproc
+ 1018              		@ args = 0, pretend = 0, frame = 32
+ 1019              		@ frame_needed = 0, uses_anonymous_args = 0
+  82:src/telemetry.cpp ****     std::snprintf(result.note, sizeof(result.note), "--");
+ 1020              		.loc 1 82 5 view .LVU270
+  83:src/telemetry.cpp ****     SendTuner(result);
+ 1021              		.loc 1 83 18 is_stmt 0 view .LVU271
+ 1022 0000 0B4A     		ldr	r2, .L68
+  82:src/telemetry.cpp ****     std::snprintf(result.note, sizeof(result.note), "--");
+ 1023              		.loc 1 82 17 view .LVU272
+ 1024 0002 0023     		movs	r3, #0
+  81:src/telemetry.cpp ****     TunerResult result = {};
+ 1025              		.loc 1 81 1 view .LVU273
+ 1026 0004 00B5     		push	{lr}
+ 1027              		.cfi_def_cfa_offset 4
+ 1028              		.cfi_offset 14, -4
+  83:src/telemetry.cpp ****     SendTuner(result);
+ 1029              		.loc 1 83 18 view .LVU274
+ 1030 0006 1268     		ldr	r2, [r2]
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 27
+
+
+  81:src/telemetry.cpp ****     TunerResult result = {};
+ 1031              		.loc 1 81 1 view .LVU275
+ 1032 0008 89B0     		sub	sp, sp, #36
+ 1033              		.cfi_def_cfa_offset 40
+  83:src/telemetry.cpp ****     SendTuner(result);
+ 1034              		.loc 1 83 18 view .LVU276
+ 1035 000a 4FEA124C 		lsr	ip, r2, #16
+  84:src/telemetry.cpp **** }
+ 1036              		.loc 1 84 14 view .LVU277
+ 1037 000e 01A9     		add	r1, sp, #4
+  82:src/telemetry.cpp ****     std::snprintf(result.note, sizeof(result.note), "--");
+ 1038              		.loc 1 82 17 view .LVU278
+ 1039 0010 0593     		str	r3, [sp, #20]
+ 1040 0012 0193     		str	r3, [sp, #4]
+ 1041 0014 0493     		str	r3, [sp, #16]
+  83:src/telemetry.cpp ****     SendTuner(result);
+ 1042              		.loc 1 83 18 view .LVU279
+ 1043 0016 ADF81420 		strh	r2, [sp, #20]	@ movhi
+ 1044 001a 8DF816C0 		strb	ip, [sp, #22]
+  82:src/telemetry.cpp ****     std::snprintf(result.note, sizeof(result.note), "--");
+ 1045              		.loc 1 82 17 view .LVU280
+ 1046 001e CDE90233 		strd	r3, r3, [sp, #8]
+ 1047 0022 CDE90633 		strd	r3, r3, [sp, #24]
+  83:src/telemetry.cpp ****     SendTuner(result);
+ 1048              		.loc 1 83 5 is_stmt 1 view .LVU281
+  84:src/telemetry.cpp **** }
+ 1049              		.loc 1 84 5 view .LVU282
+  84:src/telemetry.cpp **** }
+ 1050              		.loc 1 84 14 is_stmt 0 view .LVU283
+ 1051 0026 FFF7FEFF 		bl	_ZN3app9Telemetry9SendTunerERKNS_11TunerResultE
+ 1052              	.LVL83:
+  85:src/telemetry.cpp **** 
+ 1053              		.loc 1 85 1 view .LVU284
+ 1054 002a 09B0     		add	sp, sp, #36
+ 1055              		.cfi_def_cfa_offset 4
+ 1056              		@ sp needed
+ 1057 002c 5DF804FB 		ldr	pc, [sp], #4
+ 1058              	.L69:
+ 1059              		.align	2
+ 1060              	.L68:
+ 1061 0030 00000000 		.word	.LC6
+ 1062              		.cfi_endproc
+ 1063              	.LFE2578:
+ 1065              		.section	.text._ZN3app9Telemetry21SendRotaryCalibrationEti,"ax",%progbits
+ 1066              		.align	1
+ 1067              		.p2align 2,,3
+ 1068              		.global	_ZN3app9Telemetry21SendRotaryCalibrationEti
+ 1069              		.syntax unified
+ 1070              		.thumb
+ 1071              		.thumb_func
+ 1072              		.fpu fpv5-d16
+ 1074              	_ZN3app9Telemetry21SendRotaryCalibrationEti:
+ 1075              	.LVL84:
+ 1076              	.LFB2579:
+  88:src/telemetry.cpp **** #if ROTARY_CALIBRATION_MODE
+ 1077              		.loc 1 88 1 is_stmt 1 view -0
+ 1078              		.cfi_startproc
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 28
+
+
+ 1079              		@ args = 0, pretend = 0, frame = 0
+ 1080              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1081              		@ link register save eliminated.
+  94:src/telemetry.cpp ****     (void)position;
+ 1082              		.loc 1 94 5 view .LVU286
+  95:src/telemetry.cpp **** #endif
+ 1083              		.loc 1 95 5 view .LVU287
+  97:src/telemetry.cpp **** 
+ 1084              		.loc 1 97 1 is_stmt 0 view .LVU288
+ 1085 0000 7047     		bx	lr
+ 1086              		.cfi_endproc
+ 1087              	.LFE2579:
+ 1089 0002 00BF     		.section	.text._ZN3app9Telemetry8ClampIntEiii,"ax",%progbits
+ 1090              		.align	1
+ 1091              		.p2align 2,,3
+ 1092              		.global	_ZN3app9Telemetry8ClampIntEiii
+ 1093              		.syntax unified
+ 1094              		.thumb
+ 1095              		.thumb_func
+ 1096              		.fpu fpv5-d16
+ 1098              	_ZN3app9Telemetry8ClampIntEiii:
+ 1099              	.LVL85:
+ 1100              	.LFB2580:
+ 100:src/telemetry.cpp ****     return value < lo ? lo : (value > hi ? hi : value);
+ 1101              		.loc 1 100 1 is_stmt 1 view -0
+ 1102              		.cfi_startproc
+ 1103              		@ args = 0, pretend = 0, frame = 0
+ 1104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1105              		@ link register save eliminated.
+ 101:src/telemetry.cpp **** }
+ 1106              		.loc 1 101 5 view .LVU290
+ 101:src/telemetry.cpp **** }
+ 1107              		.loc 1 101 23 is_stmt 0 view .LVU291
+ 1108 0000 8842     		cmp	r0, r1
+ 1109 0002 03DB     		blt	.L72
+ 1110 0004 9042     		cmp	r0, r2
+ 1111 0006 0146     		mov	r1, r0
+ 1112              	.LVL86:
+ 101:src/telemetry.cpp **** }
+ 1113              		.loc 1 101 23 view .LVU292
+ 1114 0008 A8BF     		it	ge
+ 1115 000a 1146     		movge	r1, r2
+ 1116              	.L72:
+ 102:src/telemetry.cpp **** 
+ 1117              		.loc 1 102 1 discriminator 8 view .LVU293
+ 1118 000c 0846     		mov	r0, r1
+ 1119              	.LVL87:
+ 102:src/telemetry.cpp **** 
+ 1120              		.loc 1 102 1 discriminator 8 view .LVU294
+ 1121 000e 7047     		bx	lr
+ 1122              		.cfi_endproc
+ 1123              	.LFE2580:
+ 1125              		.section	.text._ZN3app9Telemetry10ClampFloatEfff,"ax",%progbits
+ 1126              		.align	1
+ 1127              		.p2align 2,,3
+ 1128              		.global	_ZN3app9Telemetry10ClampFloatEfff
+ 1129              		.syntax unified
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 29
+
+
+ 1130              		.thumb
+ 1131              		.thumb_func
+ 1132              		.fpu fpv5-d16
+ 1134              	_ZN3app9Telemetry10ClampFloatEfff:
+ 1135              	.LVL88:
+ 1136              	.LFB2581:
+ 105:src/telemetry.cpp ****     return value < lo ? lo : (value > hi ? hi : value);
+ 1137              		.loc 1 105 1 is_stmt 1 view -0
+ 1138              		.cfi_startproc
+ 1139              		@ args = 0, pretend = 0, frame = 0
+ 1140              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1141              		@ link register save eliminated.
+ 106:src/telemetry.cpp **** }
+ 1142              		.loc 1 106 5 view .LVU296
+ 106:src/telemetry.cpp **** }
+ 1143              		.loc 1 106 23 is_stmt 0 view .LVU297
+ 1144 0000 B4EEE00A 		vcmpe.f32	s0, s1
+ 1145 0004 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1146 0008 05D4     		bmi	.L74
+ 106:src/telemetry.cpp **** }
+ 1147              		.loc 1 106 42 discriminator 2 view .LVU298
+ 1148 000a B4EEC10A 		vcmpe.f32	s0, s2
+ 1149 000e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1150 0012 71FE000A 		vselgt.f32	s1, s2, s0
+ 1151              	.LVL89:
+ 1152              	.L74:
+ 107:src/telemetry.cpp **** 
+ 1153              		.loc 1 107 1 discriminator 8 view .LVU299
+ 1154 0016 B0EE600A 		vmov.f32	s0, s1
+ 1155              	.LVL90:
+ 107:src/telemetry.cpp **** 
+ 1156              		.loc 1 107 1 discriminator 8 view .LVU300
+ 1157 001a 7047     		bx	lr
+ 1158              		.cfi_endproc
+ 1159              	.LFE2581:
+ 1161              		.section	.text._ZN3app9Telemetry9PotToU10kEf,"ax",%progbits
+ 1162              		.align	1
+ 1163              		.p2align 2,,3
+ 1164              		.global	_ZN3app9Telemetry9PotToU10kEf
+ 1165              		.syntax unified
+ 1166              		.thumb
+ 1167              		.thumb_func
+ 1168              		.fpu fpv5-d16
+ 1170              	_ZN3app9Telemetry9PotToU10kEf:
+ 1171              	.LVL91:
+ 1172              	.LFB2582:
+ 111:src/telemetry.cpp ****     value = ClampFloat(value, 0.0f, 1.0f);
+ 1173              		.loc 1 111 1 is_stmt 1 view -0
+ 1174              		.cfi_startproc
+ 1175              		@ args = 0, pretend = 0, frame = 0
+ 1176              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1177              		@ link register save eliminated.
+ 112:src/telemetry.cpp ****     return ClampInt((int)(value * 10000.0f + 0.5f), 0, 10000);
+ 1178              		.loc 1 112 5 view .LVU302
+ 1179              	.LBB138:
+ 1180              	.LBI138:
+ 104:src/telemetry.cpp **** {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 30
+
+
+ 1181              		.loc 1 104 7 view .LVU303
+ 1182              	.LBB139:
+ 106:src/telemetry.cpp **** }
+ 1183              		.loc 1 106 5 view .LVU304
+ 106:src/telemetry.cpp **** }
+ 1184              		.loc 1 106 23 is_stmt 0 view .LVU305
+ 1185 0000 B5EEC00A 		vcmpe.f32	s0, #0
+ 1186 0004 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1187 0008 09D4     		bmi	.L78
+ 106:src/telemetry.cpp **** }
+ 1188              		.loc 1 106 42 view .LVU306
+ 1189 000a F7EE007A 		vmov.f32	s15, #1.0e+0
+ 1190 000e B4EEE70A 		vcmpe.f32	s0, s15
+ 1191 0012 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1192 0016 04DD     		ble	.L80
+ 1193 0018 42F21070 		movw	r0, #10000
+ 1194              	.LVL92:
+ 106:src/telemetry.cpp **** }
+ 1195              		.loc 1 106 42 view .LVU307
+ 1196              	.LBE139:
+ 1197              	.LBE138:
+ 113:src/telemetry.cpp **** }
+ 1198              		.loc 1 113 5 is_stmt 1 view .LVU308
+ 101:src/telemetry.cpp **** }
+ 1199              		.loc 1 101 5 view .LVU309
+ 114:src/telemetry.cpp **** 
+ 1200              		.loc 1 114 1 is_stmt 0 view .LVU310
+ 1201 001c 7047     		bx	lr
+ 1202              	.LVL93:
+ 1203              	.L78:
+ 1204              	.LBB141:
+ 1205              	.LBB140:
+ 114:src/telemetry.cpp **** 
+ 1206              		.loc 1 114 1 view .LVU311
+ 1207 001e 0020     		movs	r0, #0
+ 1208 0020 7047     		bx	lr
+ 1209              	.L80:
+ 1210              	.LBE140:
+ 1211              	.LBE141:
+ 113:src/telemetry.cpp **** }
+ 1212              		.loc 1 113 44 view .LVU312
+ 1213 0022 F6EE007A 		vmov.f32	s15, #5.0e-1
+ 1214 0026 9FED087A 		vldr.32	s14, .L81
+ 1215 002a 42F21073 		movw	r3, #10000
+ 1216 002e E0EE077A 		vfma.f32	s15, s0, s14
+ 113:src/telemetry.cpp **** }
+ 1217              		.loc 1 113 20 view .LVU313
+ 1218 0032 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 1219 0036 17EE900A 		vmov	r0, s15	@ int
+ 1220 003a 9842     		cmp	r0, r3
+ 1221 003c A8BF     		it	ge
+ 1222 003e 1846     		movge	r0, r3
+ 1223 0040 20EAE070 		bic	r0, r0, r0, asr #31
+ 1224 0044 7047     		bx	lr
+ 1225              	.L82:
+ 1226 0046 00BF     		.align	2
+ 1227              	.L81:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 31
+
+
+ 1228 0048 00401C46 		.word	1176256512
+ 1229              		.cfi_endproc
+ 1230              	.LFE2582:
+ 1232              		.section	.text._ZN3app9Telemetry4SendEPKc,"ax",%progbits
+ 1233              		.align	1
+ 1234              		.p2align 2,,3
+ 1235              		.global	_ZN3app9Telemetry4SendEPKc
+ 1236              		.syntax unified
+ 1237              		.thumb
+ 1238              		.thumb_func
+ 1239              		.fpu fpv5-d16
+ 1241              	_ZN3app9Telemetry4SendEPKc:
+ 1242              	.LVL94:
+ 1243              	.LFB2583:
+ 119:src/telemetry.cpp ****     const size_t len = std::strlen(message);
+ 1244              		.loc 1 119 1 is_stmt 1 view -0
+ 1245              		.cfi_startproc
+ 1246              		@ args = 0, pretend = 0, frame = 8
+ 1247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 1248              		.loc 1 120 5 view .LVU315
+ 119:src/telemetry.cpp ****     const size_t len = std::strlen(message);
+ 1249              		.loc 1 119 1 is_stmt 0 view .LVU316
+ 1250 0000 10B5     		push	{r4, lr}
+ 1251              		.cfi_def_cfa_offset 8
+ 1252              		.cfi_offset 4, -8
+ 1253              		.cfi_offset 14, -4
+ 1254 0002 0446     		mov	r4, r0
+ 1255 0004 82B0     		sub	sp, sp, #8
+ 1256              		.cfi_def_cfa_offset 16
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 1257              		.loc 1 120 35 view .LVU317
+ 1258 0006 0846     		mov	r0, r1
+ 1259              	.LVL95:
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 1260              		.loc 1 120 35 view .LVU318
+ 1261 0008 0191     		str	r1, [sp, #4]
+ 1262 000a FFF7FEFF 		bl	strlen
+ 1263              	.LVL96:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 1264              		.loc 1 121 69 view .LVU319
+ 1265 000e 0A23     		movs	r3, #10
+ 120:src/telemetry.cpp ****     const daisy::UartHandler::Result result = uart_.BlockingTransmit((uint8_t*)message, len, config
+ 1266              		.loc 1 120 35 view .LVU320
+ 1267 0010 0246     		mov	r2, r0
+ 1268              	.LVL97:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 1269              		.loc 1 121 5 is_stmt 1 view .LVU321
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 1270              		.loc 1 121 69 is_stmt 0 view .LVU322
+ 1271 0012 0199     		ldr	r1, [sp, #4]
+ 1272 0014 2046     		mov	r0, r4
+ 1273              	.LVL98:
+ 121:src/telemetry.cpp ****     if(result != daisy::UartHandler::Result::OK)
+ 1274              		.loc 1 121 69 view .LVU323
+ 1275 0016 FFF7FEFF 		bl	_ZN5daisy11UartHandler16BlockingTransmitEPhjm
+ 1276              	.LVL99:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 32
+
+
+ 122:src/telemetry.cpp ****         ++drop_count_;
+ 1277              		.loc 1 122 5 is_stmt 1 view .LVU324
+ 1278 001a 10B1     		cbz	r0, .L83
+ 1279              		.loc 1 123 9 view .LVU325
+ 1280 001c 6368     		ldr	r3, [r4, #4]
+ 1281 001e 0133     		adds	r3, r3, #1
+ 1282 0020 6360     		str	r3, [r4, #4]
+ 1283              	.L83:
+ 124:src/telemetry.cpp **** }
+ 1284              		.loc 1 124 1 is_stmt 0 view .LVU326
+ 1285 0022 02B0     		add	sp, sp, #8
+ 1286              		.cfi_def_cfa_offset 8
+ 1287              		@ sp needed
+ 1288 0024 10BD     		pop	{r4, pc}
+ 1289              		.loc 1 124 1 view .LVU327
+ 1290              		.cfi_endproc
+ 1291              	.LFE2583:
+ 1293 0026 00BF     		.section	.rodata
+ 1294              		.align	2
+ 1295              		.set	.LANCHOR0,. + 0
+ 1296              	.LC0:
+ 1297 0000 01       		.byte	1
+ 1298 0001 06       		.byte	6
+ 1299 0002 0000     		.space	2
+ 1300              	.LC1:
+ 1301 0004 01       		.byte	1
+ 1302 0005 07       		.byte	7
+ 1303              		.text
+ 1304              	.Letext0:
+ 1305              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1306              		.file 4 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1307              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 1308              		.file 6 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 1309              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 1310              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 1311              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 1312              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 1313              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 1314              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 1315              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 1316              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 1317              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 1318              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 1319              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+ 1320              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 1321              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 1322              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 1323              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1324              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1325              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1326              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 1327              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1328              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 1329              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 1330              		.file 28 "../../libDaisy/src/daisy_core.h"
+ 1331              		.file 29 "../../libDaisy/src/util/wav_format.h"
+ 1332              		.file 30 "../../libDaisy/src/dev/max11300.h"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 33
+
+
+ 1333              		.file 31 "../../libDaisy/src/daisy_seed.h"
+ 1334              		.file 32 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 1335              		.file 33 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 1336              		.file 34 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 1337              		.file 35 "src/app_config.h"
+ 1338              		.file 36 "src/tuner.h"
+ 1339              		.file 37 "src/telemetry.h"
+ 1340              		.file 38 "../../libDaisy/src/dev/sr_595.h"
+ 1341              		.file 39 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 telemetry.cpp
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:17     .text._ZN3app9TelemetryC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:26     .text._ZN3app9TelemetryC2Ev:00000000 _ZN3app9TelemetryC2Ev
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:26     .text._ZN3app9TelemetryC2Ev:00000000 _ZN3app9TelemetryC1Ev
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:58     .text._ZN3app9Telemetry4InitEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:66     .text._ZN3app9Telemetry4InitEv:00000000 _ZN3app9Telemetry4InitEv
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:150    .text._ZN3app9Telemetry4InitEv:00000034 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:155    .rodata._ZN3app9Telemetry10SendEffectEi.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:159    .text._ZN3app9Telemetry10SendEffectEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:167    .text._ZN3app9Telemetry10SendEffectEi:00000000 _ZN3app9Telemetry10SendEffectEi
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:241    .text._ZN3app9Telemetry10SendEffectEi:00000030 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:246    .rodata._ZN3app9Telemetry8SendPotsEPKf.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:250    .text._ZN3app9Telemetry8SendPotsEPKf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:258    .text._ZN3app9Telemetry8SendPotsEPKf:00000000 _ZN3app9Telemetry8SendPotsEPKf
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:687    .text._ZN3app9Telemetry8SendPotsEPKf:0000017c $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:695    .rodata._ZN3app9Telemetry14SendFootswitchEbPKci.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:699    .text._ZN3app9Telemetry14SendFootswitchEbPKci:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:707    .text._ZN3app9Telemetry14SendFootswitchEbPKci:00000000 _ZN3app9Telemetry14SendFootswitchEbPKci
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:795    .text._ZN3app9Telemetry14SendFootswitchEbPKci:00000038 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:800    .rodata._ZN3app9Telemetry9SendTunerERKNS_11TunerResultE.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:804    .text._ZN3app9Telemetry9SendTunerERKNS_11TunerResultE:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:812    .text._ZN3app9Telemetry9SendTunerERKNS_11TunerResultE:00000000 _ZN3app9Telemetry9SendTunerERKNS_11TunerResultE
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:994    .text._ZN3app9Telemetry9SendTunerERKNS_11TunerResultE:000000c0 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1001   .rodata._ZN3app9Telemetry17SendTunerDisabledEv.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1005   .text._ZN3app9Telemetry17SendTunerDisabledEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1013   .text._ZN3app9Telemetry17SendTunerDisabledEv:00000000 _ZN3app9Telemetry17SendTunerDisabledEv
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1061   .text._ZN3app9Telemetry17SendTunerDisabledEv:00000030 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1066   .text._ZN3app9Telemetry21SendRotaryCalibrationEti:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1074   .text._ZN3app9Telemetry21SendRotaryCalibrationEti:00000000 _ZN3app9Telemetry21SendRotaryCalibrationEti
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1090   .text._ZN3app9Telemetry8ClampIntEiii:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1098   .text._ZN3app9Telemetry8ClampIntEiii:00000000 _ZN3app9Telemetry8ClampIntEiii
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1126   .text._ZN3app9Telemetry10ClampFloatEfff:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1134   .text._ZN3app9Telemetry10ClampFloatEfff:00000000 _ZN3app9Telemetry10ClampFloatEfff
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1162   .text._ZN3app9Telemetry9PotToU10kEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1170   .text._ZN3app9Telemetry9PotToU10kEf:00000000 _ZN3app9Telemetry9PotToU10kEf
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1228   .text._ZN3app9Telemetry9PotToU10kEf:00000048 $d
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1233   .text._ZN3app9Telemetry4SendEPKc:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1241   .text._ZN3app9Telemetry4SendEPKc:00000000 _ZN3app9Telemetry4SendEPKc
+C:\Users\aydan\AppData\Local\Temp\ccMmHNye.s:1294   .rodata:00000000 $d
+
+UNDEFINED SYMBOLS
+_ZN5daisy11UartHandler4InitERKNS0_6ConfigE
+snprintf
+strlen
+_ZN5daisy11UartHandler16BlockingTransmitEPhjm
