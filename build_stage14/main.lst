@@ -1,0 +1,2676 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"main.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN5daisy9DaisySeedD2Ev,"axG",%progbits,_ZN5daisy9DaisySeedD5Ev,comdat
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.weak	_ZN5daisy9DaisySeedD2Ev
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN5daisy9DaisySeedD2Ev:
+  27              	.LVL0:
+  28              	.LFB2555:
+  29              		.file 1 "../../libDaisy/src/daisy_seed.h"
+   1:../../libDaisy/src/daisy_seed.h **** #pragma once
+   2:../../libDaisy/src/daisy_seed.h **** #ifndef DSY_SEED_H
+   3:../../libDaisy/src/daisy_seed.h **** #define DSY_SEED_H
+   4:../../libDaisy/src/daisy_seed.h **** 
+   5:../../libDaisy/src/daisy_seed.h **** #include "daisy.h"
+   6:../../libDaisy/src/daisy_seed.h **** 
+   7:../../libDaisy/src/daisy_seed.h **** //Uncomment this out if you're still using the rev2 hardware
+   8:../../libDaisy/src/daisy_seed.h **** //#define SEED_REV2
+   9:../../libDaisy/src/daisy_seed.h **** 
+  10:../../libDaisy/src/daisy_seed.h **** namespace daisy
+  11:../../libDaisy/src/daisy_seed.h **** {
+  12:../../libDaisy/src/daisy_seed.h **** /**
+  13:../../libDaisy/src/daisy_seed.h ****    @brief This is the higher-level interface for the Daisy board. \n 
+  14:../../libDaisy/src/daisy_seed.h ****     All basic peripheral configuration/initialization is setup here. \n
+  15:../../libDaisy/src/daisy_seed.h **** 
+  16:../../libDaisy/src/daisy_seed.h ****    @ingroup boards
+  17:../../libDaisy/src/daisy_seed.h **** */
+  18:../../libDaisy/src/daisy_seed.h **** class DaisySeed
+  19:../../libDaisy/src/daisy_seed.h **** {
+  20:../../libDaisy/src/daisy_seed.h ****   public:
+  21:../../libDaisy/src/daisy_seed.h ****     DaisySeed() {}
+  22:../../libDaisy/src/daisy_seed.h ****     ~DaisySeed() {}
+  30              		.loc 1 22 5 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              	.LBB116:
+  36              	.LBI116:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 2
+
+
+  37              		.file 2 "../../libDaisy/src/sys/system.h"
+   1:../../libDaisy/src/sys/system.h **** #ifndef DSY_SYSTEM_H
+   2:../../libDaisy/src/sys/system.h **** #define DSY_SYSTEM_H
+   3:../../libDaisy/src/sys/system.h **** 
+   4:../../libDaisy/src/sys/system.h **** #ifndef UNIT_TEST // for unit tests, a dummy implementation is provided below
+   5:../../libDaisy/src/sys/system.h **** 
+   6:../../libDaisy/src/sys/system.h **** #include <cstdint>
+   7:../../libDaisy/src/sys/system.h **** #include "per/tim.h"
+   8:../../libDaisy/src/sys/system.h **** 
+   9:../../libDaisy/src/sys/system.h **** namespace daisy
+  10:../../libDaisy/src/sys/system.h **** {
+  11:../../libDaisy/src/sys/system.h **** /** A handle for interacting with the Core System.
+  12:../../libDaisy/src/sys/system.h ****  ** This includes the Clock tree, MPU, global DMA initialization,
+  13:../../libDaisy/src/sys/system.h ****  ** cache handling, and any other necessary global initiailzation
+  14:../../libDaisy/src/sys/system.h ****  **
+  15:../../libDaisy/src/sys/system.h ****  ** @author shensley
+  16:../../libDaisy/src/sys/system.h ****  ** @ingroup system
+  17:../../libDaisy/src/sys/system.h ****  */
+  18:../../libDaisy/src/sys/system.h **** class System
+  19:../../libDaisy/src/sys/system.h **** {
+  20:../../libDaisy/src/sys/system.h ****   public:
+  21:../../libDaisy/src/sys/system.h ****     /** Contains settings for initializing the System */
+  22:../../libDaisy/src/sys/system.h ****     struct Config
+  23:../../libDaisy/src/sys/system.h ****     {
+  24:../../libDaisy/src/sys/system.h ****         /** Specifies the system clock frequency that feeds APB/AHB clocks, etc. */
+  25:../../libDaisy/src/sys/system.h ****         enum class SysClkFreq
+  26:../../libDaisy/src/sys/system.h ****         {
+  27:../../libDaisy/src/sys/system.h ****             FREQ_400MHZ,
+  28:../../libDaisy/src/sys/system.h ****             FREQ_480MHZ,
+  29:../../libDaisy/src/sys/system.h ****         };
+  30:../../libDaisy/src/sys/system.h **** 
+  31:../../libDaisy/src/sys/system.h ****         /** Method to call on the struct to set to defaults
+  32:../../libDaisy/src/sys/system.h ****          ** CPU Freq set to 400MHz
+  33:../../libDaisy/src/sys/system.h ****          ** Cache Enabled
+  34:../../libDaisy/src/sys/system.h ****          ** */
+  35:../../libDaisy/src/sys/system.h ****         void Defaults()
+  36:../../libDaisy/src/sys/system.h ****         {
+  37:../../libDaisy/src/sys/system.h ****             cpu_freq    = SysClkFreq::FREQ_400MHZ;
+  38:../../libDaisy/src/sys/system.h ****             use_dcache  = true;
+  39:../../libDaisy/src/sys/system.h ****             use_icache  = true;
+  40:../../libDaisy/src/sys/system.h ****             skip_clocks = false;
+  41:../../libDaisy/src/sys/system.h ****         }
+  42:../../libDaisy/src/sys/system.h **** 
+  43:../../libDaisy/src/sys/system.h ****         /** Method to call on the struct to set to boost mode:
+  44:../../libDaisy/src/sys/system.h ****          ** CPU Freq set to 480MHz
+  45:../../libDaisy/src/sys/system.h ****          ** Cache Enabled
+  46:../../libDaisy/src/sys/system.h ****          ** */
+  47:../../libDaisy/src/sys/system.h ****         void Boost()
+  48:../../libDaisy/src/sys/system.h ****         {
+  49:../../libDaisy/src/sys/system.h ****             cpu_freq    = SysClkFreq::FREQ_480MHZ;
+  50:../../libDaisy/src/sys/system.h ****             use_dcache  = true;
+  51:../../libDaisy/src/sys/system.h ****             use_icache  = true;
+  52:../../libDaisy/src/sys/system.h ****             skip_clocks = false;
+  53:../../libDaisy/src/sys/system.h ****         }
+  54:../../libDaisy/src/sys/system.h **** 
+  55:../../libDaisy/src/sys/system.h ****         SysClkFreq cpu_freq;
+  56:../../libDaisy/src/sys/system.h ****         bool       use_dcache;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 3
+
+
+  57:../../libDaisy/src/sys/system.h ****         bool       use_icache;
+  58:../../libDaisy/src/sys/system.h ****         bool       skip_clocks;
+  59:../../libDaisy/src/sys/system.h ****     };
+  60:../../libDaisy/src/sys/system.h **** 
+  61:../../libDaisy/src/sys/system.h ****     /** Describes the different regions of memory available to the Daisy */
+  62:../../libDaisy/src/sys/system.h ****     enum MemoryRegion
+  63:../../libDaisy/src/sys/system.h ****     {
+  64:../../libDaisy/src/sys/system.h ****         INTERNAL_FLASH = 0,
+  65:../../libDaisy/src/sys/system.h ****         ITCMRAM,
+  66:../../libDaisy/src/sys/system.h ****         DTCMRAM,
+  67:../../libDaisy/src/sys/system.h ****         SRAM_D1,
+  68:../../libDaisy/src/sys/system.h ****         SRAM_D2,
+  69:../../libDaisy/src/sys/system.h ****         SRAM_D3,
+  70:../../libDaisy/src/sys/system.h ****         SDRAM,
+  71:../../libDaisy/src/sys/system.h ****         QSPI,
+  72:../../libDaisy/src/sys/system.h ****         INVALID_ADDRESS,
+  73:../../libDaisy/src/sys/system.h ****     };
+  74:../../libDaisy/src/sys/system.h **** 
+  75:../../libDaisy/src/sys/system.h ****     /** Bootloader struct for controlling bootloading parameters */
+  76:../../libDaisy/src/sys/system.h ****     struct BootInfo
+  77:../../libDaisy/src/sys/system.h ****     {
+  78:../../libDaisy/src/sys/system.h ****         enum class Type : uint32_t
+  79:../../libDaisy/src/sys/system.h ****         {
+  80:../../libDaisy/src/sys/system.h ****             INVALID      = 0x00000000,
+  81:../../libDaisy/src/sys/system.h ****             JUMP         = 0xDEADBEEF,
+  82:../../libDaisy/src/sys/system.h ****             SKIP_TIMEOUT = 0x5AFEB007,
+  83:../../libDaisy/src/sys/system.h ****             INF_TIMEOUT  = 0xB0074EFA,
+  84:../../libDaisy/src/sys/system.h ****         } status;
+  85:../../libDaisy/src/sys/system.h ****         uint32_t data;
+  86:../../libDaisy/src/sys/system.h ****         enum class Version : uint32_t
+  87:../../libDaisy/src/sys/system.h ****         {
+  88:../../libDaisy/src/sys/system.h ****             LT_v6_0 = 0, // Less than v6.0
+  89:../../libDaisy/src/sys/system.h ****             NONE,        // No bootloader present
+  90:../../libDaisy/src/sys/system.h ****             v6_0,        // v6.0
+  91:../../libDaisy/src/sys/system.h ****             v6_1,        // v6.1 or greater
+  92:../../libDaisy/src/sys/system.h ****             LAST
+  93:../../libDaisy/src/sys/system.h ****         } version;
+  94:../../libDaisy/src/sys/system.h ****     };
+  95:../../libDaisy/src/sys/system.h **** 
+  96:../../libDaisy/src/sys/system.h ****     System() {}
+  97:../../libDaisy/src/sys/system.h ****     ~System() {}
+  38              		.loc 2 97 5 view .LVU1
+  39              		.loc 2 97 5 is_stmt 0 view .LVU2
+  40              	.LBE116:
+  41              	.LBB117:
+  42              	.LBI117:
+  43              		.file 3 "../../libDaisy/src/hid/usb.h"
+   1:../../libDaisy/src/hid/usb.h **** #pragma once
+   2:../../libDaisy/src/hid/usb.h **** #ifndef DSY_HID_USB_H
+   3:../../libDaisy/src/hid/usb.h **** #define DSY_HID_USB_H
+   4:../../libDaisy/src/hid/usb.h **** #include <stdint.h>
+   5:../../libDaisy/src/hid/usb.h **** #include <stdlib.h>
+   6:../../libDaisy/src/hid/usb.h **** 
+   7:../../libDaisy/src/hid/usb.h **** namespace daisy
+   8:../../libDaisy/src/hid/usb.h **** /** @addtogroup human_interface
+   9:../../libDaisy/src/hid/usb.h ****     @{
+  10:../../libDaisy/src/hid/usb.h **** */
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 4
+
+
+  11:../../libDaisy/src/hid/usb.h **** 
+  12:../../libDaisy/src/hid/usb.h **** {
+  13:../../libDaisy/src/hid/usb.h **** /** 
+  14:../../libDaisy/src/hid/usb.h ****     @brief Interface for initializing and using the USB Peripherals on the daisy
+  15:../../libDaisy/src/hid/usb.h ****     @author Stephen Hensley
+  16:../../libDaisy/src/hid/usb.h ****     @date December 2019
+  17:../../libDaisy/src/hid/usb.h **** */
+  18:../../libDaisy/src/hid/usb.h **** class UsbHandle
+  19:../../libDaisy/src/hid/usb.h **** {
+  20:../../libDaisy/src/hid/usb.h ****   public:
+  21:../../libDaisy/src/hid/usb.h ****     /** Return values for USBHandle Functions */
+  22:../../libDaisy/src/hid/usb.h ****     enum class Result
+  23:../../libDaisy/src/hid/usb.h ****     {
+  24:../../libDaisy/src/hid/usb.h ****         OK,
+  25:../../libDaisy/src/hid/usb.h ****         ERR,
+  26:../../libDaisy/src/hid/usb.h ****     };
+  27:../../libDaisy/src/hid/usb.h **** 
+  28:../../libDaisy/src/hid/usb.h ****     /** Specified which of the two USB Peripherals to initialize. */
+  29:../../libDaisy/src/hid/usb.h ****     enum UsbPeriph
+  30:../../libDaisy/src/hid/usb.h ****     {
+  31:../../libDaisy/src/hid/usb.h ****         FS_INTERNAL, /**< Internal pin */
+  32:../../libDaisy/src/hid/usb.h ****         FS_EXTERNAL, /**< FS External D+ pin is Pin 38 (GPIO32). FS External D- pin is Pin 37 (GPIO
+  33:../../libDaisy/src/hid/usb.h ****         FS_BOTH,     /**< Both */
+  34:../../libDaisy/src/hid/usb.h ****     };
+  35:../../libDaisy/src/hid/usb.h **** 
+  36:../../libDaisy/src/hid/usb.h **** 
+  37:../../libDaisy/src/hid/usb.h ****     /** Function called upon reception of a buffer */
+  38:../../libDaisy/src/hid/usb.h ****     typedef void (*ReceiveCallback)(uint8_t* buff, uint32_t* len);
+  39:../../libDaisy/src/hid/usb.h **** 
+  40:../../libDaisy/src/hid/usb.h ****     UsbHandle() {}
+  41:../../libDaisy/src/hid/usb.h **** 
+  42:../../libDaisy/src/hid/usb.h ****     ~UsbHandle() {}
+  44              		.loc 3 42 5 is_stmt 1 view .LVU3
+  45              		.loc 3 42 5 is_stmt 0 view .LVU4
+  46              	.LBE117:
+  47              	.LBB118:
+  48              	.LBI118:
+  49              		.file 4 "../../libDaisy/src/per/adc.h"
+   1:../../libDaisy/src/per/adc.h **** #pragma once
+   2:../../libDaisy/src/per/adc.h **** #ifndef DSY_ADC_H
+   3:../../libDaisy/src/per/adc.h **** #define DSY_ADC_H /**< Macro */
+   4:../../libDaisy/src/per/adc.h **** #include <stdint.h>
+   5:../../libDaisy/src/per/adc.h **** #include <stdlib.h>
+   6:../../libDaisy/src/per/adc.h **** #include "daisy_core.h"
+   7:../../libDaisy/src/per/adc.h **** #include "per/gpio.h"
+   8:../../libDaisy/src/per/adc.h **** 
+   9:../../libDaisy/src/per/adc.h **** #define DSY_ADC_MAX_CHANNELS 16 /**< Maximum number of ADC channels */
+  10:../../libDaisy/src/per/adc.h **** 
+  11:../../libDaisy/src/per/adc.h **** namespace daisy
+  12:../../libDaisy/src/per/adc.h **** {
+  13:../../libDaisy/src/per/adc.h **** /** @addtogroup per_analog
+  14:../../libDaisy/src/per/adc.h ****     @{
+  15:../../libDaisy/src/per/adc.h **** */
+  16:../../libDaisy/src/per/adc.h **** 
+  17:../../libDaisy/src/per/adc.h **** /* While there may not be many configuration options here,
+  18:../../libDaisy/src/per/adc.h **** using a struct like this allows us to add more configuration
+  19:../../libDaisy/src/per/adc.h **** later without breaking existing functionality.
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 5
+
+
+  20:../../libDaisy/src/per/adc.h **** */
+  21:../../libDaisy/src/per/adc.h **** 
+  22:../../libDaisy/src/per/adc.h **** /** @brief   Configuration Structure for an ADC Channel 
+  23:../../libDaisy/src/per/adc.h ****  *  @details This can be used to configure a a single input, 
+  24:../../libDaisy/src/per/adc.h ****  *           or a multiplexed input, allowing up to 8 inputs on 
+  25:../../libDaisy/src/per/adc.h ****  *           one channel.
+  26:../../libDaisy/src/per/adc.h ****  *  @note    Sharing data lines to multiple muxes _is_ possible, but
+  27:../../libDaisy/src/per/adc.h ****  *           each channel sharing data lines must be set to the maximum
+  28:../../libDaisy/src/per/adc.h ****  *           number of channels, even if some multiplexers have fewer
+  29:../../libDaisy/src/per/adc.h ****  *           inputs connected.
+  30:../../libDaisy/src/per/adc.h **** */
+  31:../../libDaisy/src/per/adc.h **** struct AdcChannelConfig
+  32:../../libDaisy/src/per/adc.h **** {
+  33:../../libDaisy/src/per/adc.h ****     /** Which pin to use for multiplexing */
+  34:../../libDaisy/src/per/adc.h ****     enum MuxPin
+  35:../../libDaisy/src/per/adc.h ****     {
+  36:../../libDaisy/src/per/adc.h ****         MUX_SEL_0,    /**< & */
+  37:../../libDaisy/src/per/adc.h ****         MUX_SEL_1,    /**< & */
+  38:../../libDaisy/src/per/adc.h ****         MUX_SEL_2,    /**< & */
+  39:../../libDaisy/src/per/adc.h ****         MUX_SEL_LAST, /**< & */
+  40:../../libDaisy/src/per/adc.h ****     };
+  41:../../libDaisy/src/per/adc.h **** 
+  42:../../libDaisy/src/per/adc.h ****     /** \brief per channel conversion speed added to fixed time based on bitdepth, etc. */
+  43:../../libDaisy/src/per/adc.h ****     enum ConversionSpeed
+  44:../../libDaisy/src/per/adc.h ****     {
+  45:../../libDaisy/src/per/adc.h ****         SPEED_1CYCLES_5,
+  46:../../libDaisy/src/per/adc.h ****         SPEED_2CYCLES_5,
+  47:../../libDaisy/src/per/adc.h ****         SPEED_8CYCLES_5,
+  48:../../libDaisy/src/per/adc.h ****         SPEED_16CYCLES_5,
+  49:../../libDaisy/src/per/adc.h ****         SPEED_32CYCLES_5,
+  50:../../libDaisy/src/per/adc.h ****         SPEED_64CYCLES_5,
+  51:../../libDaisy/src/per/adc.h ****         SPEED_387CYCLES_5,
+  52:../../libDaisy/src/per/adc.h ****         SPEED_810CYCLES_5,
+  53:../../libDaisy/src/per/adc.h ****     };
+  54:../../libDaisy/src/per/adc.h **** 
+  55:../../libDaisy/src/per/adc.h ****     /** Initializes a single ADC pin as an ADC. 
+  56:../../libDaisy/src/per/adc.h ****     \param pin Pin to init.
+  57:../../libDaisy/src/per/adc.h ****     \param speed conversion speed for this pin defaults to 8.5 cycles
+  58:../../libDaisy/src/per/adc.h ****      */
+  59:../../libDaisy/src/per/adc.h ****     void InitSingle(dsy_gpio_pin pin, ConversionSpeed speed = SPEED_8CYCLES_5);
+  60:../../libDaisy/src/per/adc.h **** 
+  61:../../libDaisy/src/per/adc.h ****     /** 
+  62:../../libDaisy/src/per/adc.h ****     Initializes a single ADC pin as a Multiplexed ADC.
+  63:../../libDaisy/src/per/adc.h ****     Requires a CD405X Multiplexer connected to the pin.
+  64:../../libDaisy/src/per/adc.h ****     You only need to supply the mux pins that are required,
+  65:../../libDaisy/src/per/adc.h ****     e.g. a 4052 mux would only require mux_0 and mux_1.
+  66:../../libDaisy/src/per/adc.h ****     Internal Callbacks handle the pin addressing.
+  67:../../libDaisy/src/per/adc.h ****     \param adc_pin &
+  68:../../libDaisy/src/per/adc.h ****     \param mux_channels must be 1-8
+  69:../../libDaisy/src/per/adc.h ****     \param mux_0 First mux pin
+  70:../../libDaisy/src/per/adc.h ****     \param mux_1 Second mux pin
+  71:../../libDaisy/src/per/adc.h ****     \param mux_2 Third mux pin
+  72:../../libDaisy/src/per/adc.h ****     \param speed conversion speed for this pin defaults to 8.5 cycles
+  73:../../libDaisy/src/per/adc.h ****     */
+  74:../../libDaisy/src/per/adc.h ****     void InitMux(dsy_gpio_pin    adc_pin,
+  75:../../libDaisy/src/per/adc.h ****                  size_t          mux_channels,
+  76:../../libDaisy/src/per/adc.h ****                  dsy_gpio_pin    mux_0,
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 6
+
+
+  77:../../libDaisy/src/per/adc.h ****                  dsy_gpio_pin    mux_1 = {DSY_GPIOX, 0},
+  78:../../libDaisy/src/per/adc.h ****                  dsy_gpio_pin    mux_2 = {DSY_GPIOX, 0},
+  79:../../libDaisy/src/per/adc.h ****                  ConversionSpeed speed = SPEED_8CYCLES_5);
+  80:../../libDaisy/src/per/adc.h **** 
+  81:../../libDaisy/src/per/adc.h ****     dsy_gpio        pin_;                   /**< & */
+  82:../../libDaisy/src/per/adc.h ****     dsy_gpio        mux_pin_[MUX_SEL_LAST]; /**< & */
+  83:../../libDaisy/src/per/adc.h ****     uint8_t         mux_channels_;          /**< & */
+  84:../../libDaisy/src/per/adc.h ****     ConversionSpeed speed_;
+  85:../../libDaisy/src/per/adc.h **** };
+  86:../../libDaisy/src/per/adc.h **** 
+  87:../../libDaisy/src/per/adc.h **** /**
+  88:../../libDaisy/src/per/adc.h ****    @brief Handler for analog to digital conversion
+  89:../../libDaisy/src/per/adc.h **** */
+  90:../../libDaisy/src/per/adc.h **** class AdcHandle
+  91:../../libDaisy/src/per/adc.h **** {
+  92:../../libDaisy/src/per/adc.h ****   public:
+  93:../../libDaisy/src/per/adc.h ****     /** Supported oversampling amounts */
+  94:../../libDaisy/src/per/adc.h ****     enum OverSampling
+  95:../../libDaisy/src/per/adc.h ****     {
+  96:../../libDaisy/src/per/adc.h ****         OVS_NONE, /**< & */
+  97:../../libDaisy/src/per/adc.h ****         OVS_4,    /**< & */
+  98:../../libDaisy/src/per/adc.h ****         OVS_8,    /**< & */
+  99:../../libDaisy/src/per/adc.h ****         OVS_16,   /**< & */
+ 100:../../libDaisy/src/per/adc.h ****         OVS_32,   /**< & */
+ 101:../../libDaisy/src/per/adc.h ****         OVS_64,   /**< & */
+ 102:../../libDaisy/src/per/adc.h ****         OVS_128,  /**< & */
+ 103:../../libDaisy/src/per/adc.h ****         OVS_256,  /**< & */
+ 104:../../libDaisy/src/per/adc.h ****         OVS_512,  /**< & */
+ 105:../../libDaisy/src/per/adc.h ****         OVS_1024, /**< & */
+ 106:../../libDaisy/src/per/adc.h ****         OVS_LAST, /**< & */
+ 107:../../libDaisy/src/per/adc.h ****     };
+ 108:../../libDaisy/src/per/adc.h **** 
+ 109:../../libDaisy/src/per/adc.h ****     AdcHandle() {}
+ 110:../../libDaisy/src/per/adc.h ****     ~AdcHandle() {}
+  50              		.loc 4 110 5 is_stmt 1 view .LVU5
+  51              		.loc 4 110 5 is_stmt 0 view .LVU6
+  52              	.LBE118:
+  53              	.LBB119:
+  54              	.LBI119:
+  55              		.file 5 "../../libDaisy/src/hid/audio.h"
+   1:../../libDaisy/src/hid/audio.h **** #ifndef DSY_AUDIO_H
+   2:../../libDaisy/src/hid/audio.h **** #define DSY_AUDIO_H /**< & */
+   3:../../libDaisy/src/hid/audio.h **** 
+   4:../../libDaisy/src/hid/audio.h **** #include "per/sai.h"
+   5:../../libDaisy/src/hid/audio.h **** 
+   6:../../libDaisy/src/hid/audio.h **** namespace daisy
+   7:../../libDaisy/src/hid/audio.h **** {
+   8:../../libDaisy/src/hid/audio.h **** /** @brief Audio Engine Handle
+   9:../../libDaisy/src/hid/audio.h ****  *  @ingroup audio 
+  10:../../libDaisy/src/hid/audio.h ****  *  @details This class allows for higher level access to an audio engine.
+  11:../../libDaisy/src/hid/audio.h ****  *           If you're using a SOM like the DaisySeed or DaisyPatchSM (or any 
+  12:../../libDaisy/src/hid/audio.h ****  *            board that includes one of those objects) then the intialization
+  13:../../libDaisy/src/hid/audio.h ****  *            is already taken  care of.
+  14:../../libDaisy/src/hid/audio.h ****  *           If you're setting up your own custom hardware, or need to make changes
+  15:../../libDaisy/src/hid/audio.h ****  *           you will have to take the following steps:
+  16:../../libDaisy/src/hid/audio.h ****  *             1. Create and Initialize an SaiHandle or two depending on your requirements
+  17:../../libDaisy/src/hid/audio.h ****  *             2. Initialize the Audio Handle with the desired settings and the Initialized SaiHand
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 7
+
+
+  18:../../libDaisy/src/hid/audio.h ****  *             3. If the connected codec requires special configuration or initialization, do so
+  19:../../libDaisy/src/hid/audio.h ****  *             4. Write a callback method using either the AudioCallback or the InterleavingAudioCa
+  20:../../libDaisy/src/hid/audio.h ****  *             5. Start the Audio using one of the StartAudio function
+  21:../../libDaisy/src/hid/audio.h ****  */
+  22:../../libDaisy/src/hid/audio.h **** class AudioHandle
+  23:../../libDaisy/src/hid/audio.h **** {
+  24:../../libDaisy/src/hid/audio.h ****   public:
+  25:../../libDaisy/src/hid/audio.h ****     /** Manually configurable details about the Audio Engine */
+  26:../../libDaisy/src/hid/audio.h ****     /** TODO: Figure out how to get samplerate in here. */
+  27:../../libDaisy/src/hid/audio.h ****     struct Config
+  28:../../libDaisy/src/hid/audio.h ****     {
+  29:../../libDaisy/src/hid/audio.h ****         /** number of samples to process per callback */
+  30:../../libDaisy/src/hid/audio.h ****         size_t blocksize;
+  31:../../libDaisy/src/hid/audio.h **** 
+  32:../../libDaisy/src/hid/audio.h ****         /**< Sample rate of audio */
+  33:../../libDaisy/src/hid/audio.h ****         SaiHandle::Config::SampleRate samplerate;
+  34:../../libDaisy/src/hid/audio.h **** 
+  35:../../libDaisy/src/hid/audio.h ****         /** factor for adjustment before and after callback for hardware that may have extra headro
+  36:../../libDaisy/src/hid/audio.h ****         float postgain;
+  37:../../libDaisy/src/hid/audio.h **** 
+  38:../../libDaisy/src/hid/audio.h ****         /** factor for additional one-sided compensation to audio path for hardware that may
+  39:../../libDaisy/src/hid/audio.h ****          *  have unequal input/output ranges
+  40:../../libDaisy/src/hid/audio.h ****          */
+  41:../../libDaisy/src/hid/audio.h ****         float output_compensation;
+  42:../../libDaisy/src/hid/audio.h **** 
+  43:../../libDaisy/src/hid/audio.h ****         /** Sets default values for config struct */
+  44:../../libDaisy/src/hid/audio.h ****         Config()
+  45:../../libDaisy/src/hid/audio.h ****         : blocksize(48),
+  46:../../libDaisy/src/hid/audio.h ****           samplerate(SaiHandle::Config::SampleRate::SAI_48KHZ),
+  47:../../libDaisy/src/hid/audio.h ****           postgain(1.f),
+  48:../../libDaisy/src/hid/audio.h ****           output_compensation(1.f)
+  49:../../libDaisy/src/hid/audio.h ****         {
+  50:../../libDaisy/src/hid/audio.h ****         }
+  51:../../libDaisy/src/hid/audio.h ****     };
+  52:../../libDaisy/src/hid/audio.h **** 
+  53:../../libDaisy/src/hid/audio.h ****     enum class Result
+  54:../../libDaisy/src/hid/audio.h ****     {
+  55:../../libDaisy/src/hid/audio.h ****         OK,
+  56:../../libDaisy/src/hid/audio.h ****         ERR,
+  57:../../libDaisy/src/hid/audio.h ****     };
+  58:../../libDaisy/src/hid/audio.h **** 
+  59:../../libDaisy/src/hid/audio.h ****     /** Non-Interleaving input buffer
+  60:../../libDaisy/src/hid/audio.h ****      * Buffer arranged by float[chn][sample] 
+  61:../../libDaisy/src/hid/audio.h ****      * const so that the user can't modify the input
+  62:../../libDaisy/src/hid/audio.h ****      */
+  63:../../libDaisy/src/hid/audio.h ****     typedef const float* const* InputBuffer;
+  64:../../libDaisy/src/hid/audio.h **** 
+  65:../../libDaisy/src/hid/audio.h ****     /** Non-Interleaving output buffer
+  66:../../libDaisy/src/hid/audio.h ****      * Arranged by float[chn][sample] 
+  67:../../libDaisy/src/hid/audio.h ****      */
+  68:../../libDaisy/src/hid/audio.h ****     typedef float** OutputBuffer;
+  69:../../libDaisy/src/hid/audio.h **** 
+  70:../../libDaisy/src/hid/audio.h ****     /** Type for a Non-Interleaving audio callback 
+  71:../../libDaisy/src/hid/audio.h ****      * Non-Interleaving audio callbacks in daisy will be of this type
+  72:../../libDaisy/src/hid/audio.h ****      */
+  73:../../libDaisy/src/hid/audio.h ****     typedef void (*AudioCallback)(InputBuffer  in,
+  74:../../libDaisy/src/hid/audio.h ****                                   OutputBuffer out,
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 8
+
+
+  75:../../libDaisy/src/hid/audio.h ****                                   size_t       size);
+  76:../../libDaisy/src/hid/audio.h **** 
+  77:../../libDaisy/src/hid/audio.h ****     /** Interleaving Input buffer
+  78:../../libDaisy/src/hid/audio.h ****      ** audio is prepared as { L0, R0, L1, R1, . . . LN, RN }]
+  79:../../libDaisy/src/hid/audio.h ****      ** this is const, as the user shouldn't modify it
+  80:../../libDaisy/src/hid/audio.h ****     */
+  81:../../libDaisy/src/hid/audio.h ****     typedef const float* InterleavingInputBuffer;
+  82:../../libDaisy/src/hid/audio.h **** 
+  83:../../libDaisy/src/hid/audio.h ****     /** Interleaving Output buffer 
+  84:../../libDaisy/src/hid/audio.h ****      ** audio is prepared as { L0, R0, L1, R1, . . . LN, RN }
+  85:../../libDaisy/src/hid/audio.h ****     */
+  86:../../libDaisy/src/hid/audio.h ****     typedef float* InterleavingOutputBuffer;
+  87:../../libDaisy/src/hid/audio.h **** 
+  88:../../libDaisy/src/hid/audio.h ****     /** Interleaving Audio Callback 
+  89:../../libDaisy/src/hid/audio.h ****      * Interleaving audio callbacks in daisy must be of this type
+  90:../../libDaisy/src/hid/audio.h ****      */
+  91:../../libDaisy/src/hid/audio.h ****     typedef void (*InterleavingAudioCallback)(InterleavingInputBuffer  in,
+  92:../../libDaisy/src/hid/audio.h ****                                               InterleavingOutputBuffer out,
+  93:../../libDaisy/src/hid/audio.h ****                                               size_t                   size);
+  94:../../libDaisy/src/hid/audio.h **** 
+  95:../../libDaisy/src/hid/audio.h ****     AudioHandle() : pimpl_(nullptr) {}
+  96:../../libDaisy/src/hid/audio.h ****     ~AudioHandle() {}
+  56              		.loc 5 96 5 is_stmt 1 view .LVU7
+  57              		.loc 5 96 5 is_stmt 0 view .LVU8
+  58              	.LBE119:
+  59              		.loc 1 22 19 view .LVU9
+  60 0000 7047     		bx	lr
+  61              		.cfi_endproc
+  62              	.LFE2555:
+  64              		.weak	_ZN5daisy9DaisySeedD1Ev
+  65              		.thumb_set _ZN5daisy9DaisySeedD1Ev,_ZN5daisy9DaisySeedD2Ev
+  66 0002 00BF     		.section	.text._ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj,"ax",%progbits
+  67              		.align	1
+  68              		.p2align 2,,3
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  72              		.fpu fpv5-d16
+  74              	_ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj:
+  75              	.LVL1:
+  76              	.LFB2582:
+  77              		.file 6 "src/main.cpp"
+   1:src/main.cpp  **** #include "diagnostic_config.h"
+   2:src/main.cpp  **** #include "daisy_seed.h"
+   3:src/main.cpp  **** 
+   4:src/main.cpp  **** #if DIAG_HAS_MAILBOX
+   5:src/main.cpp  **** #include "control_mailbox.h"
+   6:src/main.cpp  **** #endif
+   7:src/main.cpp  **** #if DIAG_HAS_CONTROLS
+   8:src/main.cpp  **** #include "controls.h"
+   9:src/main.cpp  **** #endif
+  10:src/main.cpp  **** #if DIAG_HAS_TELEMETRY
+  11:src/main.cpp  **** #include "telemetry.h"
+  12:src/main.cpp  **** #endif
+  13:src/main.cpp  **** #if DIAG_HAS_TUNER_OBJECTS
+  14:src/main.cpp  **** #include "tuner.h"
+  15:src/main.cpp  **** #endif
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 9
+
+
+  16:src/main.cpp  **** #if DIAG_HAS_THERMAL
+  17:src/main.cpp  **** #include "thermal_monitor.h"
+  18:src/main.cpp  **** #endif
+  19:src/main.cpp  **** #if DIAG_HAS_AUDIOENGINE
+  20:src/main.cpp  **** #include "audio_engine.h"
+  21:src/main.cpp  **** #endif
+  22:src/main.cpp  **** 
+  23:src/main.cpp  **** #if DIAG_AUDIO_MODE == DIAG_AUDIO_SINE_440
+  24:src/main.cpp  **** #include <cmath>
+  25:src/main.cpp  **** #endif
+  26:src/main.cpp  **** 
+  27:src/main.cpp  **** using namespace daisy;
+  28:src/main.cpp  **** 
+  29:src/main.cpp  **** namespace
+  30:src/main.cpp  **** {
+  31:src/main.cpp  **** template <typename T>
+  32:src/main.cpp  **** void RetainDiagnosticObject(T& object)
+  33:src/main.cpp  **** {
+  34:src/main.cpp  ****     asm volatile("" : : "r"(&object));
+  35:src/main.cpp  **** }
+  36:src/main.cpp  **** 
+  37:src/main.cpp  **** DaisySeed hw;
+  38:src/main.cpp  **** 
+  39:src/main.cpp  **** #if DIAG_HAS_MAILBOX
+  40:src/main.cpp  **** app::ControlMailbox control_mailbox;
+  41:src/main.cpp  **** #endif
+  42:src/main.cpp  **** #if DIAG_HAS_CONTROLS
+  43:src/main.cpp  **** app::Controls controls;
+  44:src/main.cpp  **** #endif
+  45:src/main.cpp  **** #if DIAG_HAS_TUNER_OBJECTS
+  46:src/main.cpp  **** app::TunerCapture  tuner_capture;
+  47:src/main.cpp  **** app::TunerAnalyzer tuner_analyzer;
+  48:src/main.cpp  **** #endif
+  49:src/main.cpp  **** #if DIAG_HAS_AUDIOENGINE
+  50:src/main.cpp  **** app::AudioEngine audio_engine;
+  51:src/main.cpp  **** #endif
+  52:src/main.cpp  **** #if DIAG_HAS_TELEMETRY
+  53:src/main.cpp  **** app::Telemetry telemetry;
+  54:src/main.cpp  **** #endif
+  55:src/main.cpp  **** #if DIAG_HAS_THERMAL
+  56:src/main.cpp  **** app::ThermalMonitor thermal_monitor;
+  57:src/main.cpp  **** #endif
+  58:src/main.cpp  **** #if DIAG_ANALYZE_TUNER
+  59:src/main.cpp  **** // Foreground CPU scratch, not DMA storage. Keep it out of .sram1_bss so the
+  60:src/main.cpp  **** // libDaisy audio and ADC DMA buffers remain inside the non-cacheable MPU window.
+  61:src/main.cpp  **** float tuner_source_window[app::config::kTunerSourceWindowSize];
+  62:src/main.cpp  **** #endif
+  63:src/main.cpp  **** 
+  64:src/main.cpp  **** void AudioCallback(AudioHandle::InputBuffer  in,
+  65:src/main.cpp  ****                    AudioHandle::OutputBuffer out,
+  66:src/main.cpp  ****                    size_t                    size)
+  67:src/main.cpp  **** {
+  78              		.loc 6 67 1 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  68:src/main.cpp  **** #if DIAG_CAPTURE_TUNER && !DIAG_PROCESS_AUDIOENGINE
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 10
+
+
+  69:src/main.cpp  ****     tuner_capture.WriteBlock(in[0], size);
+  82              		.loc 6 69 5 view .LVU11
+  67:src/main.cpp  **** #if DIAG_CAPTURE_TUNER && !DIAG_PROCESS_AUDIOENGINE
+  83              		.loc 6 67 1 is_stmt 0 view .LVU12
+  84 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  85              		.cfi_def_cfa_offset 24
+  86              		.cfi_offset 3, -24
+  87              		.cfi_offset 4, -20
+  88              		.cfi_offset 5, -16
+  89              		.cfi_offset 6, -12
+  90              		.cfi_offset 7, -8
+  91              		.cfi_offset 14, -4
+  67:src/main.cpp  **** #if DIAG_CAPTURE_TUNER && !DIAG_PROCESS_AUDIOENGINE
+  92              		.loc 6 67 1 view .LVU13
+  93 0002 1546     		mov	r5, r2
+  94 0004 0646     		mov	r6, r0
+  95 0006 0F46     		mov	r7, r1
+  96              		.loc 6 69 29 view .LVU14
+  97 0008 0168     		ldr	r1, [r0]
+  98              	.LVL2:
+  99              		.loc 6 69 29 view .LVU15
+ 100 000a 0A48     		ldr	r0, .L11
+ 101              	.LVL3:
+ 102              		.loc 6 69 29 view .LVU16
+ 103 000c FFF7FEFF 		bl	_ZN3app12TunerCapture10WriteBlockEPKfj
+ 104              	.LVL4:
+  70:src/main.cpp  **** #endif
+  71:src/main.cpp  **** 
+  72:src/main.cpp  **** #if DIAG_AUDIO_MODE == DIAG_AUDIO_DIRECT_STEREO_BYPASS
+  73:src/main.cpp  ****     for(size_t i = 0; i < size; ++i)
+ 105              		.loc 6 73 5 is_stmt 1 view .LVU17
+ 106              	.LBB120:
+ 107              		.loc 6 73 25 view .LVU18
+ 108 0010 7DB1     		cbz	r5, .L3
+ 109 0012 3368     		ldr	r3, [r6]
+ 110 0014 3C68     		ldr	r4, [r7]
+ 111 0016 7068     		ldr	r0, [r6, #4]
+ 112 0018 03EB850C 		add	ip, r3, r5, lsl #2
+ 113 001c 7968     		ldr	r1, [r7, #4]
+ 114              	.LVL5:
+ 115              	.L5:
+  74:src/main.cpp  ****     {
+  75:src/main.cpp  ****         out[0][i] = in[0][i];
+ 116              		.loc 6 75 9 discriminator 2 view .LVU19
+ 117              		.loc 6 75 28 is_stmt 0 discriminator 2 view .LVU20
+ 118 001e 53F8042B 		ldr	r2, [r3], #4	@ float
+ 119              		.loc 6 75 19 discriminator 2 view .LVU21
+ 120 0022 44F8042B 		str	r2, [r4], #4	@ float
+  76:src/main.cpp  ****         out[1][i] = in[1][i];
+ 121              		.loc 6 76 9 is_stmt 1 discriminator 2 view .LVU22
+  73:src/main.cpp  ****     {
+ 122              		.loc 6 73 25 is_stmt 0 discriminator 2 view .LVU23
+ 123 0026 6345     		cmp	r3, ip
+ 124              		.loc 6 76 28 discriminator 2 view .LVU24
+ 125 0028 50F8042B 		ldr	r2, [r0], #4	@ float
+ 126              		.loc 6 76 19 discriminator 2 view .LVU25
+ 127 002c 41F8042B 		str	r2, [r1], #4	@ float
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 11
+
+
+  73:src/main.cpp  ****     {
+ 128              		.loc 6 73 5 is_stmt 1 discriminator 2 view .LVU26
+  73:src/main.cpp  ****     {
+ 129              		.loc 6 73 25 discriminator 2 view .LVU27
+ 130 0030 F5D1     		bne	.L5
+ 131              	.L3:
+ 132              	.LBE120:
+  77:src/main.cpp  ****     }
+  78:src/main.cpp  **** #elif DIAG_AUDIO_MODE == DIAG_AUDIO_DIRECT_MONO_BYPASS
+  79:src/main.cpp  ****     for(size_t i = 0; i < size; ++i)
+  80:src/main.cpp  ****     {
+  81:src/main.cpp  ****         out[0][i] = in[0][i];
+  82:src/main.cpp  ****         out[1][i] = in[0][i];
+  83:src/main.cpp  ****     }
+  84:src/main.cpp  **** #elif DIAG_AUDIO_MODE == DIAG_AUDIO_SINE_440
+  85:src/main.cpp  ****     static float phase     = 0.0f;
+  86:src/main.cpp  ****     const float  increment = 6.28318530718f * 440.0f / 48000.0f;
+  87:src/main.cpp  ****     for(size_t i = 0; i < size; ++i)
+  88:src/main.cpp  ****     {
+  89:src/main.cpp  ****         const float sample = 0.1f * sinf(phase);
+  90:src/main.cpp  ****         phase += increment;
+  91:src/main.cpp  ****         if(phase >= 6.28318530718f)
+  92:src/main.cpp  ****             phase -= 6.28318530718f;
+  93:src/main.cpp  ****         out[0][i] = sample;
+  94:src/main.cpp  ****         out[1][i] = sample;
+  95:src/main.cpp  ****     }
+  96:src/main.cpp  **** #elif DIAG_AUDIO_MODE == DIAG_AUDIO_SILENCE
+  97:src/main.cpp  ****     (void)in;
+  98:src/main.cpp  ****     for(size_t i = 0; i < size; ++i)
+  99:src/main.cpp  ****     {
+ 100:src/main.cpp  ****         out[0][i] = 0.0f;
+ 101:src/main.cpp  ****         out[1][i] = 0.0f;
+ 102:src/main.cpp  ****     }
+ 103:src/main.cpp  **** #elif DIAG_AUDIO_MODE == DIAG_AUDIO_ENGINE
+ 104:src/main.cpp  ****     audio_engine.Process(in, out, size);
+ 105:src/main.cpp  **** #endif
+ 106:src/main.cpp  **** }
+ 133              		.loc 6 106 1 is_stmt 0 view .LVU28
+ 134 0032 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 135              	.LVL6:
+ 136              	.L12:
+ 137              		.loc 6 106 1 view .LVU29
+ 138              		.align	2
+ 139              	.L11:
+ 140 0034 00000000 		.word	.LANCHOR0
+ 141              		.cfi_endproc
+ 142              	.LFE2582:
+ 144              		.section	.text.startup.main,"ax",%progbits
+ 145              		.align	1
+ 146              		.p2align 2,,3
+ 147              		.global	main
+ 148              		.syntax unified
+ 149              		.thumb
+ 150              		.thumb_func
+ 151              		.fpu fpv5-d16
+ 153              	main:
+ 154              	.LFB2583:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 12
+
+
+ 107:src/main.cpp  **** } // namespace
+ 108:src/main.cpp  **** 
+ 109:src/main.cpp  **** int main(void)
+ 110:src/main.cpp  **** {
+ 155              		.loc 6 110 1 is_stmt 1 view -0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 72
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111:src/main.cpp  ****     hw.Init();
+ 159              		.loc 6 111 5 view .LVU31
+ 110:src/main.cpp  ****     hw.Init();
+ 160              		.loc 6 110 1 is_stmt 0 view .LVU32
+ 161 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 162              		.cfi_def_cfa_offset 36
+ 163              		.cfi_offset 4, -36
+ 164              		.cfi_offset 5, -32
+ 165              		.cfi_offset 6, -28
+ 166              		.cfi_offset 7, -24
+ 167              		.cfi_offset 8, -20
+ 168              		.cfi_offset 9, -16
+ 169              		.cfi_offset 10, -12
+ 170              		.cfi_offset 11, -8
+ 171              		.cfi_offset 14, -4
+ 172              		.loc 6 111 12 view .LVU33
+ 173 0004 0021     		movs	r1, #0
+ 110:src/main.cpp  ****     hw.Init();
+ 174              		.loc 6 110 1 view .LVU34
+ 175 0006 95B0     		sub	sp, sp, #84
+ 176              		.cfi_def_cfa_offset 120
+ 177              		.loc 6 111 12 view .LVU35
+ 178 0008 6A48     		ldr	r0, .L50
+ 179 000a FFF7FEFF 		bl	_ZN5daisy9DaisySeed4InitEb
+ 180              	.LVL7:
+ 112:src/main.cpp  ****     hw.SetAudioSampleRate(SaiHandle::Config::SampleRate::SAI_48KHZ);
+ 181              		.loc 6 112 5 is_stmt 1 view .LVU36
+ 182              		.loc 6 112 26 is_stmt 0 view .LVU37
+ 183 000e 0321     		movs	r1, #3
+ 184 0010 6848     		ldr	r0, .L50
+ 185 0012 FFF7FEFF 		bl	_ZN5daisy9DaisySeed18SetAudioSampleRateENS_9SaiHandle6Config10SampleRateE
+ 186              	.LVL8:
+ 113:src/main.cpp  ****     hw.SetAudioBlockSize(48);
+ 187              		.loc 6 113 5 is_stmt 1 view .LVU38
+ 188              		.loc 6 113 25 is_stmt 0 view .LVU39
+ 189 0016 3021     		movs	r1, #48
+ 190 0018 6648     		ldr	r0, .L50
+ 191 001a FFF7FEFF 		bl	_ZN5daisy9DaisySeed17SetAudioBlockSizeEj
+ 192              	.LVL9:
+ 114:src/main.cpp  **** 
+ 115:src/main.cpp  **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 116:src/main.cpp  **** #if DIAG_HAS_MAILBOX
+ 117:src/main.cpp  ****     RetainDiagnosticObject(control_mailbox);
+ 193              		.loc 6 117 5 is_stmt 1 view .LVU40
+ 194              	.LBB121:
+ 195              	.LBI121:
+  32:src/main.cpp  **** {
+ 196              		.loc 6 32 6 view .LVU41
+ 197              	.LBB122:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 13
+
+
+  34:src/main.cpp  **** }
+ 198              		.loc 6 34 5 is_stmt 0 view .LVU42
+ 199 001e 664A     		ldr	r2, .L50+4
+ 200              	.LVL10:
+  34:src/main.cpp  **** }
+ 201              		.loc 6 34 5 view .LVU43
+ 202              	.LBE122:
+ 203              	.LBE121:
+ 118:src/main.cpp  **** #endif
+ 119:src/main.cpp  **** #if DIAG_HAS_CONTROLS
+ 120:src/main.cpp  ****     RetainDiagnosticObject(controls);
+ 204              		.loc 6 120 5 is_stmt 1 view .LVU44
+ 205              	.LBB123:
+ 206              	.LBI123:
+  32:src/main.cpp  **** {
+ 207              		.loc 6 32 6 view .LVU45
+ 208              	.LBB124:
+  34:src/main.cpp  **** }
+ 209              		.loc 6 34 5 is_stmt 0 view .LVU46
+ 210 0020 6648     		ldr	r0, .L50+8
+ 211              	.LVL11:
+  34:src/main.cpp  **** }
+ 212              		.loc 6 34 5 view .LVU47
+ 213              	.LBE124:
+ 214              	.LBE123:
+ 121:src/main.cpp  **** #endif
+ 122:src/main.cpp  **** #if DIAG_HAS_TELEMETRY
+ 123:src/main.cpp  ****     RetainDiagnosticObject(telemetry);
+ 215              		.loc 6 123 5 is_stmt 1 view .LVU48
+ 216              	.LBB125:
+ 217              	.LBI125:
+  32:src/main.cpp  **** {
+ 218              		.loc 6 32 6 view .LVU49
+ 219              	.LBB126:
+  34:src/main.cpp  **** }
+ 220              		.loc 6 34 5 is_stmt 0 view .LVU50
+ 221 0022 674E     		ldr	r6, .L50+12
+ 222              	.LVL12:
+  34:src/main.cpp  **** }
+ 223              		.loc 6 34 5 view .LVU51
+ 224              	.LBE126:
+ 225              	.LBE125:
+ 124:src/main.cpp  **** #endif
+ 125:src/main.cpp  **** #if DIAG_HAS_TUNER_OBJECTS
+ 126:src/main.cpp  ****     RetainDiagnosticObject(tuner_capture);
+ 226              		.loc 6 126 5 is_stmt 1 view .LVU52
+ 227              	.LBB127:
+ 228              	.LBI127:
+  32:src/main.cpp  **** {
+ 229              		.loc 6 32 6 view .LVU53
+ 230              	.LBB128:
+  34:src/main.cpp  **** }
+ 231              		.loc 6 34 5 is_stmt 0 view .LVU54
+ 232 0024 674D     		ldr	r5, .L50+16
+ 233              	.LVL13:
+  34:src/main.cpp  **** }
+ 234              		.loc 6 34 5 view .LVU55
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 14
+
+
+ 235              	.LBE128:
+ 236              	.LBE127:
+ 127:src/main.cpp  ****     RetainDiagnosticObject(tuner_analyzer);
+ 237              		.loc 6 127 5 is_stmt 1 view .LVU56
+ 238              	.LBB129:
+ 239              	.LBI129:
+  32:src/main.cpp  **** {
+ 240              		.loc 6 32 6 view .LVU57
+ 241              	.LBB130:
+  34:src/main.cpp  **** }
+ 242              		.loc 6 34 5 is_stmt 0 view .LVU58
+ 243 0026 684C     		ldr	r4, .L50+20
+ 244              	.LVL14:
+  34:src/main.cpp  **** }
+ 245              		.loc 6 34 5 view .LVU59
+ 246              	.LBE130:
+ 247              	.LBE129:
+ 128:src/main.cpp  **** #endif
+ 129:src/main.cpp  **** #if DIAG_HAS_THERMAL
+ 130:src/main.cpp  ****     RetainDiagnosticObject(thermal_monitor);
+ 248              		.loc 6 130 5 is_stmt 1 view .LVU60
+ 249              	.LBB131:
+ 250              	.LBI131:
+  32:src/main.cpp  **** {
+ 251              		.loc 6 32 6 view .LVU61
+ 252              	.LBB132:
+  34:src/main.cpp  **** }
+ 253              		.loc 6 34 5 is_stmt 0 view .LVU62
+ 254 0028 DFF8A891 		ldr	r9, .L50+32
+ 255              	.LVL15:
+  34:src/main.cpp  **** }
+ 256              		.loc 6 34 5 view .LVU63
+ 257              	.LBE132:
+ 258              	.LBE131:
+ 131:src/main.cpp  **** #endif
+ 132:src/main.cpp  **** #if DIAG_HAS_AUDIOENGINE
+ 133:src/main.cpp  ****     RetainDiagnosticObject(audio_engine);
+ 134:src/main.cpp  **** #endif
+ 135:src/main.cpp  **** #endif
+ 136:src/main.cpp  **** 
+ 137:src/main.cpp  **** #if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+ 138:src/main.cpp  ****     telemetry.Init();
+ 139:src/main.cpp  ****     controls.Init(hw, control_mailbox);
+ 140:src/main.cpp  ****     thermal_monitor.Init(System::GetNow());
+ 141:src/main.cpp  **** #if THERMAL_DEBUG_TELEMETRY
+ 142:src/main.cpp  ****     app::ThermalCalibrationInfo thermal_calibration;
+ 143:src/main.cpp  ****     if(thermal_monitor.TakeCalibrationDebug(thermal_calibration))
+ 144:src/main.cpp  ****         telemetry.SendThermalCalibration(thermal_calibration);
+ 145:src/main.cpp  **** #endif
+ 146:src/main.cpp  ****     tuner_capture.Init();
+ 147:src/main.cpp  ****     tuner_analyzer.Reset(System::GetNow());
+ 148:src/main.cpp  ****     audio_engine.Init(hw.AudioSampleRate(), control_mailbox, tuner_capture);
+ 149:src/main.cpp  **** #else
+ 150:src/main.cpp  **** #if DIAG_INIT_CONTROLS
+ 151:src/main.cpp  ****     controls.Init(hw, control_mailbox);
+ 259              		.loc 6 151 5 is_stmt 1 view .LVU64
+ 260              		.loc 6 151 18 is_stmt 0 view .LVU65
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 15
+
+
+ 261 002c 6149     		ldr	r1, .L50
+ 152:src/main.cpp  **** #endif
+ 153:src/main.cpp  **** #if DIAG_INIT_TELEMETRY
+ 154:src/main.cpp  ****     telemetry.Init();
+ 155:src/main.cpp  **** #endif
+ 156:src/main.cpp  **** #if DIAG_INIT_TUNER
+ 157:src/main.cpp  ****     tuner_capture.Init();
+ 158:src/main.cpp  ****     tuner_analyzer.Reset(System::GetNow());
+ 159:src/main.cpp  **** #endif
+ 160:src/main.cpp  **** #if DIAG_INIT_THERMAL
+ 161:src/main.cpp  ****     thermal_monitor.Init(System::GetNow(), false);
+ 162:src/main.cpp  **** #if THERMAL_DEBUG_TELEMETRY && DIAG_INIT_TELEMETRY
+ 163:src/main.cpp  ****     app::ThermalCalibrationInfo thermal_calibration;
+ 164:src/main.cpp  ****     if(thermal_monitor.TakeCalibrationDebug(thermal_calibration))
+ 165:src/main.cpp  ****         telemetry.SendThermalCalibration(thermal_calibration);
+ 166:src/main.cpp  **** #endif
+ 167:src/main.cpp  **** #endif
+ 168:src/main.cpp  **** #if DIAG_INIT_AUDIOENGINE
+ 169:src/main.cpp  ****     audio_engine.Init(hw.AudioSampleRate(), control_mailbox, tuner_capture);
+ 170:src/main.cpp  **** #endif
+ 171:src/main.cpp  **** #endif
+ 172:src/main.cpp  **** 
+ 173:src/main.cpp  ****     hw.StartAudio(AudioCallback);
+ 174:src/main.cpp  **** 
+ 175:src/main.cpp  **** #if !DIAG_SERVICE_CONTROLS && !DIAG_SERVICE_THERMAL
+ 176:src/main.cpp  ****     while(1) {}
+ 177:src/main.cpp  **** #else
+ 178:src/main.cpp  ****     uint8_t  last_sent_effect       = 0xffu;
+ 179:src/main.cpp  ****     uint8_t  current_effect         = app::config::FX_TUNER;
+ 180:src/main.cpp  ****     bool     previous_tuner_mode    = false;
+ 181:src/main.cpp  ****     uint32_t last_pots_tx           = 0;
+ 182:src/main.cpp  ****     uint32_t last_tuner_tx          = 0;
+ 183:src/main.cpp  ****     uint32_t last_tuner_disabled_tx = 0;
+ 262              		.loc 6 183 14 view .LVU66
+ 263 002e 4FF0000B 		mov	fp, #0
+ 151:src/main.cpp  **** #endif
+ 264              		.loc 6 151 18 view .LVU67
+ 265 0032 FFF7FEFF 		bl	_ZN3app8Controls4InitERN5daisy9DaisySeedERNS_14ControlMailboxE
+ 266              	.LVL16:
+ 154:src/main.cpp  **** #endif
+ 267              		.loc 6 154 5 is_stmt 1 view .LVU68
+ 154:src/main.cpp  **** #endif
+ 268              		.loc 6 154 19 is_stmt 0 view .LVU69
+ 269 0036 3046     		mov	r0, r6
+ 270 0038 FFF7FEFF 		bl	_ZN3app9Telemetry4InitEv
+ 271              	.LVL17:
+ 157:src/main.cpp  ****     tuner_analyzer.Reset(System::GetNow());
+ 272              		.loc 6 157 5 is_stmt 1 view .LVU70
+ 157:src/main.cpp  ****     tuner_analyzer.Reset(System::GetNow());
+ 273              		.loc 6 157 23 is_stmt 0 view .LVU71
+ 274 003c 2846     		mov	r0, r5
+ 275 003e FFF7FEFF 		bl	_ZN3app12TunerCapture4InitEv
+ 276              	.LVL18:
+ 158:src/main.cpp  **** #endif
+ 277              		.loc 6 158 5 is_stmt 1 view .LVU72
+ 182:src/main.cpp  ****     uint32_t last_tuner_disabled_tx = 0;
+ 278              		.loc 6 182 14 is_stmt 0 view .LVU73
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 16
+
+
+ 279 0042 DA46     		mov	r10, fp
+ 158:src/main.cpp  **** #endif
+ 280              		.loc 6 158 25 view .LVU74
+ 281 0044 FFF7FEFF 		bl	_ZN5daisy6System6GetNowEv
+ 282              	.LVL19:
+ 283 0048 0146     		mov	r1, r0
+ 284 004a 2046     		mov	r0, r4
+ 181:src/main.cpp  ****     uint32_t last_tuner_tx          = 0;
+ 285              		.loc 6 181 14 view .LVU75
+ 286 004c D846     		mov	r8, fp
+ 158:src/main.cpp  **** #endif
+ 287              		.loc 6 158 25 view .LVU76
+ 288 004e FFF7FEFF 		bl	_ZN3app13TunerAnalyzer5ResetEm
+ 289              	.LVL20:
+ 161:src/main.cpp  **** #if THERMAL_DEBUG_TELEMETRY && DIAG_INIT_TELEMETRY
+ 290              		.loc 6 161 5 is_stmt 1 view .LVU77
+ 180:src/main.cpp  ****     uint32_t last_pots_tx           = 0;
+ 291              		.loc 6 180 14 is_stmt 0 view .LVU78
+ 292 0052 5F46     		mov	r7, fp
+ 161:src/main.cpp  **** #if THERMAL_DEBUG_TELEMETRY && DIAG_INIT_TELEMETRY
+ 293              		.loc 6 161 25 view .LVU79
+ 294 0054 FFF7FEFF 		bl	_ZN5daisy6System6GetNowEv
+ 295              	.LVL21:
+ 296 0058 5A46     		mov	r2, fp
+ 297 005a 0146     		mov	r1, r0
+ 298 005c 4846     		mov	r0, r9
+ 299 005e FFF7FEFF 		bl	_ZN3app14ThermalMonitor4InitEmb
+ 300              	.LVL22:
+ 173:src/main.cpp  **** 
+ 301              		.loc 6 173 5 is_stmt 1 view .LVU80
+ 173:src/main.cpp  **** 
+ 302              		.loc 6 173 18 is_stmt 0 view .LVU81
+ 303 0062 5A49     		ldr	r1, .L50+24
+ 304 0064 5348     		ldr	r0, .L50
+ 178:src/main.cpp  ****     uint8_t  current_effect         = app::config::FX_TUNER;
+ 305              		.loc 6 178 14 view .LVU82
+ 306 0066 FF26     		movs	r6, #255
+ 173:src/main.cpp  **** 
+ 307              		.loc 6 173 18 view .LVU83
+ 308 0068 FFF7FEFF 		bl	_ZN5daisy9DaisySeed10StartAudioEPFvPKPKfPPfjE
+ 309              	.LVL23:
+ 178:src/main.cpp  ****     uint8_t  current_effect         = app::config::FX_TUNER;
+ 310              		.loc 6 178 5 is_stmt 1 view .LVU84
+ 179:src/main.cpp  ****     bool     previous_tuner_mode    = false;
+ 311              		.loc 6 179 5 view .LVU85
+ 180:src/main.cpp  ****     uint32_t last_pots_tx           = 0;
+ 312              		.loc 6 180 5 view .LVU86
+ 181:src/main.cpp  ****     uint32_t last_tuner_tx          = 0;
+ 313              		.loc 6 181 5 view .LVU87
+ 182:src/main.cpp  ****     uint32_t last_tuner_disabled_tx = 0;
+ 314              		.loc 6 182 5 view .LVU88
+ 315              		.loc 6 183 5 view .LVU89
+ 184:src/main.cpp  ****     uint32_t last_rotary_cal_tx     = 0;
+ 316              		.loc 6 184 5 view .LVU90
+ 185:src/main.cpp  ****     uint32_t last_thermal_debug_tx  = 0;
+ 317              		.loc 6 185 5 view .LVU91
+ 186:src/main.cpp  ****     uint32_t last_cpu_tx            = 0;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 17
+
+
+ 318              		.loc 6 186 5 view .LVU92
+ 319              		.loc 6 186 5 is_stmt 0 view .LVU93
+ 320 006c 2BE0     		b	.L26
+ 321              	.LVL24:
+ 322              	.L47:
+ 323              	.LBB133:
+ 187:src/main.cpp  **** 
+ 188:src/main.cpp  ****     while(1)
+ 189:src/main.cpp  ****     {
+ 190:src/main.cpp  ****         const uint32_t now             = System::GetNow();
+ 191:src/main.cpp  **** 
+ 192:src/main.cpp  **** #if DIAG_SERVICE_THERMAL
+ 193:src/main.cpp  ****         const bool     thermal_sampled = thermal_monitor.Service(now);
+ 194:src/main.cpp  **** #if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+ 195:src/main.cpp  ****         if(thermal_monitor.IsSafetyLatched())
+ 196:src/main.cpp  ****         {
+ 197:src/main.cpp  ****             controls.RequestThermalShutdown();
+ 198:src/main.cpp  ****             const app::ThermalFaultKind fault
+ 199:src/main.cpp  ****                 = thermal_monitor.TakeFaultNotification();
+ 200:src/main.cpp  ****             if(app::config::kThermalFaultMessagesEnabled)
+ 201:src/main.cpp  ****             {
+ 202:src/main.cpp  ****                 if(fault == app::ThermalFaultKind::Thermal)
+ 203:src/main.cpp  ****                     telemetry.SendThermalFault(
+ 204:src/main.cpp  ****                         thermal_monitor.filtered_temperature_c());
+ 205:src/main.cpp  ****                 else if(fault == app::ThermalFaultKind::Sensor)
+ 206:src/main.cpp  ****                     telemetry.SendTemperatureSensorFault(
+ 207:src/main.cpp  ****                         thermal_monitor.last_error_code());
+ 208:src/main.cpp  ****             }
+ 209:src/main.cpp  ****             hw.SetLed(thermal_monitor.FaultLedOn(now));
+ 210:src/main.cpp  ****             System::Delay(app::config::kThermalFaultLoopDelayMs);
+ 211:src/main.cpp  ****             continue;
+ 212:src/main.cpp  ****         }
+ 213:src/main.cpp  **** #else
+ 214:src/main.cpp  ****         if(thermal_monitor.IsSafetyLatched())
+ 215:src/main.cpp  ****         {
+ 216:src/main.cpp  **** #if DIAG_ENFORCE_THERMAL_AUDIO_SHUTDOWN
+ 217:src/main.cpp  ****             controls.RequestThermalShutdown();
+ 218:src/main.cpp  **** #endif
+ 219:src/main.cpp  ****             const app::ThermalFaultKind fault
+ 220:src/main.cpp  ****                 = thermal_monitor.TakeFaultNotification();
+ 221:src/main.cpp  **** #if DIAG_INIT_TELEMETRY
+ 222:src/main.cpp  ****             if(fault == app::ThermalFaultKind::Thermal)
+ 223:src/main.cpp  ****                 telemetry.SendThermalFault(
+ 224:src/main.cpp  ****                     thermal_monitor.filtered_temperature_c());
+ 225:src/main.cpp  ****             else if(fault == app::ThermalFaultKind::Sensor)
+ 226:src/main.cpp  ****                 telemetry.SendTemperatureSensorFault(
+ 227:src/main.cpp  ****                     thermal_monitor.last_error_code());
+ 228:src/main.cpp  **** #else
+ 229:src/main.cpp  ****             (void)fault;
+ 230:src/main.cpp  **** #endif
+ 231:src/main.cpp  ****             hw.SetLed(thermal_monitor.FaultLedOn(now));
+ 232:src/main.cpp  ****         }
+ 233:src/main.cpp  **** #endif
+ 234:src/main.cpp  **** #if THERMAL_DEBUG_TELEMETRY && DIAG_INIT_TELEMETRY
+ 235:src/main.cpp  ****         if(thermal_sampled
+ 236:src/main.cpp  ****            && (uint32_t)(now - last_thermal_debug_tx)
+ 237:src/main.cpp  ****                   >= app::config::kThermalDebugTelemetryPeriodMs)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 18
+
+
+ 238:src/main.cpp  ****         {
+ 239:src/main.cpp  ****             last_thermal_debug_tx = now;
+ 240:src/main.cpp  ****             telemetry.SendThermalDebug(thermal_monitor.filtered_temperature_c(),
+ 241:src/main.cpp  ****                                        thermal_monitor.last_raw_temperature(),
+ 242:src/main.cpp  ****                                        thermal_monitor.state());
+ 243:src/main.cpp  ****         }
+ 244:src/main.cpp  **** #else
+ 245:src/main.cpp  ****         (void)thermal_sampled;
+ 246:src/main.cpp  ****         (void)last_thermal_debug_tx;
+ 247:src/main.cpp  **** #endif
+ 248:src/main.cpp  **** #else
+ 249:src/main.cpp  ****         (void)last_thermal_debug_tx;
+ 250:src/main.cpp  **** #endif
+ 251:src/main.cpp  **** 
+ 252:src/main.cpp  **** #if DIAG_SERVICE_CONTROLS
+ 253:src/main.cpp  ****         const app::ControlTelemetryState state = controls.Process(hw, now);
+ 254:src/main.cpp  ****         current_effect                         = state.effect;
+ 255:src/main.cpp  ****         hw.SetLed(state.rotary_position == 1);
+ 256:src/main.cpp  **** 
+ 257:src/main.cpp  **** #if DIAG_SEND_TELEMETRY
+ 258:src/main.cpp  ****         if(current_effect != last_sent_effect)
+ 259:src/main.cpp  ****         {
+ 260:src/main.cpp  ****             last_sent_effect = current_effect;
+ 261:src/main.cpp  ****             telemetry.SendEffect(last_sent_effect);
+ 262:src/main.cpp  ****         }
+ 263:src/main.cpp  ****         if(state.footswitch.occurred)
+ 264:src/main.cpp  ****             telemetry.SendFootswitch(state.footswitch.down,
+ 265:src/main.cpp  ****                                      state.footswitch.edge,
+ 266:src/main.cpp  ****                                      state.footswitch.press_count);
+ 267:src/main.cpp  ****         if(state.pots_changed
+ 268:src/main.cpp  ****            || (uint32_t)(now - last_pots_tx)
+ 269:src/main.cpp  ****                   >= app::config::kPotTelemetryHeartbeatMs)
+ 270:src/main.cpp  ****         {
+ 271:src/main.cpp  ****             last_pots_tx = now;
+ 272:src/main.cpp  ****             telemetry.SendPots(state.pots);
+ 273:src/main.cpp  ****         }
+ 274:src/main.cpp  **** #if ROTARY_CALIBRATION_MODE
+ 275:src/main.cpp  ****         if((uint32_t)(now - last_rotary_cal_tx) >= 100u)
+ 276:src/main.cpp  ****         {
+ 277:src/main.cpp  ****             last_rotary_cal_tx = now;
+ 278:src/main.cpp  ****             telemetry.SendRotaryCalibration(state.rotary_raw_u16,
+ 279:src/main.cpp  ****                                             state.rotary_position);
+ 280:src/main.cpp  ****         }
+ 281:src/main.cpp  **** #endif
+ 282:src/main.cpp  **** #endif
+ 283:src/main.cpp  **** 
+ 284:src/main.cpp  **** #if DIAG_ANALYZE_TUNER
+ 285:src/main.cpp  ****         const bool tuner_mode = current_effect == app::config::FX_TUNER;
+ 286:src/main.cpp  ****         if(tuner_mode && !previous_tuner_mode)
+ 324              		.loc 6 286 9 view .LVU94
+ 325 006e 002E     		cmp	r6, #0
+ 326 0070 61D0     		beq	.L21
+ 287:src/main.cpp  ****         {
+ 288:src/main.cpp  ****             tuner_analyzer.Reset(now);
+ 327              		.loc 6 288 13 is_stmt 1 view .LVU95
+ 328              		.loc 6 288 33 is_stmt 0 view .LVU96
+ 329 0072 2146     		mov	r1, r4
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 19
+
+
+ 330 0074 5448     		ldr	r0, .L50+20
+ 331 0076 FFF7FEFF 		bl	_ZN3app13TunerAnalyzer5ResetEm
+ 332              	.LVL25:
+ 289:src/main.cpp  ****             last_tuner_tx = 0;
+ 333              		.loc 6 289 13 is_stmt 1 view .LVU97
+ 290:src/main.cpp  ****         }
+ 291:src/main.cpp  ****         else if(!tuner_mode && previous_tuner_mode)
+ 292:src/main.cpp  ****         {
+ 293:src/main.cpp  ****             tuner_analyzer.Reset(now);
+ 294:src/main.cpp  **** #if DIAG_SEND_TELEMETRY
+ 295:src/main.cpp  ****             telemetry.SendTunerDisabled();
+ 296:src/main.cpp  **** #endif
+ 297:src/main.cpp  ****             last_tuner_disabled_tx = now;
+ 298:src/main.cpp  ****         }
+ 299:src/main.cpp  ****         previous_tuner_mode = tuner_mode;
+ 334              		.loc 6 299 9 view .LVU98
+ 300:src/main.cpp  **** 
+ 301:src/main.cpp  ****         if(tuner_mode
+ 335              		.loc 6 301 9 view .LVU99
+ 289:src/main.cpp  ****         }
+ 336              		.loc 6 289 27 is_stmt 0 view .LVU100
+ 337 007a 4FF0000A 		mov	r10, #0
+ 288:src/main.cpp  ****             last_tuner_tx = 0;
+ 338              		.loc 6 288 33 view .LVU101
+ 339 007e 2346     		mov	r3, r4
+ 340              	.LVL26:
+ 341              	.L22:
+ 342              	.LBB134:
+ 302:src/main.cpp  ****            && (uint32_t)(now - last_tuner_tx)
+ 343              		.loc 6 302 12 view .LVU102
+ 344 0080 4F2B     		cmp	r3, #79
+ 345 0082 1BD9     		bls	.L24
+ 346              	.LBB135:
+ 303:src/main.cpp  ****                   >= app::config::kTunerAnalysisPeriodMs)
+ 304:src/main.cpp  ****         {
+ 305:src/main.cpp  ****             last_tuner_tx = now;
+ 347              		.loc 6 305 13 is_stmt 1 view .LVU103
+ 348              	.LVL27:
+ 306:src/main.cpp  ****             if(tuner_capture.CopyAnalysisWindow(
+ 349              		.loc 6 306 13 view .LVU104
+ 350              	.LBB136:
+ 351              		.loc 6 306 48 is_stmt 0 view .LVU105
+ 352 0084 4FF48052 		mov	r2, #4096
+ 353 0088 5149     		ldr	r1, .L50+28
+ 354 008a 4E48     		ldr	r0, .L50+16
+ 355 008c FFF7FEFF 		bl	_ZNK3app12TunerCapture18CopyAnalysisWindowEPfi
+ 356              	.LVL28:
+ 357              		.loc 6 306 13 view .LVU106
+ 358 0090 0028     		cmp	r0, #0
+ 359 0092 00F08180 		beq	.L27
+ 360              	.LBB137:
+ 307:src/main.cpp  ****                    tuner_source_window, app::config::kTunerSourceWindowSize))
+ 308:src/main.cpp  ****             {
+ 309:src/main.cpp  ****                 const app::TunerResult result = tuner_analyzer.Analyze(
+ 361              		.loc 6 309 17 is_stmt 1 view .LVU107
+ 310:src/main.cpp  ****                     tuner_source_window,
+ 311:src/main.cpp  ****                     app::config::kTunerSourceWindowSize,
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 20
+
+
+ 312:src/main.cpp  ****                     state.pots[0],
+ 313:src/main.cpp  ****                     state.pots[1],
+ 314:src/main.cpp  ****                     state.pots[2],
+ 315:src/main.cpp  ****                     now);
+ 362              		.loc 6 315 24 is_stmt 0 view .LVU108
+ 363 0096 03A8     		add	r0, sp, #12
+ 364 0098 4B49     		ldr	r1, .L50+20
+ 365 009a 9DED0C1A 		vldr.32	s2, [sp, #48]
+ 366 009e 4FF48053 		mov	r3, #4096
+ 367 00a2 DDED0B0A 		vldr.32	s1, [sp, #44]
+ 368              	.LBE137:
+ 369              	.LBE136:
+ 305:src/main.cpp  ****             if(tuner_capture.CopyAnalysisWindow(
+ 370              		.loc 6 305 27 view .LVU109
+ 371 00a6 A246     		mov	r10, r4
+ 372              	.LBB139:
+ 373              	.LBB138:
+ 374              		.loc 6 315 24 view .LVU110
+ 375 00a8 9DED0A0A 		vldr.32	s0, [sp, #40]
+ 376 00ac 484A     		ldr	r2, .L50+28
+ 377 00ae 0094     		str	r4, [sp]
+ 378 00b0 FFF7FEFF 		bl	_ZN3app13TunerAnalyzer7AnalyzeEPKfifffm
+ 379              	.LVL29:
+ 316:src/main.cpp  **** #if DIAG_SEND_TELEMETRY
+ 317:src/main.cpp  ****                 telemetry.SendTuner(result);
+ 380              		.loc 6 317 17 is_stmt 1 view .LVU111
+ 381              		.loc 6 317 36 is_stmt 0 view .LVU112
+ 382 00b4 03A9     		add	r1, sp, #12
+ 383 00b6 4248     		ldr	r0, .L50+12
+ 384 00b8 FFF7FEFF 		bl	_ZN3app9Telemetry9SendTunerERKNS_11TunerResultE
+ 385              	.LVL30:
+ 386              	.L24:
+ 387              		.loc 6 317 36 view .LVU113
+ 388              	.LBE138:
+ 389              	.LBE139:
+ 390              	.LBE135:
+ 391              	.LBE134:
+ 318:src/main.cpp  **** #else
+ 319:src/main.cpp  ****                 (void)result;
+ 320:src/main.cpp  **** #endif
+ 321:src/main.cpp  ****             }
+ 322:src/main.cpp  ****         }
+ 323:src/main.cpp  **** #if DIAG_SEND_TELEMETRY
+ 324:src/main.cpp  ****         else if(!tuner_mode
+ 325:src/main.cpp  ****                 && (uint32_t)(now - last_tuner_disabled_tx)
+ 326:src/main.cpp  ****                        >= app::config::kTunerDisabledHeartbeatMs)
+ 327:src/main.cpp  ****         {
+ 328:src/main.cpp  ****             last_tuner_disabled_tx = now;
+ 329:src/main.cpp  ****             telemetry.SendTunerDisabled();
+ 330:src/main.cpp  ****         }
+ 331:src/main.cpp  **** #endif
+ 332:src/main.cpp  **** #endif
+ 333:src/main.cpp  **** #endif
+ 334:src/main.cpp  **** 
+ 335:src/main.cpp  **** #if AUDIO_CPU_LOAD_DEBUG && DIAG_INIT_TELEMETRY
+ 336:src/main.cpp  ****         if((uint32_t)(now - last_cpu_tx) >= 500u)
+ 337:src/main.cpp  ****         {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 21
+
+
+ 338:src/main.cpp  ****             last_cpu_tx = now;
+ 339:src/main.cpp  ****             const app::AudioEngine::CpuLoadSnapshot load
+ 340:src/main.cpp  ****                 = audio_engine.GetCpuLoadSnapshot();
+ 341:src/main.cpp  ****             const uint8_t effect = (uint8_t)DIAG_FORCE_EFFECT;
+ 342:src/main.cpp  ****             telemetry.SendAudioCpuLoad(load.average,
+ 343:src/main.cpp  ****                                        load.peak,
+ 344:src/main.cpp  ****                                        load.overrun_count,
+ 345:src/main.cpp  ****                                        effect,
+ 346:src/main.cpp  ****                                        load.effect_peak[effect]);
+ 347:src/main.cpp  ****         }
+ 348:src/main.cpp  **** #else
+ 349:src/main.cpp  ****         (void)last_cpu_tx;
+ 392              		.loc 6 349 9 is_stmt 1 discriminator 2 view .LVU114
+ 350:src/main.cpp  **** #endif
+ 351:src/main.cpp  **** 
+ 352:src/main.cpp  ****         (void)last_sent_effect;
+ 393              		.loc 6 352 9 discriminator 2 view .LVU115
+ 353:src/main.cpp  ****         (void)last_pots_tx;
+ 394              		.loc 6 353 9 discriminator 2 view .LVU116
+ 354:src/main.cpp  ****         (void)last_tuner_tx;
+ 395              		.loc 6 354 9 discriminator 2 view .LVU117
+ 355:src/main.cpp  ****         (void)last_tuner_disabled_tx;
+ 396              		.loc 6 355 9 discriminator 2 view .LVU118
+ 356:src/main.cpp  ****         (void)last_rotary_cal_tx;
+ 397              		.loc 6 356 9 discriminator 2 view .LVU119
+ 357:src/main.cpp  ****         (void)previous_tuner_mode;
+ 398              		.loc 6 357 9 discriminator 2 view .LVU120
+ 358:src/main.cpp  ****         (void)current_effect;
+ 399              		.loc 6 358 9 discriminator 2 view .LVU121
+ 359:src/main.cpp  ****         System::Delay(app::config::kMainLoopDelayMs);
+ 400              		.loc 6 359 9 discriminator 2 view .LVU122
+ 401              		.loc 6 359 22 is_stmt 0 discriminator 2 view .LVU123
+ 402 00bc 0120     		movs	r0, #1
+ 285:src/main.cpp  ****         if(tuner_mode && !previous_tuner_mode)
+ 403              		.loc 6 285 20 discriminator 2 view .LVU124
+ 404 00be 3746     		mov	r7, r6
+ 254:src/main.cpp  ****         hw.SetLed(state.rotary_position == 1);
+ 405              		.loc 6 254 48 discriminator 2 view .LVU125
+ 406 00c0 2E46     		mov	r6, r5
+ 407              	.LVL31:
+ 408              		.loc 6 359 22 discriminator 2 view .LVU126
+ 409 00c2 FFF7FEFF 		bl	_ZN5daisy6System5DelayEm
+ 410              	.LVL32:
+ 411              	.LBE133:
+ 188:src/main.cpp  ****     {
+ 412              		.loc 6 188 5 is_stmt 1 discriminator 2 view .LVU127
+ 413              	.L26:
+ 188:src/main.cpp  ****     {
+ 414              		.loc 6 188 5 view .LVU128
+ 415              	.LBB167:
+ 190:src/main.cpp  **** 
+ 416              		.loc 6 190 9 view .LVU129
+ 190:src/main.cpp  **** 
+ 417              		.loc 6 190 56 is_stmt 0 view .LVU130
+ 418 00c6 FFF7FEFF 		bl	_ZN5daisy6System6GetNowEv
+ 419              	.LVL33:
+ 420 00ca 0446     		mov	r4, r0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 22
+
+
+ 193:src/main.cpp  **** #if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+ 421              		.loc 6 193 65 view .LVU131
+ 422 00cc 4148     		ldr	r0, .L50+32
+ 423              	.LVL34:
+ 193:src/main.cpp  **** #if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+ 424              		.loc 6 193 9 is_stmt 1 view .LVU132
+ 193:src/main.cpp  **** #if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+ 425              		.loc 6 193 65 is_stmt 0 view .LVU133
+ 426 00ce 2146     		mov	r1, r4
+ 427 00d0 FFF7FEFF 		bl	_ZN3app14ThermalMonitor7ServiceEm
+ 428              	.LVL35:
+ 214:src/main.cpp  ****         {
+ 429              		.loc 6 214 9 is_stmt 1 view .LVU134
+ 430              	.LBB141:
+ 431              	.LBB142:
+ 432              	.LBI142:
+ 433              		.file 7 "src/thermal_monitor.h"
+   1:src/thermal_monitor.h **** #pragma once
+   2:src/thermal_monitor.h **** 
+   3:src/thermal_monitor.h **** #include "app_config.h"
+   4:src/thermal_monitor.h **** 
+   5:src/thermal_monitor.h **** #include <stdint.h>
+   6:src/thermal_monitor.h **** 
+   7:src/thermal_monitor.h **** namespace app
+   8:src/thermal_monitor.h **** {
+   9:src/thermal_monitor.h **** enum class ThermalState : uint8_t
+  10:src/thermal_monitor.h **** {
+  11:src/thermal_monitor.h ****     Normal,
+  12:src/thermal_monitor.h ****     Warning,
+  13:src/thermal_monitor.h ****     Shutdown,
+  14:src/thermal_monitor.h ****     SensorFault
+  15:src/thermal_monitor.h **** };
+  16:src/thermal_monitor.h **** 
+  17:src/thermal_monitor.h **** enum class ThermalFaultKind : uint8_t
+  18:src/thermal_monitor.h **** {
+  19:src/thermal_monitor.h ****     None,
+  20:src/thermal_monitor.h ****     Thermal,
+  21:src/thermal_monitor.h ****     Sensor
+  22:src/thermal_monitor.h **** };
+  23:src/thermal_monitor.h **** 
+  24:src/thermal_monitor.h **** enum ThermalSensorError : int
+  25:src/thermal_monitor.h **** {
+  26:src/thermal_monitor.h ****     THERMAL_SENSOR_OK          = 0,
+  27:src/thermal_monitor.h ****     THERMAL_SENSOR_DISABLED    = 1,
+  28:src/thermal_monitor.h ****     THERMAL_SENSOR_ADC_INIT    = 2,
+  29:src/thermal_monitor.h ****     THERMAL_SENSOR_CALIBRATION = 3,
+  30:src/thermal_monitor.h ****     THERMAL_SENSOR_CONVERSION  = 4,
+  31:src/thermal_monitor.h ****     THERMAL_SENSOR_IMPLAUSIBLE = 5,
+  32:src/thermal_monitor.h ****     THERMAL_SENSOR_REVISION    = 6
+  33:src/thermal_monitor.h **** };
+  34:src/thermal_monitor.h **** 
+  35:src/thermal_monitor.h **** struct ThermalCalibrationInfo
+  36:src/thermal_monitor.h **** {
+  37:src/thermal_monitor.h ****     uint32_t revision_id;
+  38:src/thermal_monitor.h ****     uint16_t cal1_raw;
+  39:src/thermal_monitor.h ****     uint16_t cal2_raw;
+  40:src/thermal_monitor.h ****     int32_t  cal2_temperature_c;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 23
+
+
+  41:src/thermal_monitor.h **** };
+  42:src/thermal_monitor.h **** 
+  43:src/thermal_monitor.h **** int32_t ResolveTemperatureCal2C(uint32_t revision_id);
+  44:src/thermal_monitor.h **** 
+  45:src/thermal_monitor.h **** struct ThermalSample
+  46:src/thermal_monitor.h **** {
+  47:src/thermal_monitor.h ****     bool     valid;
+  48:src/thermal_monitor.h ****     float    temperature_c;
+  49:src/thermal_monitor.h ****     uint16_t raw_temperature;
+  50:src/thermal_monitor.h ****     uint16_t raw_vref;
+  51:src/thermal_monitor.h ****     int      error_code;
+  52:src/thermal_monitor.h **** };
+  53:src/thermal_monitor.h **** 
+  54:src/thermal_monitor.h **** // Concrete backend kept separate from policy so a future external thermistor can
+  55:src/thermal_monitor.h **** // replace ADC3 acquisition without changing the safety state machine.
+  56:src/thermal_monitor.h **** class InternalTemperatureSensor
+  57:src/thermal_monitor.h **** {
+  58:src/thermal_monitor.h ****   public:
+  59:src/thermal_monitor.h ****     InternalTemperatureSensor();
+  60:src/thermal_monitor.h ****     bool          Init();
+  61:src/thermal_monitor.h ****     ThermalSample Read();
+  62:src/thermal_monitor.h **** 
+  63:src/thermal_monitor.h ****     static bool            ConvertTemperatureC(uint32_t raw_temperature,
+  64:src/thermal_monitor.h ****                                                uint32_t raw_vref,
+  65:src/thermal_monitor.h ****                                                uint32_t vref_cal,
+  66:src/thermal_monitor.h ****                                                uint32_t cal1_raw,
+  67:src/thermal_monitor.h ****                                                uint32_t cal2_raw,
+  68:src/thermal_monitor.h ****                                                int32_t  cal1_temperature_c,
+  69:src/thermal_monitor.h ****                                                int32_t  cal2_temperature_c,
+  70:src/thermal_monitor.h ****                                                float&   out_temperature_c);
+  71:src/thermal_monitor.h ****     ThermalCalibrationInfo calibration_info() const;
+  72:src/thermal_monitor.h **** 
+  73:src/thermal_monitor.h ****   private:
+  74:src/thermal_monitor.h ****     bool ReadChannelAveraged(uint32_t channel, uint16_t& out_raw);
+  75:src/thermal_monitor.h **** 
+  76:src/thermal_monitor.h **** #if THERMAL_MONITOR_ENABLED
+  77:src/thermal_monitor.h ****     ADC_HandleTypeDef adc_;
+  78:src/thermal_monitor.h **** #endif
+  79:src/thermal_monitor.h ****     bool     ready_;
+  80:src/thermal_monitor.h ****     int      init_error_;
+  81:src/thermal_monitor.h ****     uint32_t revision_id_;
+  82:src/thermal_monitor.h ****     uint16_t cal1_raw_;
+  83:src/thermal_monitor.h ****     uint16_t cal2_raw_;
+  84:src/thermal_monitor.h ****     uint16_t vref_cal_raw_;
+  85:src/thermal_monitor.h ****     int32_t  cal2_temperature_c_;
+  86:src/thermal_monitor.h **** };
+  87:src/thermal_monitor.h **** 
+  88:src/thermal_monitor.h **** class ThermalPolicy
+  89:src/thermal_monitor.h **** {
+  90:src/thermal_monitor.h ****   public:
+  91:src/thermal_monitor.h ****     ThermalPolicy();
+  92:src/thermal_monitor.h ****     void Reset();
+  93:src/thermal_monitor.h ****     void Process(const ThermalSample& sample);
+  94:src/thermal_monitor.h **** 
+  95:src/thermal_monitor.h ****     ThermalState state() const { return state_; }
+  96:src/thermal_monitor.h ****     bool         IsSafetyLatched() const
+  97:src/thermal_monitor.h ****     {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 24
+
+
+  98:src/thermal_monitor.h ****         return state_ == ThermalState::Shutdown
+  99:src/thermal_monitor.h ****                || state_ == ThermalState::SensorFault;
+ 100:src/thermal_monitor.h ****     }
+ 101:src/thermal_monitor.h ****     float    filtered_temperature_c() const { return filtered_temperature_c_; }
+ 102:src/thermal_monitor.h ****     uint16_t last_raw_temperature() const { return last_raw_temperature_; }
+ 103:src/thermal_monitor.h ****     int      last_error_code() const { return last_error_code_; }
+ 104:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification();
+ 105:src/thermal_monitor.h **** 
+ 106:src/thermal_monitor.h ****   private:
+ 107:src/thermal_monitor.h ****     void Latch(ThermalState state, int error_code);
+ 108:src/thermal_monitor.h **** 
+ 109:src/thermal_monitor.h ****     ThermalState     state_;
+ 110:src/thermal_monitor.h ****     float            filter_[config::kThermalFilterLength];
+ 111:src/thermal_monitor.h ****     int              filter_count_;
+ 112:src/thermal_monitor.h ****     int              filter_index_;
+ 113:src/thermal_monitor.h ****     int              warning_count_;
+ 114:src/thermal_monitor.h ****     int              trip_count_;
+ 115:src/thermal_monitor.h ****     int              invalid_count_;
+ 116:src/thermal_monitor.h ****     float            filtered_temperature_c_;
+ 117:src/thermal_monitor.h ****     uint16_t         last_raw_temperature_;
+ 118:src/thermal_monitor.h ****     int              last_error_code_;
+ 119:src/thermal_monitor.h ****     ThermalFaultKind pending_fault_;
+ 120:src/thermal_monitor.h **** };
+ 121:src/thermal_monitor.h **** 
+ 122:src/thermal_monitor.h **** class ThermalMonitor
+ 123:src/thermal_monitor.h **** {
+ 124:src/thermal_monitor.h ****   public:
+ 125:src/thermal_monitor.h ****     ThermalMonitor();
+ 126:src/thermal_monitor.h ****     void Init(uint32_t now_ms, bool perform_initial_sample = true);
+ 127:src/thermal_monitor.h ****     bool Service(uint32_t now_ms);
+ 128:src/thermal_monitor.h **** 
+ 129:src/thermal_monitor.h ****     ThermalState state() const { return policy_.state(); }
+ 130:src/thermal_monitor.h ****     bool         IsSafetyLatched() const { return policy_.IsSafetyLatched(); }
+ 434              		.loc 7 130 18 view .LVU135
+ 435              	.LBE142:
+ 436              	.LBE141:
+ 437              	.LBE167:
+ 438              		.loc 7 130 44 view .LVU136
+ 439              	.LBB168:
+ 440              	.LBB160:
+ 441              	.LBB145:
+ 442              	.LBB143:
+ 443              	.LBI143:
+  96:src/thermal_monitor.h ****     {
+ 444              		.loc 7 96 18 view .LVU137
+ 445              	.LBB144:
+  98:src/thermal_monitor.h ****                || state_ == ThermalState::SensorFault;
+ 446              		.loc 7 98 9 view .LVU138
+  99:src/thermal_monitor.h ****     }
+ 447              		.loc 7 99 16 is_stmt 0 view .LVU139
+ 448 00d4 99F87C30 		ldrb	r3, [r9, #124]	@ zero_extendqisi2
+ 449              	.LBE144:
+ 450              	.LBE143:
+ 451              	.LBE145:
+ 214:src/main.cpp  ****         {
+ 452              		.loc 6 214 9 view .LVU140
+ 453 00d8 023B     		subs	r3, r3, #2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 25
+
+
+ 454 00da 012B     		cmp	r3, #1
+ 455 00dc 3ED9     		bls	.L45
+ 456              	.L14:
+ 457              	.LBE160:
+ 245:src/main.cpp  ****         (void)last_thermal_debug_tx;
+ 458              		.loc 6 245 9 is_stmt 1 view .LVU141
+ 246:src/main.cpp  **** #endif
+ 459              		.loc 6 246 9 view .LVU142
+ 253:src/main.cpp  ****         current_effect                         = state.effect;
+ 460              		.loc 6 253 9 view .LVU143
+ 253:src/main.cpp  ****         current_effect                         = state.effect;
+ 461              		.loc 6 253 74 is_stmt 0 view .LVU144
+ 462 00de 3749     		ldr	r1, .L50+8
+ 463 00e0 0AA8     		add	r0, sp, #40
+ 464 00e2 2346     		mov	r3, r4
+ 465 00e4 334A     		ldr	r2, .L50
+ 466 00e6 FFF7FEFF 		bl	_ZN3app8Controls7ProcessERN5daisy9DaisySeedEm
+ 467              	.LVL36:
+ 254:src/main.cpp  ****         hw.SetLed(state.rotary_position == 1);
+ 468              		.loc 6 254 9 is_stmt 1 view .LVU145
+ 255:src/main.cpp  **** 
+ 469              		.loc 6 255 18 is_stmt 0 view .LVU146
+ 470 00ea 1099     		ldr	r1, [sp, #64]
+ 254:src/main.cpp  ****         hw.SetLed(state.rotary_position == 1);
+ 471              		.loc 6 254 48 view .LVU147
+ 472 00ec 9DF83A50 		ldrb	r5, [sp, #58]	@ zero_extendqisi2
+ 473              	.LVL37:
+ 255:src/main.cpp  **** 
+ 474              		.loc 6 255 9 is_stmt 1 view .LVU148
+ 255:src/main.cpp  **** 
+ 475              		.loc 6 255 18 is_stmt 0 view .LVU149
+ 476 00f0 A1F10101 		sub	r1, #1
+ 477 00f4 2F48     		ldr	r0, .L50
+ 478 00f6 B1FA81F1 		clz	r1, r1
+ 479 00fa 4909     		lsrs	r1, r1, #5
+ 480 00fc FFF7FEFF 		bl	_ZN5daisy9DaisySeed6SetLedEb
+ 481              	.LVL38:
+ 258:src/main.cpp  ****         {
+ 482              		.loc 6 258 9 is_stmt 1 view .LVU150
+ 483 0100 AE42     		cmp	r6, r5
+ 484 0102 03D0     		beq	.L17
+ 260:src/main.cpp  ****             telemetry.SendEffect(last_sent_effect);
+ 485              		.loc 6 260 13 view .LVU151
+ 486              	.LVL39:
+ 261:src/main.cpp  ****         }
+ 487              		.loc 6 261 13 view .LVU152
+ 261:src/main.cpp  ****         }
+ 488              		.loc 6 261 33 is_stmt 0 view .LVU153
+ 489 0104 2946     		mov	r1, r5
+ 490 0106 2E48     		ldr	r0, .L50+12
+ 491 0108 FFF7FEFF 		bl	_ZN3app9Telemetry10SendEffectEi
+ 492              	.LVL40:
+ 493              	.L17:
+ 263:src/main.cpp  ****             telemetry.SendFootswitch(state.footswitch.down,
+ 494              		.loc 6 263 9 is_stmt 1 view .LVU154
+ 495 010c 9DF84430 		ldrb	r3, [sp, #68]	@ zero_extendqisi2
+ 496 0110 E3B9     		cbnz	r3, .L46
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 26
+
+
+ 497              	.L18:
+ 267:src/main.cpp  ****            || (uint32_t)(now - last_pots_tx)
+ 498              		.loc 6 267 9 view .LVU155
+ 499 0112 9DF83830 		ldrb	r3, [sp, #56]	@ zero_extendqisi2
+ 500 0116 23B9     		cbnz	r3, .L19
+ 268:src/main.cpp  ****                   >= app::config::kPotTelemetryHeartbeatMs)
+ 501              		.loc 6 268 30 is_stmt 0 view .LVU156
+ 502 0118 A4EB0803 		sub	r3, r4, r8
+ 268:src/main.cpp  ****                   >= app::config::kPotTelemetryHeartbeatMs)
+ 503              		.loc 6 268 12 view .LVU157
+ 504 011c B3F5FA7F 		cmp	r3, #500
+ 505 0120 04D3     		bcc	.L20
+ 506              	.L19:
+ 271:src/main.cpp  ****             telemetry.SendPots(state.pots);
+ 507              		.loc 6 271 13 is_stmt 1 view .LVU158
+ 508              	.LVL41:
+ 272:src/main.cpp  ****         }
+ 509              		.loc 6 272 13 view .LVU159
+ 272:src/main.cpp  ****         }
+ 510              		.loc 6 272 31 is_stmt 0 view .LVU160
+ 511 0122 0AA9     		add	r1, sp, #40
+ 512 0124 2648     		ldr	r0, .L50+12
+ 271:src/main.cpp  ****             telemetry.SendPots(state.pots);
+ 513              		.loc 6 271 26 view .LVU161
+ 514 0126 A046     		mov	r8, r4
+ 272:src/main.cpp  ****         }
+ 515              		.loc 6 272 31 view .LVU162
+ 516 0128 FFF7FEFF 		bl	_ZN3app9Telemetry8SendPotsEPKf
+ 517              	.LVL42:
+ 518              	.L20:
+ 285:src/main.cpp  ****         if(tuner_mode && !previous_tuner_mode)
+ 519              		.loc 6 285 9 is_stmt 1 view .LVU163
+ 285:src/main.cpp  ****         if(tuner_mode && !previous_tuner_mode)
+ 520              		.loc 6 285 20 is_stmt 0 view .LVU164
+ 521 012c B5FA85F6 		clz	r6, r5
+ 522 0130 7609     		lsrs	r6, r6, #5
+ 523              	.LVL43:
+ 286:src/main.cpp  ****         {
+ 524              		.loc 6 286 9 is_stmt 1 view .LVU165
+ 525 0132 002F     		cmp	r7, #0
+ 526 0134 9BD0     		beq	.L47
+ 527              	.L21:
+ 291:src/main.cpp  ****         {
+ 528              		.loc 6 291 14 view .LVU166
+ 529 0136 65B3     		cbz	r5, .L43
+ 530 0138 07B3     		cbz	r7, .L23
+ 293:src/main.cpp  **** #if DIAG_SEND_TELEMETRY
+ 531              		.loc 6 293 13 view .LVU167
+ 293:src/main.cpp  **** #if DIAG_SEND_TELEMETRY
+ 532              		.loc 6 293 33 is_stmt 0 view .LVU168
+ 533 013a 2146     		mov	r1, r4
+ 534 013c 2248     		ldr	r0, .L50+20
+ 535 013e FFF7FEFF 		bl	_ZN3app13TunerAnalyzer5ResetEm
+ 536              	.LVL44:
+ 295:src/main.cpp  **** #endif
+ 537              		.loc 6 295 13 is_stmt 1 view .LVU169
+ 295:src/main.cpp  **** #endif
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 27
+
+
+ 538              		.loc 6 295 40 is_stmt 0 view .LVU170
+ 539 0142 1F48     		ldr	r0, .L50+12
+ 297:src/main.cpp  ****         }
+ 540              		.loc 6 297 36 view .LVU171
+ 541 0144 A346     		mov	fp, r4
+ 542              	.LVL45:
+ 295:src/main.cpp  **** #endif
+ 543              		.loc 6 295 40 view .LVU172
+ 544 0146 FFF7FEFF 		bl	_ZN3app9Telemetry17SendTunerDisabledEv
+ 545              	.LVL46:
+ 297:src/main.cpp  ****         }
+ 546              		.loc 6 297 13 is_stmt 1 view .LVU173
+ 299:src/main.cpp  **** 
+ 547              		.loc 6 299 9 view .LVU174
+ 301:src/main.cpp  ****            && (uint32_t)(now - last_tuner_tx)
+ 548              		.loc 6 301 9 view .LVU175
+ 549              	.LBB161:
+ 324:src/main.cpp  ****                 && (uint32_t)(now - last_tuner_disabled_tx)
+ 550              		.loc 6 324 14 view .LVU176
+ 551 014a B7E7     		b	.L24
+ 552              	.LVL47:
+ 553              	.L46:
+ 324:src/main.cpp  ****                 && (uint32_t)(now - last_tuner_disabled_tx)
+ 554              		.loc 6 324 14 is_stmt 0 view .LVU177
+ 555              	.LBE161:
+ 264:src/main.cpp  ****                                      state.footswitch.edge,
+ 556              		.loc 6 264 13 is_stmt 1 view .LVU178
+ 264:src/main.cpp  ****                                      state.footswitch.edge,
+ 557              		.loc 6 264 37 is_stmt 0 view .LVU179
+ 558 014c DDE91223 		ldrd	r2, r3, [sp, #72]
+ 559 0150 9DF84510 		ldrb	r1, [sp, #69]	@ zero_extendqisi2
+ 560 0154 1A48     		ldr	r0, .L50+12
+ 561 0156 FFF7FEFF 		bl	_ZN3app9Telemetry14SendFootswitchEbPKci
+ 562              	.LVL48:
+ 563 015a DAE7     		b	.L18
+ 564              	.LVL49:
+ 565              	.L45:
+ 566              	.LBB162:
+ 567              	.LBB146:
+ 219:src/main.cpp  ****                 = thermal_monitor.TakeFaultNotification();
+ 568              		.loc 6 219 13 is_stmt 1 view .LVU180
+ 569              	.LBB147:
+ 570              	.LBI147:
+ 131:src/thermal_monitor.h ****     float        filtered_temperature_c() const
+ 132:src/thermal_monitor.h ****     {
+ 133:src/thermal_monitor.h ****         return policy_.filtered_temperature_c();
+ 134:src/thermal_monitor.h ****     }
+ 135:src/thermal_monitor.h ****     uint16_t last_raw_temperature() const
+ 136:src/thermal_monitor.h ****     {
+ 137:src/thermal_monitor.h ****         return policy_.last_raw_temperature();
+ 138:src/thermal_monitor.h ****     }
+ 139:src/thermal_monitor.h ****     int last_error_code() const { return policy_.last_error_code(); }
+ 140:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification()
+ 571              		.loc 7 140 22 view .LVU181
+ 572              	.LBB148:
+ 141:src/thermal_monitor.h ****     {
+ 142:src/thermal_monitor.h ****         return policy_.TakeFaultNotification();
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 28
+
+
+ 573              		.loc 7 142 9 view .LVU182
+ 574              		.loc 7 142 45 is_stmt 0 view .LVU183
+ 575 015c 1E48     		ldr	r0, .L50+36
+ 576 015e FFF7FEFF 		bl	_ZN3app13ThermalPolicy21TakeFaultNotificationEv
+ 577              	.LVL50:
+ 578              		.loc 7 142 45 view .LVU184
+ 579              	.LBE148:
+ 580              	.LBE147:
+ 222:src/main.cpp  ****                 telemetry.SendThermalFault(
+ 581              		.loc 6 222 13 is_stmt 1 view .LVU185
+ 582 0162 0128     		cmp	r0, #1
+ 583 0164 1AD0     		beq	.L48
+ 225:src/main.cpp  ****                 telemetry.SendTemperatureSensorFault(
+ 584              		.loc 6 225 18 view .LVU186
+ 585 0166 0228     		cmp	r0, #2
+ 586 0168 1ED0     		beq	.L49
+ 587              	.LVL51:
+ 588              	.L16:
+ 231:src/main.cpp  ****         }
+ 589              		.loc 6 231 13 view .LVU187
+ 231:src/main.cpp  ****         }
+ 590              		.loc 6 231 22 is_stmt 0 view .LVU188
+ 591 016a 2146     		mov	r1, r4
+ 592 016c 1948     		ldr	r0, .L50+32
+ 593 016e FFF7FEFF 		bl	_ZNK3app14ThermalMonitor10FaultLedOnEm
+ 594              	.LVL52:
+ 595 0172 0146     		mov	r1, r0
+ 596 0174 0F48     		ldr	r0, .L50
+ 597 0176 FFF7FEFF 		bl	_ZN5daisy9DaisySeed6SetLedEb
+ 598              	.LVL53:
+ 599              	.LBE146:
+ 600 017a B0E7     		b	.L14
+ 601              	.LVL54:
+ 602              	.L23:
+ 231:src/main.cpp  ****         }
+ 603              		.loc 6 231 22 view .LVU189
+ 604              	.LBE162:
+ 299:src/main.cpp  **** 
+ 605              		.loc 6 299 9 is_stmt 1 view .LVU190
+ 301:src/main.cpp  ****            && (uint32_t)(now - last_tuner_tx)
+ 606              		.loc 6 301 9 view .LVU191
+ 607              	.LBB163:
+ 608 017c 4DB1     		cbz	r5, .L43
+ 609              	.LVL55:
+ 324:src/main.cpp  ****                 && (uint32_t)(now - last_tuner_disabled_tx)
+ 610              		.loc 6 324 14 view .LVU192
+ 325:src/main.cpp  ****                        >= app::config::kTunerDisabledHeartbeatMs)
+ 611              		.loc 6 325 35 is_stmt 0 view .LVU193
+ 612 017e A4EB0B03 		sub	r3, r4, fp
+ 325:src/main.cpp  ****                        >= app::config::kTunerDisabledHeartbeatMs)
+ 613              		.loc 6 325 17 view .LVU194
+ 614 0182 B3F57A7F 		cmp	r3, #1000
+ 615 0186 99D3     		bcc	.L24
+ 328:src/main.cpp  ****             telemetry.SendTunerDisabled();
+ 616              		.loc 6 328 13 is_stmt 1 view .LVU195
+ 617              	.LVL56:
+ 329:src/main.cpp  ****         }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 29
+
+
+ 618              		.loc 6 329 13 view .LVU196
+ 329:src/main.cpp  ****         }
+ 619              		.loc 6 329 40 is_stmt 0 view .LVU197
+ 620 0188 0D48     		ldr	r0, .L50+12
+ 328:src/main.cpp  ****             telemetry.SendTunerDisabled();
+ 621              		.loc 6 328 36 view .LVU198
+ 622 018a A346     		mov	fp, r4
+ 329:src/main.cpp  ****         }
+ 623              		.loc 6 329 40 view .LVU199
+ 624 018c FFF7FEFF 		bl	_ZN3app9Telemetry17SendTunerDisabledEv
+ 625              	.LVL57:
+ 626 0190 94E7     		b	.L24
+ 627              	.LVL58:
+ 628              	.L43:
+ 302:src/main.cpp  ****                   >= app::config::kTunerAnalysisPeriodMs)
+ 629              		.loc 6 302 30 view .LVU200
+ 630 0192 A4EB0A03 		sub	r3, r4, r10
+ 631 0196 73E7     		b	.L22
+ 632              	.LVL59:
+ 633              	.L27:
+ 634              	.LBB140:
+ 305:src/main.cpp  ****             if(tuner_capture.CopyAnalysisWindow(
+ 635              		.loc 6 305 27 view .LVU201
+ 636 0198 A246     		mov	r10, r4
+ 637 019a 8FE7     		b	.L24
+ 638              	.LVL60:
+ 639              	.L48:
+ 305:src/main.cpp  ****             if(tuner_capture.CopyAnalysisWindow(
+ 640              		.loc 6 305 27 view .LVU202
+ 641              	.LBE140:
+ 642              	.LBE163:
+ 643              	.LBB164:
+ 644              	.LBB157:
+ 223:src/main.cpp  ****                     thermal_monitor.filtered_temperature_c());
+ 645              		.loc 6 223 17 is_stmt 1 view .LVU203
+ 646              	.LBB149:
+ 647              	.LBI149:
+ 131:src/thermal_monitor.h ****     {
+ 648              		.loc 7 131 18 view .LVU204
+ 649              	.LBE149:
+ 650              	.LBE157:
+ 651              	.LBE164:
+ 652              	.LBE168:
+ 133:src/thermal_monitor.h ****     }
+ 653              		.loc 7 133 9 view .LVU205
+ 654              	.LBB169:
+ 655              	.LBB165:
+ 656              	.LBB158:
+ 657              	.LBB152:
+ 658              	.LBB150:
+ 659              	.LBI150:
+ 101:src/thermal_monitor.h ****     uint16_t last_raw_temperature() const { return last_raw_temperature_; }
+ 660              		.loc 7 101 14 view .LVU206
+ 661              	.LBB151:
+ 101:src/thermal_monitor.h ****     uint16_t last_raw_temperature() const { return last_raw_temperature_; }
+ 662              		.loc 7 101 47 view .LVU207
+ 101:src/thermal_monitor.h ****     uint16_t last_raw_temperature() const { return last_raw_temperature_; }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 30
+
+
+ 663              		.loc 7 101 47 is_stmt 0 view .LVU208
+ 664              	.LBE151:
+ 665              	.LBE150:
+ 666              	.LBE152:
+ 223:src/main.cpp  ****                     thermal_monitor.filtered_temperature_c());
+ 667              		.loc 6 223 43 view .LVU209
+ 668 019c 99ED290A 		vldr.32	s0, [r9, #164]
+ 669 01a0 0748     		ldr	r0, .L50+12
+ 670              	.LVL61:
+ 223:src/main.cpp  ****                     thermal_monitor.filtered_temperature_c());
+ 671              		.loc 6 223 43 view .LVU210
+ 672 01a2 FFF7FEFF 		bl	_ZN3app9Telemetry16SendThermalFaultEf
+ 673              	.LVL62:
+ 674 01a6 E0E7     		b	.L16
+ 675              	.LVL63:
+ 676              	.L49:
+ 226:src/main.cpp  ****                     thermal_monitor.last_error_code());
+ 677              		.loc 6 226 17 is_stmt 1 view .LVU211
+ 678              	.LBB153:
+ 679              	.LBI153:
+ 139:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification()
+ 680              		.loc 7 139 9 view .LVU212
+ 681              	.LBE153:
+ 682              	.LBE158:
+ 683              	.LBE165:
+ 684              	.LBE169:
+ 139:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification()
+ 685              		.loc 7 139 35 view .LVU213
+ 686              	.LBB170:
+ 687              	.LBB166:
+ 688              	.LBB159:
+ 689              	.LBB156:
+ 690              	.LBB154:
+ 691              	.LBI154:
+ 103:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification();
+ 692              		.loc 7 103 14 view .LVU214
+ 693              	.LBB155:
+ 103:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification();
+ 694              		.loc 7 103 40 view .LVU215
+ 103:src/thermal_monitor.h ****     ThermalFaultKind TakeFaultNotification();
+ 695              		.loc 7 103 40 is_stmt 0 view .LVU216
+ 696              	.LBE155:
+ 697              	.LBE154:
+ 698              	.LBE156:
+ 226:src/main.cpp  ****                     thermal_monitor.last_error_code());
+ 699              		.loc 6 226 53 view .LVU217
+ 700 01a8 D9F8AC10 		ldr	r1, [r9, #172]
+ 701 01ac 0448     		ldr	r0, .L50+12
+ 702              	.LVL64:
+ 226:src/main.cpp  ****                     thermal_monitor.last_error_code());
+ 703              		.loc 6 226 53 view .LVU218
+ 704 01ae FFF7FEFF 		bl	_ZN3app9Telemetry26SendTemperatureSensorFaultEi
+ 705              	.LVL65:
+ 706 01b2 DAE7     		b	.L16
+ 707              	.L51:
+ 708              		.align	2
+ 709              	.L50:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 31
+
+
+ 710 01b4 00000000 		.word	.LANCHOR1
+ 711 01b8 00000000 		.word	.LANCHOR2
+ 712 01bc 00000000 		.word	.LANCHOR3
+ 713 01c0 00000000 		.word	.LANCHOR4
+ 714 01c4 00000000 		.word	.LANCHOR0
+ 715 01c8 00000000 		.word	.LANCHOR5
+ 716 01cc 00000000 		.word	_ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj
+ 717 01d0 00000000 		.word	_ZN12_GLOBAL__N_119tuner_source_windowE
+ 718 01d4 00000000 		.word	.LANCHOR6
+ 719 01d8 7C000000 		.word	.LANCHOR6+124
+ 720              	.LBE159:
+ 721              	.LBE166:
+ 722              	.LBE170:
+ 723              		.cfi_endproc
+ 724              	.LFE2583:
+ 726              		.section	.text.startup._GLOBAL__sub_I_main,"ax",%progbits
+ 727              		.align	1
+ 728              		.p2align 2,,3
+ 729              		.syntax unified
+ 730              		.thumb
+ 731              		.thumb_func
+ 732              		.fpu fpv5-d16
+ 734              	_GLOBAL__sub_I_main:
+ 735              	.LFB2608:
+ 360:src/main.cpp  ****     }
+ 361:src/main.cpp  **** #endif
+ 362:src/main.cpp  **** }
+ 736              		.loc 6 362 1 is_stmt 1 view -0
+ 737              		.cfi_startproc
+ 738              		@ args = 0, pretend = 0, frame = 0
+ 739              		@ frame_needed = 0, uses_anonymous_args = 0
+ 740              	.LBB195:
+ 741              	.LBI195:
+ 742              		.loc 6 362 1 view .LVU220
+ 743              	.LVL66:
+ 744              	.LBB196:
+ 745              	.LBB197:
+ 746              	.LBI197:
+  21:../../libDaisy/src/daisy_seed.h ****     ~DaisySeed() {}
+ 747              		.loc 1 21 5 view .LVU221
+ 748              	.LBB198:
+ 749              	.LBB199:
+ 750              	.LBI199:
+ 751              		.file 8 "../../libDaisy/src/per/qspi.h"
+   1:../../libDaisy/src/per/qspi.h **** #ifndef DSY_QSPI
+   2:../../libDaisy/src/per/qspi.h **** #define DSY_QSPI /**< Macro */
+   3:../../libDaisy/src/per/qspi.h **** 
+   4:../../libDaisy/src/per/qspi.h **** #ifndef UNIT_TEST // for unit tests, a dummy implementation
+   5:../../libDaisy/src/per/qspi.h **** 
+   6:../../libDaisy/src/per/qspi.h **** #include <cstdint>
+   7:../../libDaisy/src/per/qspi.h **** #include "daisy_core.h" // Added for dsy_gpio_pin typedef
+   8:../../libDaisy/src/per/qspi.h **** 
+   9:../../libDaisy/src/per/qspi.h **** #define DSY_QSPI_TEXT       \
+  10:../../libDaisy/src/per/qspi.h ****     __attribute__((section( \
+  11:../../libDaisy/src/per/qspi.h ****         ".qspiflash_text"))) /**< used for reading memory in memory_mapped mode. */
+  12:../../libDaisy/src/per/qspi.h **** #define DSY_QSPI_DATA       \
+  13:../../libDaisy/src/per/qspi.h ****     __attribute__((section( \
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 32
+
+
+  14:../../libDaisy/src/per/qspi.h ****         ".qspiflash_data"))) /**< used for reading memory in memory_mapped mode. */
+  15:../../libDaisy/src/per/qspi.h **** #define DSY_QSPI_BSS        \
+  16:../../libDaisy/src/per/qspi.h ****     __attribute__((section( \
+  17:../../libDaisy/src/per/qspi.h ****         ".qspiflash_bss"))) /**< used for reading memory in memory_mapped mode. */
+  18:../../libDaisy/src/per/qspi.h **** 
+  19:../../libDaisy/src/per/qspi.h **** namespace daisy
+  20:../../libDaisy/src/per/qspi.h **** {
+  21:../../libDaisy/src/per/qspi.h **** /** @addtogroup serial
+  22:../../libDaisy/src/per/qspi.h **** @{
+  23:../../libDaisy/src/per/qspi.h **** */
+  24:../../libDaisy/src/per/qspi.h **** 
+  25:../../libDaisy/src/per/qspi.h **** /** 
+  26:../../libDaisy/src/per/qspi.h ****  Driver for QSPI peripheral to interface with external flash memory. \n 
+  27:../../libDaisy/src/per/qspi.h ****     Currently supported QSPI Devices: \n 
+  28:../../libDaisy/src/per/qspi.h ****     * IS25LP080D
+  29:../../libDaisy/src/per/qspi.h **** */
+  30:../../libDaisy/src/per/qspi.h **** class QSPIHandle
+  31:../../libDaisy/src/per/qspi.h **** {
+  32:../../libDaisy/src/per/qspi.h ****   public:
+  33:../../libDaisy/src/per/qspi.h ****     enum Result
+  34:../../libDaisy/src/per/qspi.h ****     {
+  35:../../libDaisy/src/per/qspi.h ****         OK = 0,
+  36:../../libDaisy/src/per/qspi.h ****         ERR
+  37:../../libDaisy/src/per/qspi.h ****     };
+  38:../../libDaisy/src/per/qspi.h **** 
+  39:../../libDaisy/src/per/qspi.h ****     /** Indicates the current status of the module. 
+  40:../../libDaisy/src/per/qspi.h ****          *  Warnings are indicated by a leading W.
+  41:../../libDaisy/src/per/qspi.h ****          *  Errors are indicated by a leading E and cause an immediate exit.
+  42:../../libDaisy/src/per/qspi.h ****          * 
+  43:../../libDaisy/src/per/qspi.h ****          *  \param GOOD - No errors have been reported.
+  44:../../libDaisy/src/per/qspi.h ****          *  \param E_HAL_ERROR - HAL code did not return HAL_OK.
+  45:../../libDaisy/src/per/qspi.h ****          *  \param E_SWITCHING_MODES - An error was encountered while switching QSPI peripheral mod
+  46:../../libDaisy/src/per/qspi.h ****          *  \param E_INVALID_MODE - QSPI should not be written to while the program is executing fr
+  47:../../libDaisy/src/per/qspi.h ****          */
+  48:../../libDaisy/src/per/qspi.h ****     enum Status
+  49:../../libDaisy/src/per/qspi.h ****     {
+  50:../../libDaisy/src/per/qspi.h ****         GOOD = 0,
+  51:../../libDaisy/src/per/qspi.h ****         E_HAL_ERROR,
+  52:../../libDaisy/src/per/qspi.h ****         E_SWITCHING_MODES,
+  53:../../libDaisy/src/per/qspi.h ****         E_INVALID_MODE,
+  54:../../libDaisy/src/per/qspi.h ****     };
+  55:../../libDaisy/src/per/qspi.h **** 
+  56:../../libDaisy/src/per/qspi.h ****     /** Configuration structure for interfacing with QSPI Driver */
+  57:../../libDaisy/src/per/qspi.h ****     struct Config
+  58:../../libDaisy/src/per/qspi.h ****     {
+  59:../../libDaisy/src/per/qspi.h ****         /** Flash Devices supported. (Both of these are more-or-less the same, just different sizes
+  60:../../libDaisy/src/per/qspi.h ****         enum Device
+  61:../../libDaisy/src/per/qspi.h ****         {
+  62:../../libDaisy/src/per/qspi.h ****             IS25LP080D,  /**< & */
+  63:../../libDaisy/src/per/qspi.h ****             IS25LP064A,  /**< & */
+  64:../../libDaisy/src/per/qspi.h ****             DEVICE_LAST, /**< & */
+  65:../../libDaisy/src/per/qspi.h ****         };
+  66:../../libDaisy/src/per/qspi.h **** 
+  67:../../libDaisy/src/per/qspi.h ****         /** 
+  68:../../libDaisy/src/per/qspi.h ****         Modes of operation.
+  69:../../libDaisy/src/per/qspi.h ****         Memory Mapped mode: QSPI configured so that the QSPI can be
+  70:../../libDaisy/src/per/qspi.h ****         read from starting address 0x90000000. Writing is not
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 33
+
+
+  71:../../libDaisy/src/per/qspi.h ****         possible in this mode. \n 
+  72:../../libDaisy/src/per/qspi.h ****         Indirect Polling mode: Device driver enabled. 
+  73:../../libDaisy/src/per/qspi.h ****         */
+  74:../../libDaisy/src/per/qspi.h ****         enum Mode
+  75:../../libDaisy/src/per/qspi.h ****         {
+  76:../../libDaisy/src/per/qspi.h ****             MEMORY_MAPPED,    /**< & */
+  77:../../libDaisy/src/per/qspi.h ****             INDIRECT_POLLING, /**< & */
+  78:../../libDaisy/src/per/qspi.h ****             MODE_LAST,
+  79:../../libDaisy/src/per/qspi.h ****         };
+  80:../../libDaisy/src/per/qspi.h **** 
+  81:../../libDaisy/src/per/qspi.h ****         //SCK,  CE# (active low)
+  82:../../libDaisy/src/per/qspi.h ****         struct
+  83:../../libDaisy/src/per/qspi.h ****         {
+  84:../../libDaisy/src/per/qspi.h ****             dsy_gpio_pin io0; /**< & */
+  85:../../libDaisy/src/per/qspi.h ****             dsy_gpio_pin io1; /**< & */
+  86:../../libDaisy/src/per/qspi.h ****             dsy_gpio_pin io2; /**< & */
+  87:../../libDaisy/src/per/qspi.h ****             dsy_gpio_pin io3; /**< & */
+  88:../../libDaisy/src/per/qspi.h ****             dsy_gpio_pin clk; /**< & */
+  89:../../libDaisy/src/per/qspi.h ****             dsy_gpio_pin ncs; /**< & */
+  90:../../libDaisy/src/per/qspi.h ****         } pin_config;
+  91:../../libDaisy/src/per/qspi.h **** 
+  92:../../libDaisy/src/per/qspi.h ****         Device device;
+  93:../../libDaisy/src/per/qspi.h ****         Mode   mode;
+  94:../../libDaisy/src/per/qspi.h ****     };
+  95:../../libDaisy/src/per/qspi.h **** 
+  96:../../libDaisy/src/per/qspi.h ****     /** 
+  97:../../libDaisy/src/per/qspi.h ****         Initializes QSPI peripheral, and Resets, and prepares memory for access.
+  98:../../libDaisy/src/per/qspi.h ****         \param config should be populated with the mode, device and pin_config before calling this 
+  99:../../libDaisy/src/per/qspi.h ****         \return Result::OK or Result::ERR
+ 100:../../libDaisy/src/per/qspi.h ****         */
+ 101:../../libDaisy/src/per/qspi.h ****     Result Init(const Config& config);
+ 102:../../libDaisy/src/per/qspi.h **** 
+ 103:../../libDaisy/src/per/qspi.h ****     /** Returns the current config. */
+ 104:../../libDaisy/src/per/qspi.h ****     const Config& GetConfig() const;
+ 105:../../libDaisy/src/per/qspi.h **** 
+ 106:../../libDaisy/src/per/qspi.h ****     // Couldn't this just be called before anything else in init? That
+ 107:../../libDaisy/src/per/qspi.h ****     // would make manually calling it unnecessary.
+ 108:../../libDaisy/src/per/qspi.h ****     /** 
+ 109:../../libDaisy/src/per/qspi.h ****         Deinitializes the peripheral
+ 110:../../libDaisy/src/per/qspi.h ****         This should be called before reinitializing QSPI in a different mode.
+ 111:../../libDaisy/src/per/qspi.h ****         \return Result::OK or Result::ERR
+ 112:../../libDaisy/src/per/qspi.h ****         */
+ 113:../../libDaisy/src/per/qspi.h ****     Result DeInit();
+ 114:../../libDaisy/src/per/qspi.h **** 
+ 115:../../libDaisy/src/per/qspi.h ****     /** 
+ 116:../../libDaisy/src/per/qspi.h ****         Writes a single page to to the specified address on the QSPI chip.
+ 117:../../libDaisy/src/per/qspi.h ****         For IS25LP*, page size is 256 bytes.
+ 118:../../libDaisy/src/per/qspi.h ****         \param address Address to write to
+ 119:../../libDaisy/src/per/qspi.h ****         \param size Buffer size
+ 120:../../libDaisy/src/per/qspi.h ****         \param buffer Buffer to write
+ 121:../../libDaisy/src/per/qspi.h ****         \return Result::OK or Result::ERR
+ 122:../../libDaisy/src/per/qspi.h ****         */
+ 123:../../libDaisy/src/per/qspi.h ****     Result WritePage(uint32_t address, uint32_t size, uint8_t* buffer);
+ 124:../../libDaisy/src/per/qspi.h **** 
+ 125:../../libDaisy/src/per/qspi.h ****     /** 
+ 126:../../libDaisy/src/per/qspi.h ****         Writes data in buffer to to the QSPI. Starting at address to address+size 
+ 127:../../libDaisy/src/per/qspi.h ****         \param address Address to write to
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 34
+
+
+ 128:../../libDaisy/src/per/qspi.h ****         \param size Buffer size
+ 129:../../libDaisy/src/per/qspi.h ****         \param buffer Buffer to write
+ 130:../../libDaisy/src/per/qspi.h ****         \return Result::OK or Result::ERR
+ 131:../../libDaisy/src/per/qspi.h ****         */
+ 132:../../libDaisy/src/per/qspi.h ****     Result Write(uint32_t address, uint32_t size, uint8_t* buffer);
+ 133:../../libDaisy/src/per/qspi.h **** 
+ 134:../../libDaisy/src/per/qspi.h ****     /** 
+ 135:../../libDaisy/src/per/qspi.h ****         Erases the area specified on the chip.
+ 136:../../libDaisy/src/per/qspi.h ****         Erasures will happen by 4K, 32K or 64K increments.
+ 137:../../libDaisy/src/per/qspi.h ****         Smallest erase possible is 4kB at a time. (on IS25LP*)
+ 138:../../libDaisy/src/per/qspi.h ****         \param start_addr Address to begin erasing from
+ 139:../../libDaisy/src/per/qspi.h ****         \param end_addr  Address to stop erasing at
+ 140:../../libDaisy/src/per/qspi.h ****         \return Result::OK or Result::ERR
+ 141:../../libDaisy/src/per/qspi.h ****         */
+ 142:../../libDaisy/src/per/qspi.h ****     Result Erase(uint32_t start_addr, uint32_t end_addr);
+ 143:../../libDaisy/src/per/qspi.h **** 
+ 144:../../libDaisy/src/per/qspi.h ****     /**  
+ 145:../../libDaisy/src/per/qspi.h ****          Erases a single sector of the chip.  
+ 146:../../libDaisy/src/per/qspi.h ****         TODO: Document the size of this function. 
+ 147:../../libDaisy/src/per/qspi.h ****         \param address Address of sector to erase
+ 148:../../libDaisy/src/per/qspi.h ****         \return Result::OK or Result::ERR
+ 149:../../libDaisy/src/per/qspi.h ****         */
+ 150:../../libDaisy/src/per/qspi.h ****     Result EraseSector(uint32_t address);
+ 151:../../libDaisy/src/per/qspi.h **** 
+ 152:../../libDaisy/src/per/qspi.h ****     /** Returns the current class status. Useful for debugging.
+ 153:../../libDaisy/src/per/qspi.h ****      *  \returns Status
+ 154:../../libDaisy/src/per/qspi.h ****      */
+ 155:../../libDaisy/src/per/qspi.h ****     Status GetStatus();
+ 156:../../libDaisy/src/per/qspi.h **** 
+ 157:../../libDaisy/src/per/qspi.h ****     /** Returns a pointer to the actual memory used 
+ 158:../../libDaisy/src/per/qspi.h ****      *  The memory at this address is read-only
+ 159:../../libDaisy/src/per/qspi.h ****      *  to write to it use the Write function.
+ 160:../../libDaisy/src/per/qspi.h ****      * 
+ 161:../../libDaisy/src/per/qspi.h ****      *  \param offset returns the pointer starting this 
+ 162:../../libDaisy/src/per/qspi.h ****      *                many bytes into the memory
+ 163:../../libDaisy/src/per/qspi.h ****     */
+ 164:../../libDaisy/src/per/qspi.h ****     void* GetData(uint32_t offset = 0);
+ 165:../../libDaisy/src/per/qspi.h **** 
+ 166:../../libDaisy/src/per/qspi.h ****     QSPIHandle() : pimpl_(nullptr) {}
+ 752              		.loc 8 166 5 view .LVU222
+ 753              	.LBE199:
+ 754              	.LBE198:
+ 755              	.LBE197:
+ 756              	.LBE196:
+ 757              	.LBE195:
+ 758              		.loc 6 362 1 is_stmt 0 view .LVU223
+ 759 0000 10B5     		push	{r4, lr}
+ 760              		.cfi_def_cfa_offset 8
+ 761              		.cfi_offset 4, -8
+ 762              		.cfi_offset 14, -4
+ 763              	.LBB230:
+ 764              	.LBB228:
+ 765              	.LBB220:
+ 766              	.LBB218:
+ 767              	.LBB204:
+ 768              	.LBB200:
+ 769              	.LBB201:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 35
+
+
+ 770              		.loc 8 166 34 view .LVU224
+ 771 0002 1048     		ldr	r0, .L54
+ 772 0004 0024     		movs	r4, #0
+ 773              	.LBE201:
+ 774              	.LBE200:
+ 775              	.LBE204:
+ 776              	.LBE218:
+ 777              	.LBE220:
+  37:src/main.cpp  **** 
+ 778              		.loc 6 37 11 view .LVU225
+ 779 0006 104A     		ldr	r2, .L54+4
+ 780 0008 1049     		ldr	r1, .L54+8
+ 781              	.LBB221:
+ 782              	.LBB219:
+ 783              	.LBB205:
+ 784              	.LBB203:
+ 785              	.LBB202:
+ 786              		.loc 8 166 34 view .LVU226
+ 787 000a 0460     		str	r4, [r0]
+ 788              	.LVL67:
+ 789              		.loc 8 166 34 view .LVU227
+ 790              	.LBE202:
+ 791              	.LBE203:
+ 792              	.LBE205:
+ 793              	.LBB206:
+ 794              	.LBI206:
+  95:../../libDaisy/src/hid/audio.h ****     ~AudioHandle() {}
+ 795              		.loc 5 95 5 is_stmt 1 view .LVU228
+ 796              	.LBB207:
+ 797              	.LBB208:
+  95:../../libDaisy/src/hid/audio.h ****     ~AudioHandle() {}
+ 798              		.loc 5 95 35 is_stmt 0 view .LVU229
+ 799 000c 4461     		str	r4, [r0, #20]
+ 800              	.LVL68:
+  95:../../libDaisy/src/hid/audio.h ****     ~AudioHandle() {}
+ 801              		.loc 5 95 35 view .LVU230
+ 802              	.LBE208:
+ 803              	.LBE207:
+ 804              	.LBE206:
+ 805              	.LBB209:
+ 806              	.LBI209:
+ 109:../../libDaisy/src/per/adc.h ****     ~AdcHandle() {}
+ 807              		.loc 4 109 5 is_stmt 1 view .LVU231
+ 109:../../libDaisy/src/per/adc.h ****     ~AdcHandle() {}
+ 808              		.loc 4 109 5 is_stmt 0 view .LVU232
+ 809              	.LBE209:
+ 810              	.LBB210:
+ 811              	.LBI210:
+ 812              		.file 9 "../../libDaisy/src/per/dac.h"
+   1:../../libDaisy/src/per/dac.h **** #pragma once
+   2:../../libDaisy/src/per/dac.h **** #ifndef DSY_DAC_H
+   3:../../libDaisy/src/per/dac.h **** #define DSY_DAC_H
+   4:../../libDaisy/src/per/dac.h **** 
+   5:../../libDaisy/src/per/dac.h **** #include "daisy_core.h"
+   6:../../libDaisy/src/per/dac.h **** 
+   7:../../libDaisy/src/per/dac.h **** namespace daisy
+   8:../../libDaisy/src/per/dac.h **** {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 36
+
+
+   9:../../libDaisy/src/per/dac.h **** /** @brief DAC handle for Built-in DAC Peripheral 
+  10:../../libDaisy/src/per/dac.h ****  *  @ingroup per_analog
+  11:../../libDaisy/src/per/dac.h ****  ** 
+  12:../../libDaisy/src/per/dac.h ****  ** For now only Normal Mode is supported,
+  13:../../libDaisy/src/per/dac.h ****  ** Sample and hold mode provides reduced power consumption, but requires a bit more setup.
+  14:../../libDaisy/src/per/dac.h ****  **
+  15:../../libDaisy/src/per/dac.h ****  ** For now connecting the DAC through other internal peripherals is also not supported.
+  16:../../libDaisy/src/per/dac.h ****  **
+  17:../../libDaisy/src/per/dac.h ****  ** Since the DAC channels have dedicated pins we don't need to pass in a pin config like with
+  18:../../libDaisy/src/per/dac.h ****  ** other modules. However, it is still important to not try to use the DAC pins for anything else.
+  19:../../libDaisy/src/per/dac.h ****  ** DAC Channel 1 is on PA4, and DAC Channel 2 is on PA5
+  20:../../libDaisy/src/per/dac.h ****  ***/
+  21:../../libDaisy/src/per/dac.h **** class DacHandle
+  22:../../libDaisy/src/per/dac.h **** {
+  23:../../libDaisy/src/per/dac.h ****   public:
+  24:../../libDaisy/src/per/dac.h ****     /** Return Values for the DacHandle class */
+  25:../../libDaisy/src/per/dac.h ****     enum class Result
+  26:../../libDaisy/src/per/dac.h ****     {
+  27:../../libDaisy/src/per/dac.h ****         OK,
+  28:../../libDaisy/src/per/dac.h ****         ERR,
+  29:../../libDaisy/src/per/dac.h ****     };
+  30:../../libDaisy/src/per/dac.h **** 
+  31:../../libDaisy/src/per/dac.h ****     /** Selects which channel(s) will be configured for use. */
+  32:../../libDaisy/src/per/dac.h ****     enum class Channel
+  33:../../libDaisy/src/per/dac.h ****     {
+  34:../../libDaisy/src/per/dac.h ****         ONE,
+  35:../../libDaisy/src/per/dac.h ****         TWO,
+  36:../../libDaisy/src/per/dac.h ****         BOTH,
+  37:../../libDaisy/src/per/dac.h ****     };
+  38:../../libDaisy/src/per/dac.h **** 
+  39:../../libDaisy/src/per/dac.h ****     /** Sets the Mode for the DAC channels.
+  40:../../libDaisy/src/per/dac.h ****      **
+  41:../../libDaisy/src/per/dac.h ****      ** Polling mode uses the blocking mode to transmit a single value at a time.
+  42:../../libDaisy/src/per/dac.h ****      **
+  43:../../libDaisy/src/per/dac.h ****      ** DMA mode uses a buffer, and periodically transmits it triggering a 
+  44:../../libDaisy/src/per/dac.h ****      ** callback to fill the buffer when it is ready for more samples.
+  45:../../libDaisy/src/per/dac.h ****      ***/
+  46:../../libDaisy/src/per/dac.h ****     enum class Mode
+  47:../../libDaisy/src/per/dac.h ****     {
+  48:../../libDaisy/src/per/dac.h ****         POLLING,
+  49:../../libDaisy/src/per/dac.h ****         DMA,
+  50:../../libDaisy/src/per/dac.h ****     };
+  51:../../libDaisy/src/per/dac.h **** 
+  52:../../libDaisy/src/per/dac.h ****     /** Sets the number of bits per sample transmitted out of the DAC.
+  53:../../libDaisy/src/per/dac.h ****      ** The output range will be: 0V - VDDA
+  54:../../libDaisy/src/per/dac.h ****      ** The resolution will be roughly: bitdepth / (VDDA - 0V) 
+  55:../../libDaisy/src/per/dac.h ****      ***/
+  56:../../libDaisy/src/per/dac.h ****     enum class BitDepth
+  57:../../libDaisy/src/per/dac.h ****     {
+  58:../../libDaisy/src/per/dac.h ****         BITS_8,
+  59:../../libDaisy/src/per/dac.h ****         BITS_12
+  60:../../libDaisy/src/per/dac.h ****     };
+  61:../../libDaisy/src/per/dac.h **** 
+  62:../../libDaisy/src/per/dac.h ****     /** Sets whether the DAC output is buffered for higher drive ability. */
+  63:../../libDaisy/src/per/dac.h ****     enum class BufferState
+  64:../../libDaisy/src/per/dac.h ****     {
+  65:../../libDaisy/src/per/dac.h ****         ENABLED,
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 37
+
+
+  66:../../libDaisy/src/per/dac.h ****         DISABLED,
+  67:../../libDaisy/src/per/dac.h ****     };
+  68:../../libDaisy/src/per/dac.h **** 
+  69:../../libDaisy/src/per/dac.h ****     /** Configuration structure for initializing the DAC structure. */
+  70:../../libDaisy/src/per/dac.h ****     struct Config
+  71:../../libDaisy/src/per/dac.h ****     {
+  72:../../libDaisy/src/per/dac.h ****         /** Target Samplerate in Hz used to configure the internal 
+  73:../../libDaisy/src/per/dac.h ****          ** timebase for DMA mode. Does nothing in POLLING mode.
+  74:../../libDaisy/src/per/dac.h ****          ** If the value is 0 at Init time this will default to 48000Hz 
+  75:../../libDaisy/src/per/dac.h ****          ** otherwise the driver will attempt meet the target.*/
+  76:../../libDaisy/src/per/dac.h ****         uint32_t target_samplerate;
+  77:../../libDaisy/src/per/dac.h **** 
+  78:../../libDaisy/src/per/dac.h ****         Channel     chn;
+  79:../../libDaisy/src/per/dac.h ****         Mode        mode;
+  80:../../libDaisy/src/per/dac.h ****         BitDepth    bitdepth;
+  81:../../libDaisy/src/per/dac.h ****         BufferState buff_state;
+  82:../../libDaisy/src/per/dac.h ****     };
+  83:../../libDaisy/src/per/dac.h **** 
+  84:../../libDaisy/src/per/dac.h ****     DacHandle() : pimpl_(nullptr) {}
+ 813              		.loc 9 84 5 is_stmt 1 view .LVU233
+ 814              	.LBB211:
+ 815              	.LBB212:
+ 816              		.loc 9 84 33 is_stmt 0 view .LVU234
+ 817 000e 0462     		str	r4, [r0, #32]
+ 818              	.LVL69:
+ 819              		.loc 9 84 33 view .LVU235
+ 820              	.LBE212:
+ 821              	.LBE211:
+ 822              	.LBE210:
+ 823              	.LBB213:
+ 824              	.LBI213:
+  40:../../libDaisy/src/hid/usb.h **** 
+ 825              		.loc 3 40 5 is_stmt 1 view .LVU236
+  40:../../libDaisy/src/hid/usb.h **** 
+ 826              		.loc 3 40 5 is_stmt 0 view .LVU237
+ 827              	.LBE213:
+ 828              	.LBB214:
+ 829              	.LBI214:
+  96:../../libDaisy/src/sys/system.h ****     ~System() {}
+ 830              		.loc 2 96 5 is_stmt 1 view .LVU238
+  96:../../libDaisy/src/sys/system.h ****     ~System() {}
+ 831              		.loc 2 96 5 is_stmt 0 view .LVU239
+ 832              	.LBE214:
+ 833              	.LBB215:
+ 834              	.LBI215:
+ 835              		.file 10 "../../libDaisy/src/per/sai.h"
+   1:../../libDaisy/src/per/sai.h **** #pragma once
+   2:../../libDaisy/src/per/sai.h **** #ifndef DSY_SAI_H
+   3:../../libDaisy/src/per/sai.h **** #define DSY_SAI_H
+   4:../../libDaisy/src/per/sai.h **** 
+   5:../../libDaisy/src/per/sai.h **** #include "daisy_core.h"
+   6:../../libDaisy/src/per/sai.h **** 
+   7:../../libDaisy/src/per/sai.h **** namespace daisy
+   8:../../libDaisy/src/per/sai.h **** {
+   9:../../libDaisy/src/per/sai.h **** /** 
+  10:../../libDaisy/src/per/sai.h ****  * Support for I2S Audio Protocol with different bit-depth, samplerate options
+  11:../../libDaisy/src/per/sai.h ****  * Allows for master or slave, as well as freedom of selecting direction, 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 38
+
+
+  12:../../libDaisy/src/per/sai.h ****  * and other behavior for each peripheral, and block.
+  13:../../libDaisy/src/per/sai.h ****  * 
+  14:../../libDaisy/src/per/sai.h ****  * DMA Transfer commands must use buffers located within non-cached memory or use cache maintenance
+  15:../../libDaisy/src/per/sai.h ****  * To declare an unitialized global element in the DMA memory section:
+  16:../../libDaisy/src/per/sai.h ****  *    int32_t DSY_DMA_BUFFER_SECTOR my_buffer[96];
+  17:../../libDaisy/src/per/sai.h ****  *
+  18:../../libDaisy/src/per/sai.h ****  * Callback functions will be called once per half of the buffer. In the above example, 
+  19:../../libDaisy/src/per/sai.h ****  * the callback function would be called once for every 48 samples.
+  20:../../libDaisy/src/per/sai.h ****  * 
+  21:../../libDaisy/src/per/sai.h ****  * Use SAI Handle like this:
+  22:../../libDaisy/src/per/sai.h ****  * 
+  23:../../libDaisy/src/per/sai.h ****  *  SaiHandle::Config sai_config;
+  24:../../libDaisy/src/per/sai.h ****  *  sai_config.periph          = SaiHandle::Config::Peripheral::SAI_1;
+  25:../../libDaisy/src/per/sai.h ****  *  sai_config.sr              = SaiHandle::Config::SampleRate::SAI_48KHZ;
+  26:../../libDaisy/src/per/sai.h ****  *  sai_config.bit_depth       = SaiHandle::Config::BitDepth::SAI_24BIT;
+  27:../../libDaisy/src/per/sai.h ****  *  sai_config.a_sync          = SaiHandle::Config::Sync::MASTER;
+  28:../../libDaisy/src/per/sai.h ****  *  sai_config.b_sync          = SaiHandle::Config::Sync::SLAVE;
+  29:../../libDaisy/src/per/sai.h ****  *  sai_config.a_dir           = SaiHandle::Config::Direction::RECEIVE;
+  30:../../libDaisy/src/per/sai.h ****  *  sai_config.b_dir           = SaiHandle::Config::Direction::TRANSMIT;
+  31:../../libDaisy/src/per/sai.h ****  *  sai_config.pin_config.fs   = {DSY_GPIOE, 4};
+  32:../../libDaisy/src/per/sai.h ****  *  sai_config.pin_config.mclk = {DSY_GPIOE, 2};
+  33:../../libDaisy/src/per/sai.h ****  *  sai_config.pin_config.sck  = {DSY_GPIOE, 5};
+  34:../../libDaisy/src/per/sai.h ****  *  sai_config.pin_config.sa   = {DSY_GPIOE, 6};
+  35:../../libDaisy/src/per/sai.h ****  *  sai_config.pin_config.sb   = {DSY_GPIOE, 3};
+  36:../../libDaisy/src/per/sai.h ****  *  // Then Initialize
+  37:../../libDaisy/src/per/sai.h ****  *  SaiHandle sai;
+  38:../../libDaisy/src/per/sai.h ****  *  sai.Init(sai_config);
+  39:../../libDaisy/src/per/sai.h ****  *  // Now you can use it:
+  40:../../libDaisy/src/per/sai.h ****  *  sai.StartDma(. . .);
+  41:../../libDaisy/src/per/sai.h ****  */
+  42:../../libDaisy/src/per/sai.h **** class SaiHandle
+  43:../../libDaisy/src/per/sai.h **** {
+  44:../../libDaisy/src/per/sai.h ****   public:
+  45:../../libDaisy/src/per/sai.h ****     /** Contains settings for initialising an SAI Interface */
+  46:../../libDaisy/src/per/sai.h ****     struct Config
+  47:../../libDaisy/src/per/sai.h ****     {
+  48:../../libDaisy/src/per/sai.h ****         /** Specifies the internal peripheral to use (mapped to different hardware pins) */
+  49:../../libDaisy/src/per/sai.h ****         enum class Peripheral
+  50:../../libDaisy/src/per/sai.h ****         {
+  51:../../libDaisy/src/per/sai.h ****             SAI_1,
+  52:../../libDaisy/src/per/sai.h ****             SAI_2,
+  53:../../libDaisy/src/per/sai.h ****         };
+  54:../../libDaisy/src/per/sai.h **** 
+  55:../../libDaisy/src/per/sai.h ****         /** Rate at which samples will be streaming to/from the device. */
+  56:../../libDaisy/src/per/sai.h ****         enum class SampleRate
+  57:../../libDaisy/src/per/sai.h ****         {
+  58:../../libDaisy/src/per/sai.h ****             SAI_8KHZ,
+  59:../../libDaisy/src/per/sai.h ****             SAI_16KHZ,
+  60:../../libDaisy/src/per/sai.h ****             SAI_32KHZ,
+  61:../../libDaisy/src/per/sai.h ****             SAI_48KHZ,
+  62:../../libDaisy/src/per/sai.h ****             SAI_96KHZ,
+  63:../../libDaisy/src/per/sai.h ****         };
+  64:../../libDaisy/src/per/sai.h **** 
+  65:../../libDaisy/src/per/sai.h ****         /** Bit Depth that the hardware expects to be transferred to/from the device. */
+  66:../../libDaisy/src/per/sai.h ****         enum class BitDepth
+  67:../../libDaisy/src/per/sai.h ****         {
+  68:../../libDaisy/src/per/sai.h ****             SAI_16BIT,
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 39
+
+
+  69:../../libDaisy/src/per/sai.h ****             SAI_24BIT,
+  70:../../libDaisy/src/per/sai.h ****             SAI_32BIT,
+  71:../../libDaisy/src/per/sai.h ****         };
+  72:../../libDaisy/src/per/sai.h **** 
+  73:../../libDaisy/src/per/sai.h ****         /** Specifies whether a particular block is the master or the slave 
+  74:../../libDaisy/src/per/sai.h ****          ** If both are set to slave, no MCLK signal will be used, and it is
+  75:../../libDaisy/src/per/sai.h ****          ** expected that the codec will have its own xtal.
+  76:../../libDaisy/src/per/sai.h ****          */
+  77:../../libDaisy/src/per/sai.h ****         enum class Sync
+  78:../../libDaisy/src/per/sai.h ****         {
+  79:../../libDaisy/src/per/sai.h ****             MASTER,
+  80:../../libDaisy/src/per/sai.h ****             SLAVE,
+  81:../../libDaisy/src/per/sai.h ****         };
+  82:../../libDaisy/src/per/sai.h **** 
+  83:../../libDaisy/src/per/sai.h ****         /** Specifies the direction for each peripheral block. */
+  84:../../libDaisy/src/per/sai.h ****         enum class Direction
+  85:../../libDaisy/src/per/sai.h ****         {
+  86:../../libDaisy/src/per/sai.h ****             TRANSMIT,
+  87:../../libDaisy/src/per/sai.h ****             RECEIVE,
+  88:../../libDaisy/src/per/sai.h ****         };
+  89:../../libDaisy/src/per/sai.h **** 
+  90:../../libDaisy/src/per/sai.h ****         Peripheral periph;
+  91:../../libDaisy/src/per/sai.h ****         struct
+  92:../../libDaisy/src/per/sai.h ****         {
+  93:../../libDaisy/src/per/sai.h ****             dsy_gpio_pin mclk, fs, sck, sa, sb;
+  94:../../libDaisy/src/per/sai.h ****         } pin_config;
+  95:../../libDaisy/src/per/sai.h ****         SampleRate sr;
+  96:../../libDaisy/src/per/sai.h ****         BitDepth   bit_depth;
+  97:../../libDaisy/src/per/sai.h ****         Sync       a_sync, b_sync;
+  98:../../libDaisy/src/per/sai.h ****         Direction  a_dir, b_dir;
+  99:../../libDaisy/src/per/sai.h ****     };
+ 100:../../libDaisy/src/per/sai.h **** 
+ 101:../../libDaisy/src/per/sai.h ****     /** Return values for SAI functions */
+ 102:../../libDaisy/src/per/sai.h ****     enum class Result
+ 103:../../libDaisy/src/per/sai.h ****     {
+ 104:../../libDaisy/src/per/sai.h ****         OK,
+ 105:../../libDaisy/src/per/sai.h ****         ERR,
+ 106:../../libDaisy/src/per/sai.h ****     };
+ 107:../../libDaisy/src/per/sai.h **** 
+ 108:../../libDaisy/src/per/sai.h ****     SaiHandle() : pimpl_(nullptr) {}
+ 836              		.loc 10 108 5 is_stmt 1 view .LVU240
+ 837              	.LBB216:
+ 838              	.LBB217:
+ 839              		.loc 10 108 33 is_stmt 0 view .LVU241
+ 840 0010 C463     		str	r4, [r0, #60]
+ 841              	.LVL70:
+ 842              		.loc 10 108 33 view .LVU242
+ 843              	.LBE217:
+ 844              	.LBE216:
+ 845              	.LBE215:
+ 846              	.LBE219:
+ 847              	.LBE221:
+  37:src/main.cpp  **** 
+ 848              		.loc 6 37 11 view .LVU243
+ 849 0012 FFF7FEFF 		bl	__aeabi_atexit
+ 850              	.LVL71:
+ 851              	.LBB222:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 40
+
+
+ 852              	.LBI222:
+ 853              		.file 11 "src/control_mailbox.h"
+   1:src/control_mailbox.h **** #pragma once
+   2:src/control_mailbox.h **** 
+   3:src/control_mailbox.h **** #include "app_config.h"
+   4:src/control_mailbox.h **** 
+   5:src/control_mailbox.h **** #include <stdint.h>
+   6:src/control_mailbox.h **** #include <type_traits>
+   7:src/control_mailbox.h **** 
+   8:src/control_mailbox.h **** namespace app
+   9:src/control_mailbox.h **** {
+  10:src/control_mailbox.h **** 
+  11:src/control_mailbox.h **** enum class SystemMode : uint8_t
+  12:src/control_mailbox.h **** {
+  13:src/control_mailbox.h ****     Normal = 0,
+  14:src/control_mailbox.h ****     ThermalShutdown = 1
+  15:src/control_mailbox.h **** };
+  16:src/control_mailbox.h **** 
+  17:src/control_mailbox.h **** // Compact requested-control state crossing from the foreground loop into the
+  18:src/control_mailbox.h **** // audio interrupt. Keep this trivially copyable and small so a seqlock retry is
+  19:src/control_mailbox.h **** // cheap and no dynamic allocation or mutex is needed.
+  20:src/control_mailbox.h **** struct ControlSnapshot
+  21:src/control_mailbox.h **** {
+  22:src/control_mailbox.h ****     uint8_t effect;
+  23:src/control_mailbox.h ****     uint8_t bypass;
+  24:src/control_mailbox.h ****     uint8_t system_mode;
+  25:src/control_mailbox.h ****     uint8_t reserved;
+  26:src/control_mailbox.h ****     uint16_t parameters[config::kPhysicalPotCount];
+  27:src/control_mailbox.h **** };
+  28:src/control_mailbox.h **** 
+  29:src/control_mailbox.h **** static_assert(std::is_trivially_copyable<ControlSnapshot>::value, "ControlSnapshot must be copied b
+  30:src/control_mailbox.h **** static_assert(sizeof(ControlSnapshot) <= 16, "ControlSnapshot must stay small for interrupt transfe
+  31:src/control_mailbox.h **** static_assert(sizeof(ControlSnapshot) == 10, "ControlSnapshot layout changed unexpectedly");
+  32:src/control_mailbox.h **** 
+  33:src/control_mailbox.h **** // Single-writer/single-reader mailbox for the main loop -> audio callback handoff.
+  34:src/control_mailbox.h **** // The main loop is the only writer, and the audio interrupt is the only reader.
+  35:src/control_mailbox.h **** class ControlMailbox
+  36:src/control_mailbox.h **** {
+  37:src/control_mailbox.h ****   public:
+  38:src/control_mailbox.h ****     ControlMailbox();
+  39:src/control_mailbox.h **** 
+  40:src/control_mailbox.h ****     // Publish() is called from the main loop after controls have been filtered and
+  41:src/control_mailbox.h ****     // debounced. It marks the sequence odd while the payload is being copied.
+  42:src/control_mailbox.h ****     void Publish(const ControlSnapshot& snapshot);
+  43:src/control_mailbox.h **** 
+  44:src/control_mailbox.h ****     // Read() is called once at the beginning of an audio block. It returns false
+  45:src/control_mailbox.h ****     // if publication is in progress, allowing the callback to keep its last valid
+  46:src/control_mailbox.h ****     // snapshot without blocking.
+  47:src/control_mailbox.h ****     bool Read(ControlSnapshot& out, uint32_t& out_revision) const;
+  48:src/control_mailbox.h **** 
+  49:src/control_mailbox.h ****   private:
+  50:src/control_mailbox.h ****     uint32_t sequence_;
+  51:src/control_mailbox.h ****     ControlSnapshot snapshot_;
+  52:src/control_mailbox.h **** };
+  53:src/control_mailbox.h **** 
+  54:src/control_mailbox.h **** inline ControlMailbox::ControlMailbox()
+ 854              		.loc 11 54 8 is_stmt 1 view .LVU244
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 41
+
+
+ 855              	.LBB223:
+ 856              	.LBB224:
+  55:src/control_mailbox.h **** : sequence_(0),
+  56:src/control_mailbox.h ****   snapshot_{config::FX_TUNER, 0, (uint8_t)SystemMode::Normal, 0, {0, 0, 0}}
+ 857              		.loc 11 56 75 is_stmt 0 view .LVU245
+ 858 0016 0E4B     		ldr	r3, .L54+12
+ 859              	.LBE224:
+ 860              	.LBE223:
+ 861              	.LBE222:
+  43:src/main.cpp  **** #endif
+ 862              		.loc 6 43 15 view .LVU246
+ 863 0018 0E48     		ldr	r0, .L54+16
+ 864              	.LBB227:
+ 865              	.LBB226:
+ 866              	.LBB225:
+ 867              		.loc 11 56 75 view .LVU247
+ 868 001a 5C60     		str	r4, [r3, #4]
+ 869 001c 43F8044B 		str	r4, [r3], #4
+ 870 0020 5C60     		str	r4, [r3, #4]
+ 871 0022 1C81     		strh	r4, [r3, #8]	@ movhi
+ 872              	.LVL72:
+ 873              		.loc 11 56 75 view .LVU248
+ 874              	.LBE225:
+ 875              	.LBE226:
+ 876              	.LBE227:
+  43:src/main.cpp  **** #endif
+ 877              		.loc 6 43 15 view .LVU249
+ 878 0024 FFF7FEFF 		bl	_ZN3app8ControlsC1Ev
+ 879              	.LVL73:
+  46:src/main.cpp  **** app::TunerAnalyzer tuner_analyzer;
+ 880              		.loc 6 46 20 view .LVU250
+ 881 0028 0B48     		ldr	r0, .L54+20
+ 882 002a FFF7FEFF 		bl	_ZN3app12TunerCaptureC1Ev
+ 883              	.LVL74:
+  47:src/main.cpp  **** #endif
+ 884              		.loc 6 47 20 view .LVU251
+ 885 002e 0B48     		ldr	r0, .L54+24
+ 886 0030 FFF7FEFF 		bl	_ZN3app13TunerAnalyzerC1Ev
+ 887              	.LVL75:
+  53:src/main.cpp  **** #endif
+ 888              		.loc 6 53 16 view .LVU252
+ 889 0034 0A48     		ldr	r0, .L54+28
+ 890 0036 FFF7FEFF 		bl	_ZN3app9TelemetryC1Ev
+ 891              	.LVL76:
+  56:src/main.cpp  **** #endif
+ 892              		.loc 6 56 21 view .LVU253
+ 893 003a 0A48     		ldr	r0, .L54+32
+ 894              	.LBE228:
+ 895              	.LBE230:
+ 896              		.loc 6 362 1 view .LVU254
+ 897 003c BDE81040 		pop	{r4, lr}
+ 898              		.cfi_restore 14
+ 899              		.cfi_restore 4
+ 900              		.cfi_def_cfa_offset 0
+ 901              	.LBB231:
+ 902              	.LBB229:
+  56:src/main.cpp  **** #endif
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 42
+
+
+ 903              		.loc 6 56 21 view .LVU255
+ 904 0040 FFF7FEBF 		b	_ZN3app14ThermalMonitorC1Ev
+ 905              	.LVL77:
+ 906              	.L55:
+ 907              		.align	2
+ 908              	.L54:
+ 909 0044 00000000 		.word	.LANCHOR1
+ 910 0048 00000000 		.word	__dso_handle
+ 911 004c 00000000 		.word	_ZN5daisy9DaisySeedD1Ev
+ 912 0050 00000000 		.word	.LANCHOR2
+ 913 0054 00000000 		.word	.LANCHOR3
+ 914 0058 00000000 		.word	.LANCHOR0
+ 915 005c 00000000 		.word	.LANCHOR5
+ 916 0060 00000000 		.word	.LANCHOR4
+ 917 0064 00000000 		.word	.LANCHOR6
+ 918              	.LBE229:
+ 919              	.LBE231:
+ 920              		.cfi_endproc
+ 921              	.LFE2608:
+ 923              		.section	.init_array,"aw",%init_array
+ 924              		.align	2
+ 925 0000 00000000 		.word	_GLOBAL__sub_I_main(target1)
+ 926              		.section	.bss._ZN12_GLOBAL__N_113tuner_captureE,"aw",%nobits
+ 927              		.align	2
+ 928              		.set	.LANCHOR0,. + 0
+ 931              	_ZN12_GLOBAL__N_113tuner_captureE:
+ 932 0000 00000000 		.space	8
+ 932      00000000 
+ 933              		.section	.bss._ZN12_GLOBAL__N_114tuner_analyzerE,"aw",%nobits
+ 934              		.align	2
+ 935              		.set	.LANCHOR5,. + 0
+ 938              	_ZN12_GLOBAL__N_114tuner_analyzerE:
+ 939 0000 00000000 		.space	52
+ 939      00000000 
+ 939      00000000 
+ 939      00000000 
+ 939      00000000 
+ 940              		.section	.bss._ZN12_GLOBAL__N_115control_mailboxE,"aw",%nobits
+ 941              		.align	2
+ 942              		.set	.LANCHOR2,. + 0
+ 945              	_ZN12_GLOBAL__N_115control_mailboxE:
+ 946 0000 00000000 		.space	16
+ 946      00000000 
+ 946      00000000 
+ 946      00000000 
+ 947              		.section	.bss._ZN12_GLOBAL__N_115thermal_monitorE,"aw",%nobits
+ 948              		.align	2
+ 949              		.set	.LANCHOR6,. + 0
+ 952              	_ZN12_GLOBAL__N_115thermal_monitorE:
+ 953 0000 00000000 		.space	192
+ 953      00000000 
+ 953      00000000 
+ 953      00000000 
+ 953      00000000 
+ 954              		.section	.bss._ZN12_GLOBAL__N_119tuner_source_windowE,"aw",%nobits
+ 955              		.align	2
+ 958              	_ZN12_GLOBAL__N_119tuner_source_windowE:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 43
+
+
+ 959 0000 00000000 		.space	16384
+ 959      00000000 
+ 959      00000000 
+ 959      00000000 
+ 959      00000000 
+ 960              		.section	.bss._ZN12_GLOBAL__N_12hwE,"aw",%nobits
+ 961              		.align	2
+ 962              		.set	.LANCHOR1,. + 0
+ 965              	_ZN12_GLOBAL__N_12hwE:
+ 966 0000 00000000 		.space	64
+ 966      00000000 
+ 966      00000000 
+ 966      00000000 
+ 966      00000000 
+ 967              		.section	.bss._ZN12_GLOBAL__N_18controlsE,"aw",%nobits
+ 968              		.align	2
+ 969              		.set	.LANCHOR3,. + 0
+ 972              	_ZN12_GLOBAL__N_18controlsE:
+ 973 0000 00000000 		.space	104
+ 973      00000000 
+ 973      00000000 
+ 973      00000000 
+ 973      00000000 
+ 974              		.section	.bss._ZN12_GLOBAL__N_19telemetryE,"aw",%nobits
+ 975              		.align	2
+ 976              		.set	.LANCHOR4,. + 0
+ 979              	_ZN12_GLOBAL__N_19telemetryE:
+ 980 0000 00000000 		.space	8
+ 980      00000000 
+ 981              		.text
+ 982              	.Letext0:
+ 983              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 984              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 985              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 986              		.file 15 "../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h750xx.h"
+ 987              		.file 16 "../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 988              		.file 17 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 989              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 990              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 991              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 992              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 993              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 994              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 995              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 996              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 997              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 998              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 999              		.file 28 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+ 1000              		.file 29 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 1001              		.file 30 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 1002              		.file 31 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 1003              		.file 32 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1004              		.file 33 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1005              		.file 34 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1006              		.file 35 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 1007              		.file 36 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1008              		.file 37 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 44
+
+
+ 1009              		.file 38 "../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 1010              		.file 39 "../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 1011              		.file 40 "../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_adc.h"
+ 1012              		.file 41 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 1013              		.file 42 "../../libDaisy/src/daisy_core.h"
+ 1014              		.file 43 "../../libDaisy/src/per/tim.h"
+ 1015              		.file 44 "../../libDaisy/src/per/gpio.h"
+ 1016              		.file 45 "../../libDaisy/src/per/uart.h"
+ 1017              		.file 46 "../../libDaisy/src/util/wav_format.h"
+ 1018              		.file 47 "../../libDaisy/src/dev/max11300.h"
+ 1019              		.file 48 "../../libDaisy/src/dev/sdram.h"
+ 1020              		.file 49 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 1021              		.file 50 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 1022              		.file 51 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 1023              		.file 52 "src/app_config.h"
+ 1024              		.file 53 "src/controls.h"
+ 1025              		.file 54 "src/tuner.h"
+ 1026              		.file 55 "src/telemetry.h"
+ 1027              		.file 56 "../../libDaisy/src/dev/sr_595.h"
+ 1028              		.file 57 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 45
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.cpp
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:17     .text._ZN5daisy9DaisySeedD2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:26     .text._ZN5daisy9DaisySeedD2Ev:00000000 _ZN5daisy9DaisySeedD2Ev
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:26     .text._ZN5daisy9DaisySeedD2Ev:00000000 _ZN5daisy9DaisySeedD1Ev
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:67     .text._ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:74     .text._ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj:00000000 _ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:140    .text._ZN12_GLOBAL__N_113AudioCallbackEPKPKfPPfj:00000034 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:145    .text.startup.main:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:153    .text.startup.main:00000000 main
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:710    .text.startup.main:000001b4 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:958    .bss._ZN12_GLOBAL__N_119tuner_source_windowE:00000000 _ZN12_GLOBAL__N_119tuner_source_windowE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:727    .text.startup._GLOBAL__sub_I_main:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:734    .text.startup._GLOBAL__sub_I_main:00000000 _GLOBAL__sub_I_main
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:909    .text.startup._GLOBAL__sub_I_main:00000044 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:924    .init_array:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:927    .bss._ZN12_GLOBAL__N_113tuner_captureE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:931    .bss._ZN12_GLOBAL__N_113tuner_captureE:00000000 _ZN12_GLOBAL__N_113tuner_captureE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:934    .bss._ZN12_GLOBAL__N_114tuner_analyzerE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:938    .bss._ZN12_GLOBAL__N_114tuner_analyzerE:00000000 _ZN12_GLOBAL__N_114tuner_analyzerE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:941    .bss._ZN12_GLOBAL__N_115control_mailboxE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:945    .bss._ZN12_GLOBAL__N_115control_mailboxE:00000000 _ZN12_GLOBAL__N_115control_mailboxE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:948    .bss._ZN12_GLOBAL__N_115thermal_monitorE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:952    .bss._ZN12_GLOBAL__N_115thermal_monitorE:00000000 _ZN12_GLOBAL__N_115thermal_monitorE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:955    .bss._ZN12_GLOBAL__N_119tuner_source_windowE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:961    .bss._ZN12_GLOBAL__N_12hwE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:965    .bss._ZN12_GLOBAL__N_12hwE:00000000 _ZN12_GLOBAL__N_12hwE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:968    .bss._ZN12_GLOBAL__N_18controlsE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:972    .bss._ZN12_GLOBAL__N_18controlsE:00000000 _ZN12_GLOBAL__N_18controlsE
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:975    .bss._ZN12_GLOBAL__N_19telemetryE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s:979    .bss._ZN12_GLOBAL__N_19telemetryE:00000000 _ZN12_GLOBAL__N_19telemetryE
+                           .group:00000000 _ZN5daisy9DaisySeedD5Ev
+
+UNDEFINED SYMBOLS
+_ZN3app12TunerCapture10WriteBlockEPKfj
+_ZN5daisy9DaisySeed4InitEb
+_ZN5daisy9DaisySeed18SetAudioSampleRateENS_9SaiHandle6Config10SampleRateE
+_ZN5daisy9DaisySeed17SetAudioBlockSizeEj
+_ZN3app8Controls4InitERN5daisy9DaisySeedERNS_14ControlMailboxE
+_ZN3app9Telemetry4InitEv
+_ZN3app12TunerCapture4InitEv
+_ZN5daisy6System6GetNowEv
+_ZN3app13TunerAnalyzer5ResetEm
+_ZN3app14ThermalMonitor4InitEmb
+_ZN5daisy9DaisySeed10StartAudioEPFvPKPKfPPfjE
+_ZNK3app12TunerCapture18CopyAnalysisWindowEPfi
+_ZN3app13TunerAnalyzer7AnalyzeEPKfifffm
+_ZN3app9Telemetry9SendTunerERKNS_11TunerResultE
+_ZN5daisy6System5DelayEm
+_ZN3app14ThermalMonitor7ServiceEm
+_ZN3app8Controls7ProcessERN5daisy9DaisySeedEm
+_ZN5daisy9DaisySeed6SetLedEb
+_ZN3app9Telemetry10SendEffectEi
+_ZN3app9Telemetry8SendPotsEPKf
+_ZN3app9Telemetry17SendTunerDisabledEv
+_ZN3app9Telemetry14SendFootswitchEbPKci
+_ZN3app13ThermalPolicy21TakeFaultNotificationEv
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmWXK6h.s 			page 46
+
+
+_ZNK3app14ThermalMonitor10FaultLedOnEm
+_ZN3app9Telemetry16SendThermalFaultEf
+_ZN3app9Telemetry26SendTemperatureSensorFaultEi
+__aeabi_atexit
+_ZN3app8ControlsC1Ev
+_ZN3app12TunerCaptureC1Ev
+_ZN3app13TunerAnalyzerC1Ev
+_ZN3app9TelemetryC1Ev
+_ZN3app14ThermalMonitorC1Ev
+__dso_handle

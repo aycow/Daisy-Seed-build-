@@ -3,6 +3,7 @@
 #include "app_config.h"
 #include "controls.h"
 #include "daisy_seed.h"
+#include "thermal_monitor.h"
 #include "tuner.h"
 
 namespace app
@@ -23,6 +24,15 @@ class Telemetry
     void SendFootswitch(bool down, const char* edge, int press_count);
     void SendTuner(const TunerResult& result);
     void SendTunerDisabled();
+    void SendThermalFault(float temperature_c);
+    void SendTemperatureSensorFault(int error_code);
+    void SendThermalDebug(float temperature_c, uint16_t raw_adc, ThermalState state);
+    void SendThermalCalibration(const ThermalCalibrationInfo& calibration);
+    void SendAudioCpuLoad(float average,
+                          float peak,
+                          uint32_t overruns,
+                          uint8_t effect,
+                          float effect_peak);
 
     // Debug-only rotary calibration output. Production builds keep this silent.
     void SendRotaryCalibration(uint16_t raw_u16, int position);

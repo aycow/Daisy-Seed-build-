@@ -1,0 +1,1162 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"crusher_module.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN10bkshepherd13CrusherModuleD2Ev,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN10bkshepherd13CrusherModuleD2Ev
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN10bkshepherd13CrusherModuleD2Ev:
+  27              	.LVL0:
+  28              	.LFB4748:
+  29              		.file 1 "gml/GuitarPedal/Effect-Modules/crusher_module.cpp"
+   1:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** #include "crusher_module.h"
+   2:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+   3:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** using namespace bkshepherd;
+   4:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+   5:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** static const int s_paramCount = 3;
+   6:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** static const ParameterMetaData s_metaData[s_paramCount] = {
+   7:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     {name : "Level", valueType : ParameterValueType::FloatMagnitude, valueBinCount : 0, defaultValu
+   8:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     {name : "Bits", valueType : ParameterValueType::Binned, valueBinCount : 32, defaultValue : 32, 
+   9:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     {name : "Cutoff", valueType : ParameterValueType::FloatMagnitude, valueBinCount : 0, defaultVal
+  10:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  11:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** CrusherModule::CrusherModule() : BaseEffectModule(),
+  12:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_levelMin(0.01f),
+  13:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_levelMax(20.0f),
+  14:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_cutoffMin(500.0f),
+  15:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_cutoffMax(20000.0f),
+  16:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_level(1.0f),
+  17:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_bits(32.0f),
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_cutoff(20000.0f)
+  19:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+  20:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_name = "Crusher";
+  21:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_paramMetaData = s_metaData;
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   this->InitParams(s_paramCount);
+  23:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+  24:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** CrusherModule::~CrusherModule()
+  30              		.loc 1 25 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 2
+
+
+  34              	.LBB32:
+  35              		.loc 1 25 31 is_stmt 0 view .LVU1
+  36 0000 034B     		ldr	r3, .L4
+  37              	.LBE32:
+  38              		.loc 1 25 1 view .LVU2
+  39 0002 10B5     		push	{r4, lr}
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 4, -8
+  42              		.cfi_offset 14, -4
+  43              		.loc 1 25 1 view .LVU3
+  44 0004 0446     		mov	r4, r0
+  45              	.LBB35:
+  46              		.loc 1 25 31 view .LVU4
+  47 0006 0360     		str	r3, [r0]
+  48              	.LVL1:
+  49              	.LBB33:
+  50              	.LBI33:
+  51              		.file 2 "gml/GuitarPedal/Effect-Modules/crusher_module.h"
+   1:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #pragma once
+   2:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #ifndef CRUSHER_MODULE_H
+   3:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #define CRUSHER_MODULE_H
+   4:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+   5:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #include <stdint.h>
+   6:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #include "daisysp.h"
+   7:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #include "base_effect_module.h"
+   8:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #include "Filters/tone.h"
+   9:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  10:gml/GuitarPedal/Effect-Modules/crusher_module.h **** #ifdef __cplusplus
+  11:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  12:gml/GuitarPedal/Effect-Modules/crusher_module.h **** /** @file crusher_module.h */
+  13:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  14:gml/GuitarPedal/Effect-Modules/crusher_module.h **** using namespace daisysp;
+  15:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  16:gml/GuitarPedal/Effect-Modules/crusher_module.h **** namespace bkshepherd
+  17:gml/GuitarPedal/Effect-Modules/crusher_module.h **** {
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  19:gml/GuitarPedal/Effect-Modules/crusher_module.h **** class Bitcrusher
+  20:gml/GuitarPedal/Effect-Modules/crusher_module.h **** {
+  21:gml/GuitarPedal/Effect-Modules/crusher_module.h **** public:
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   Bitcrusher() {}
+  23:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   ~Bitcrusher() {}
+  52              		.loc 2 23 3 is_stmt 1 view .LVU5
+  53              		.loc 2 23 3 is_stmt 0 view .LVU6
+  54              	.LBE33:
+  55              	.LBB34:
+  56              	.LBI34:
+  57              		.file 3 "../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h"
+   1:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** /*
+   2:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** Copyright (c) 2023 Electrosmith, Corp, Barry Vercoe, John FFitch, Gabriel Maldonado
+   3:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+   4:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** Use of this source code is governed by the LGPL V2.1
+   5:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** license that can be found in the LICENSE file or at
+   6:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** https://opensource.org/license/lgpl-2-1/
+   7:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** */
+   8:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+   9:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #pragma once
+  10:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #ifndef DSY_TONE_H
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 3
+
+
+  11:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #define DSY_TONE_H
+  12:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+  13:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #include <stdint.h>
+  14:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #ifdef __cplusplus
+  15:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+  16:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** namespace daisysp
+  17:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** {
+  18:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** /** A first-order recursive low-pass filter with variable frequency response. */
+  19:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** class Tone
+  20:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** {
+  21:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****   public:
+  22:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     Tone() {}
+  23:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     ~Tone() {}
+  58              		.loc 3 23 5 is_stmt 1 view .LVU7
+  59              		.loc 3 23 5 is_stmt 0 view .LVU8
+  60              	.LBE34:
+  61              		.loc 1 25 31 view .LVU9
+  62 0008 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModuleD2Ev
+  63              	.LVL2:
+  64              		.loc 1 25 31 view .LVU10
+  65              	.LBE35:
+  26:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+  66              		.loc 1 27 1 view .LVU11
+  67 000c 2046     		mov	r0, r4
+  68 000e 10BD     		pop	{r4, pc}
+  69              	.LVL3:
+  70              	.L5:
+  71              		.loc 1 27 1 view .LVU12
+  72              		.align	2
+  73              	.L4:
+  74 0010 08000000 		.word	.LANCHOR0+8
+  75              		.cfi_endproc
+  76              	.LFE4748:
+  78              		.global	_ZN10bkshepherd13CrusherModuleD1Ev
+  79              		.thumb_set _ZN10bkshepherd13CrusherModuleD1Ev,_ZN10bkshepherd13CrusherModuleD2Ev
+  80              		.section	.text._ZN10bkshepherd13CrusherModuleD0Ev,"ax",%progbits
+  81              		.align	1
+  82              		.p2align 2,,3
+  83              		.global	_ZN10bkshepherd13CrusherModuleD0Ev
+  84              		.syntax unified
+  85              		.thumb
+  86              		.thumb_func
+  87              		.fpu fpv5-d16
+  89              	_ZN10bkshepherd13CrusherModuleD0Ev:
+  90              	.LVL4:
+  91              	.LFB4750:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+  92              		.loc 1 25 1 is_stmt 1 view -0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              	.LBB36:
+  97              	.LBB37:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+  98              		.loc 1 25 31 is_stmt 0 view .LVU14
+  99 0000 054B     		ldr	r3, .L8
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 4
+
+
+ 100              	.LBE37:
+ 101              	.LBE36:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 102              		.loc 1 25 1 view .LVU15
+ 103 0002 10B5     		push	{r4, lr}
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 4, -8
+ 106              		.cfi_offset 14, -4
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 107              		.loc 1 25 1 view .LVU16
+ 108 0004 0446     		mov	r4, r0
+ 109              	.LVL5:
+ 110              	.LBB41:
+ 111              	.LBI36:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 112              		.loc 1 25 1 is_stmt 1 view .LVU17
+ 113              	.LBB40:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 114              		.loc 1 25 31 is_stmt 0 view .LVU18
+ 115 0006 0360     		str	r3, [r0]
+ 116              	.LVL6:
+ 117              	.LBB38:
+ 118              	.LBI38:
+ 119              		.loc 2 23 3 is_stmt 1 view .LVU19
+ 120              		.loc 2 23 3 is_stmt 0 view .LVU20
+ 121              	.LBE38:
+ 122              	.LBB39:
+ 123              	.LBI39:
+ 124              		.loc 3 23 5 is_stmt 1 view .LVU21
+ 125              		.loc 3 23 5 is_stmt 0 view .LVU22
+ 126              	.LBE39:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 127              		.loc 1 25 31 view .LVU23
+ 128 0008 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModuleD2Ev
+ 129              	.LVL7:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 130              		.loc 1 25 31 view .LVU24
+ 131              	.LBE40:
+ 132              	.LBE41:
+ 133              		.loc 1 27 1 view .LVU25
+ 134 000c 6021     		movs	r1, #96
+ 135 000e 2046     		mov	r0, r4
+ 136 0010 FFF7FEFF 		bl	_ZdlPvj
+ 137              	.LVL8:
+ 138 0014 2046     		mov	r0, r4
+ 139 0016 10BD     		pop	{r4, pc}
+ 140              	.LVL9:
+ 141              	.L9:
+ 142              		.loc 1 27 1 view .LVU26
+ 143              		.align	2
+ 144              	.L8:
+ 145 0018 08000000 		.word	.LANCHOR0+8
+ 146              		.cfi_endproc
+ 147              	.LFE4750:
+ 149              		.section	.text._ZN10bkshepherd13CrusherModule16ParameterChangedEi,"ax",%progbits
+ 150              		.align	1
+ 151              		.p2align 2,,3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 5
+
+
+ 152              		.global	_ZN10bkshepherd13CrusherModule16ParameterChangedEi
+ 153              		.syntax unified
+ 154              		.thumb
+ 155              		.thumb_func
+ 156              		.fpu fpv5-d16
+ 158              	_ZN10bkshepherd13CrusherModule16ParameterChangedEi:
+ 159              	.LVL10:
+ 160              	.LFB4752:
+  28:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  29:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** void CrusherModule::Init(float sample_rate)
+  30:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+  31:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::Init(sample_rate);
+  32:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_tone.Init(sample_rate);
+  33:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bitcrusher.Init();
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   for(int i = 0; i < s_paramCount; ++i)
+  35:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+  36:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+  37:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  38:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** void CrusherModule::ParameterChanged(int parameter_id)
+  39:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 161              		.loc 1 39 1 is_stmt 1 view -0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+  40:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   (void)parameter_id;
+ 165              		.loc 1 40 3 view .LVU28
+  41:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_level = m_levelMin + (GetParameterAsMagnitude(0) * (m_levelMax - m_levelMin));
+ 166              		.loc 1 41 3 view .LVU29
+  39:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   (void)parameter_id;
+ 167              		.loc 1 39 1 is_stmt 0 view .LVU30
+ 168 0000 10B5     		push	{r4, lr}
+ 169              		.cfi_def_cfa_offset 8
+ 170              		.cfi_offset 4, -8
+ 171              		.cfi_offset 14, -4
+ 172 0002 0446     		mov	r4, r0
+ 173              		.loc 1 41 50 view .LVU31
+ 174 0004 0021     		movs	r1, #0
+ 175              	.LVL11:
+  39:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   (void)parameter_id;
+ 176              		.loc 1 39 1 view .LVU32
+ 177 0006 2DED028B 		vpush.64	{d8}
+ 178              		.cfi_def_cfa_offset 16
+ 179              		.cfi_offset 80, -16
+ 180              		.cfi_offset 81, -12
+ 181              		.loc 1 41 13 view .LVU33
+ 182 000a 90ED118A 		vldr.32	s16, [r0, #68]
+ 183              		.loc 1 41 50 view .LVU34
+ 184 000e FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 185              	.LVL12:
+ 186              		.loc 1 41 68 view .LVU35
+ 187 0012 94ED117A 		vldr.32	s14, [r4, #68]
+  42:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bits = (float)GetParameterAsBinnedValue(1);
+ 188              		.loc 1 42 44 view .LVU36
+ 189 0016 0121     		movs	r1, #1
+  41:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_level = m_levelMin + (GetParameterAsMagnitude(0) * (m_levelMax - m_levelMin));
+ 190              		.loc 1 41 68 view .LVU37
+ 191 0018 D4ED127A 		vldr.32	s15, [r4, #72]
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 6
+
+
+ 192              		.loc 1 42 44 view .LVU38
+ 193 001c 2046     		mov	r0, r4
+  41:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_level = m_levelMin + (GetParameterAsMagnitude(0) * (m_levelMax - m_levelMin));
+ 194              		.loc 1 41 68 view .LVU39
+ 195 001e 77EEC77A 		vsub.f32	s15, s15, s14
+  41:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_level = m_levelMin + (GetParameterAsMagnitude(0) * (m_levelMax - m_levelMin));
+ 196              		.loc 1 41 24 view .LVU40
+ 197 0022 A0EE278A 		vfma.f32	s16, s0, s15
+  41:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_level = m_levelMin + (GetParameterAsMagnitude(0) * (m_levelMax - m_levelMin));
+ 198              		.loc 1 41 11 view .LVU41
+ 199 0026 84ED158A 		vstr.32	s16, [r4, #84]
+ 200              		.loc 1 42 3 is_stmt 1 view .LVU42
+ 201              		.loc 1 42 44 is_stmt 0 view .LVU43
+ 202 002a FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi
+ 203              	.LVL13:
+ 204 002e 07EE900A 		vmov	s15, r0	@ int
+  43:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_cutoff = m_cutoffMin + GetParameterAsMagnitude(2) * (m_cutoffMax - m_cutoffMin);
+ 205              		.loc 1 43 51 view .LVU44
+ 206 0032 0221     		movs	r1, #2
+ 207 0034 2046     		mov	r0, r4
+  42:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bits = (float)GetParameterAsBinnedValue(1);
+ 208              		.loc 1 42 12 view .LVU45
+ 209 0036 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 210              		.loc 1 43 14 view .LVU46
+ 211 003a 94ED138A 		vldr.32	s16, [r4, #76]
+  42:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bits = (float)GetParameterAsBinnedValue(1);
+ 212              		.loc 1 42 12 view .LVU47
+ 213 003e C4ED167A 		vstr.32	s15, [r4, #88]
+ 214              		.loc 1 43 3 is_stmt 1 view .LVU48
+ 215              		.loc 1 43 51 is_stmt 0 view .LVU49
+ 216 0042 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+ 217              	.LVL14:
+ 218              		.loc 1 43 70 view .LVU50
+ 219 0046 D4ED137A 		vldr.32	s15, [r4, #76]
+ 220 004a 94ED147A 		vldr.32	s14, [r4, #80]
+ 221              	.LBB46:
+ 222              	.LBB47:
+  24:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     /** Initializes the Tone module.
+  25:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         sample_rate - The sample rate of the audio engine being run. 
+  26:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     */
+  27:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     void Init(float sample_rate);
+  28:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+  29:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+  30:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     /** Processes one sample through the filter and returns one sample.
+  31:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         in - input signal 
+  32:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     */
+  33:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     float Process(float in);
+  34:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+  35:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     /** Sets the cutoff frequency or half-way point of the filter.
+  36:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
+  37:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         \param freq - frequency value in Hz. Range: Any positive value.
+  38:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     */
+  39:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     inline void SetFreq(float freq)
+  40:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     {
+  41:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         freq_ = freq;
+  42:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         CalculateCoefficients();
+ 223              		.loc 3 42 30 view .LVU51
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 7
+
+
+ 224 004e 04F12400 		add	r0, r4, #36
+ 225              	.LBE47:
+ 226              	.LBE46:
+ 227              		.loc 1 43 70 view .LVU52
+ 228 0052 37EE677A 		vsub.f32	s14, s14, s15
+ 229              		.loc 1 43 26 view .LVU53
+ 230 0056 F0EE487A 		vmov.f32	s15, s16
+ 231 005a E0EE077A 		vfma.f32	s15, s0, s14
+ 232              		.loc 1 43 12 view .LVU54
+ 233 005e C4ED177A 		vstr.32	s15, [r4, #92]
+  44:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  45:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_tone.SetFreq(m_cutoff);
+ 234              		.loc 1 45 3 is_stmt 1 view .LVU55
+ 235              	.LVL15:
+ 236              	.LBB49:
+ 237              	.LBI46:
+  39:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     {
+ 238              		.loc 3 39 17 view .LVU56
+ 239              	.LBB48:
+  41:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         CalculateCoefficients();
+ 240              		.loc 3 41 9 view .LVU57
+  41:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         CalculateCoefficients();
+ 241              		.loc 3 41 15 is_stmt 0 view .LVU58
+ 242 0062 C4ED0C7A 		vstr.32	s15, [r4, #48]
+ 243              		.loc 3 42 9 is_stmt 1 view .LVU59
+ 244              		.loc 3 42 30 is_stmt 0 view .LVU60
+ 245 0066 FFF7FEFF 		bl	_ZN7daisysp4Tone21CalculateCoefficientsEv
+ 246              	.LVL16:
+ 247              		.loc 3 42 30 view .LVU61
+ 248              	.LBE48:
+ 249              	.LBE49:
+  46:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bitcrusher.setNumberOfBits(m_bits);
+ 250              		.loc 1 46 3 is_stmt 1 view .LVU62
+ 251              	.LBB50:
+ 252              	.LBB51:
+  24:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   void Init() { quant = 65536.0; } // need some default value
+  26:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   float Process(float in) { return truncf(in * quant) / quant; }
+  28:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+  29:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   void setNumberOfBits(float nBits)
+  30:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   {
+  31:gml/GuitarPedal/Effect-Modules/crusher_module.h ****     if (nBits < 1.0) {
+ 253              		.loc 2 31 5 is_stmt 0 view .LVU63
+ 254 006a F7EE007A 		vmov.f32	s15, #1.0e+0
+ 255              	.LBE51:
+ 256              	.LBE50:
+ 257              		.loc 1 46 31 view .LVU64
+ 258 006e D4ED160A 		vldr.32	s1, [r4, #88]
+ 259              	.LVL17:
+ 260              	.LBB54:
+ 261              	.LBI50:
+  29:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   {
+ 262              		.loc 2 29 8 is_stmt 1 view .LVU65
+ 263              	.LBB52:
+ 264              		.loc 2 31 5 view .LVU66
+ 265 0072 F4EEE70A 		vcmpe.f32	s1, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 8
+
+
+ 266 0076 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 267 007a 10D4     		bmi	.L13
+  32:gml/GuitarPedal/Effect-Modules/crusher_module.h ****       nBits = 1.0;
+  33:gml/GuitarPedal/Effect-Modules/crusher_module.h ****     } else if (nBits > 32.0) {
+ 268              		.loc 2 33 12 view .LVU67
+ 269 007c DFED097A 		vldr.32	s15, .L16
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.h ****       nBits = 32.0;
+ 270              		.loc 2 34 13 is_stmt 0 view .LVU68
+ 271 0080 F4EE670A 		vcmp.f32	s1, s15
+ 272 0084 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 273 0088 77FEA00A 		vselgt.f32	s1, s15, s1
+ 274              	.LVL18:
+ 275              	.L11:
+  35:gml/GuitarPedal/Effect-Modules/crusher_module.h ****     }
+  36:gml/GuitarPedal/Effect-Modules/crusher_module.h ****     quant = powf(2.0, nBits);
+ 276              		.loc 2 36 5 is_stmt 1 view .LVU69
+ 277              		.loc 2 36 17 is_stmt 0 view .LVU70
+ 278 008c B0EE000A 		vmov.f32	s0, #2.0e+0
+ 279 0090 FFF7FEFF 		bl	powf
+ 280              	.LVL19:
+ 281              		.loc 2 36 11 view .LVU71
+ 282 0094 84ED100A 		vstr.32	s0, [r4, #64]
+ 283              	.LVL20:
+ 284              		.loc 2 36 11 view .LVU72
+ 285              	.LBE52:
+ 286              	.LBE54:
+  47:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 287              		.loc 1 47 1 view .LVU73
+ 288 0098 BDEC028B 		vldm	sp!, {d8}
+ 289              		.cfi_remember_state
+ 290              		.cfi_restore 80
+ 291              		.cfi_restore 81
+ 292              		.cfi_def_cfa_offset 8
+ 293 009c 10BD     		pop	{r4, pc}
+ 294              	.LVL21:
+ 295              	.L13:
+ 296              		.cfi_restore_state
+ 297              	.LBB55:
+ 298              	.LBB53:
+  32:gml/GuitarPedal/Effect-Modules/crusher_module.h ****     } else if (nBits > 32.0) {
+ 299              		.loc 2 32 13 view .LVU74
+ 300 009e F0EE670A 		vmov.f32	s1, s15
+ 301              	.LVL22:
+  32:gml/GuitarPedal/Effect-Modules/crusher_module.h ****     } else if (nBits > 32.0) {
+ 302              		.loc 2 32 13 view .LVU75
+ 303 00a2 F3E7     		b	.L11
+ 304              	.L17:
+ 305              		.align	2
+ 306              	.L16:
+ 307 00a4 00000042 		.word	1107296256
+ 308              	.LBE53:
+ 309              	.LBE55:
+ 310              		.cfi_endproc
+ 311              	.LFE4752:
+ 313              		.section	.rodata._ZN10bkshepherd13CrusherModuleC2Ev.str1.4,"aMS",%progbits,1
+ 314              		.align	2
+ 315              	.LC0:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 9
+
+
+ 316 0000 43727573 		.ascii	"Crusher\000"
+ 316      68657200 
+ 317              		.section	.text._ZN10bkshepherd13CrusherModuleC2Ev,"ax",%progbits
+ 318              		.align	1
+ 319              		.p2align 2,,3
+ 320              		.global	_ZN10bkshepherd13CrusherModuleC2Ev
+ 321              		.syntax unified
+ 322              		.thumb
+ 323              		.thumb_func
+ 324              		.fpu fpv5-d16
+ 326              	_ZN10bkshepherd13CrusherModuleC2Ev:
+ 327              	.LVL23:
+ 328              	.LFB4745:
+  11:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_levelMin(0.01f),
+ 329              		.loc 1 11 1 is_stmt 1 view -0
+ 330              		.cfi_startproc
+ 331              		@ args = 0, pretend = 0, frame = 0
+ 332              		@ frame_needed = 0, uses_anonymous_args = 0
+  11:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_levelMin(0.01f),
+ 333              		.loc 1 11 1 is_stmt 0 view .LVU77
+ 334 0000 38B5     		push	{r3, r4, r5, lr}
+ 335              		.cfi_def_cfa_offset 16
+ 336              		.cfi_offset 3, -16
+ 337              		.cfi_offset 4, -12
+ 338              		.cfi_offset 5, -8
+ 339              		.cfi_offset 14, -4
+  11:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****                                   m_levelMin(0.01f),
+ 340              		.loc 1 11 1 view .LVU78
+ 341 0002 0446     		mov	r4, r0
+ 342              	.LBB56:
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 343              		.loc 1 18 52 view .LVU79
+ 344 0004 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModuleC2Ev
+ 345              	.LVL24:
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 346              		.loc 1 18 52 view .LVU80
+ 347 0008 0D49     		ldr	r1, .L20
+ 348 000a 4FF07E52 		mov	r2, #1065353216
+ 349 000e 0D48     		ldr	r0, .L20+4
+ 350 0010 A164     		str	r1, [r4, #72]	@ float
+ 351 0012 0D49     		ldr	r1, .L20+8
+ 352 0014 0D4B     		ldr	r3, .L20+12
+ 353 0016 2060     		str	r0, [r4]
+ 354              	.LVL25:
+ 355              	.LBB57:
+ 356              	.LBI57:
+  22:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     ~Tone() {}
+ 357              		.loc 3 22 5 is_stmt 1 view .LVU81
+  22:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****     ~Tone() {}
+ 358              		.loc 3 22 5 is_stmt 0 view .LVU82
+ 359              	.LBE57:
+ 360              	.LBB58:
+ 361              	.LBI58:
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   ~Bitcrusher() {}
+ 362              		.loc 2 22 3 is_stmt 1 view .LVU83
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   ~Bitcrusher() {}
+ 363              		.loc 2 22 3 is_stmt 0 view .LVU84
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 10
+
+
+ 364              	.LBE58:
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 365              		.loc 1 18 52 view .LVU85
+ 366 0018 E164     		str	r1, [r4, #76]	@ float
+ 367 001a 4FF08441 		mov	r1, #1107296256
+ 368 001e 6265     		str	r2, [r4, #84]	@ float
+ 369 0020 0B48     		ldr	r0, .L20+16
+  21:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   this->InitParams(s_paramCount);
+ 370              		.loc 1 21 19 view .LVU86
+ 371 0022 0C4A     		ldr	r2, .L20+20
+  20:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_paramMetaData = s_metaData;
+ 372              		.loc 1 20 10 view .LVU87
+ 373 0024 0C4D     		ldr	r5, .L20+24
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 374              		.loc 1 18 52 view .LVU88
+ 375 0026 6064     		str	r0, [r4, #68]	@ float
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 376              		.loc 1 22 19 view .LVU89
+ 377 0028 2046     		mov	r0, r4
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 378              		.loc 1 18 52 view .LVU90
+ 379 002a A165     		str	r1, [r4, #88]	@ float
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 380              		.loc 1 22 19 view .LVU91
+ 381 002c 0321     		movs	r1, #3
+  18:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 382              		.loc 1 18 52 view .LVU92
+ 383 002e 2365     		str	r3, [r4, #80]	@ float
+ 384 0030 E365     		str	r3, [r4, #92]	@ float
+  20:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_paramMetaData = s_metaData;
+ 385              		.loc 1 20 3 is_stmt 1 view .LVU93
+  20:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_paramMetaData = s_metaData;
+ 386              		.loc 1 20 10 is_stmt 0 view .LVU94
+ 387 0032 6560     		str	r5, [r4, #4]
+  21:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   this->InitParams(s_paramCount);
+ 388              		.loc 1 21 3 is_stmt 1 view .LVU95
+  21:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   this->InitParams(s_paramCount);
+ 389              		.loc 1 21 19 is_stmt 0 view .LVU96
+ 390 0034 2261     		str	r2, [r4, #16]
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 391              		.loc 1 22 3 is_stmt 1 view .LVU97
+  22:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 392              		.loc 1 22 19 is_stmt 0 view .LVU98
+ 393 0036 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule10InitParamsEi
+ 394              	.LVL26:
+ 395              	.LBE56:
+  23:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+ 396              		.loc 1 23 1 view .LVU99
+ 397 003a 2046     		mov	r0, r4
+ 398 003c 38BD     		pop	{r3, r4, r5, pc}
+ 399              	.LVL27:
+ 400              	.L21:
+  23:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+ 401              		.loc 1 23 1 view .LVU100
+ 402 003e 00BF     		.align	2
+ 403              	.L20:
+ 404 0040 0000A041 		.word	1101004800
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 11
+
+
+ 405 0044 08000000 		.word	.LANCHOR0+8
+ 406 0048 0000FA43 		.word	1140457472
+ 407 004c 00409C46 		.word	1184645120
+ 408 0050 0AD7233C 		.word	1008981770
+ 409 0054 00000000 		.word	.LANCHOR1
+ 410 0058 00000000 		.word	.LC0
+ 411              		.cfi_endproc
+ 412              	.LFE4745:
+ 414              		.global	_ZN10bkshepherd13CrusherModuleC1Ev
+ 415              		.thumb_set _ZN10bkshepherd13CrusherModuleC1Ev,_ZN10bkshepherd13CrusherModuleC2Ev
+ 416              		.section	.text._ZN10bkshepherd13CrusherModule4InitEf,"ax",%progbits
+ 417              		.align	1
+ 418              		.p2align 2,,3
+ 419              		.global	_ZN10bkshepherd13CrusherModule4InitEf
+ 420              		.syntax unified
+ 421              		.thumb
+ 422              		.thumb_func
+ 423              		.fpu fpv5-d16
+ 425              	_ZN10bkshepherd13CrusherModule4InitEf:
+ 426              	.LVL28:
+ 427              	.LFB4751:
+  30:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::Init(sample_rate);
+ 428              		.loc 1 30 1 is_stmt 1 view -0
+ 429              		.cfi_startproc
+ 430              		@ args = 0, pretend = 0, frame = 0
+ 431              		@ frame_needed = 0, uses_anonymous_args = 0
+  31:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_tone.Init(sample_rate);
+ 432              		.loc 1 31 3 view .LVU102
+  30:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::Init(sample_rate);
+ 433              		.loc 1 30 1 is_stmt 0 view .LVU103
+ 434 0000 38B5     		push	{r3, r4, r5, lr}
+ 435              		.cfi_def_cfa_offset 16
+ 436              		.cfi_offset 3, -16
+ 437              		.cfi_offset 4, -12
+ 438              		.cfi_offset 5, -8
+ 439              		.cfi_offset 14, -4
+ 440 0002 2DED028B 		vpush.64	{d8}
+ 441              		.cfi_def_cfa_offset 24
+ 442              		.cfi_offset 80, -24
+ 443              		.cfi_offset 81, -20
+  30:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::Init(sample_rate);
+ 444              		.loc 1 30 1 view .LVU104
+ 445 0006 B0EE408A 		vmov.f32	s16, s0
+ 446 000a 0546     		mov	r5, r0
+  31:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_tone.Init(sample_rate);
+ 447              		.loc 1 31 25 view .LVU105
+ 448 000c FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule4InitEf
+ 449              	.LVL29:
+  32:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bitcrusher.Init();
+ 450              		.loc 1 32 3 is_stmt 1 view .LVU106
+ 451              	.LBB59:
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+ 452              		.loc 1 34 11 is_stmt 0 view .LVU107
+ 453 0010 0024     		movs	r4, #0
+ 454              	.LBE59:
+  32:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bitcrusher.Init();
+ 455              		.loc 1 32 14 view .LVU108
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 12
+
+
+ 456 0012 05F12400 		add	r0, r5, #36
+ 457 0016 B0EE480A 		vmov.f32	s0, s16
+ 458 001a FFF7FEFF 		bl	_ZN7daisysp4Tone4InitEf
+ 459              	.LVL30:
+  33:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   for(int i = 0; i < s_paramCount; ++i)
+ 460              		.loc 1 33 3 is_stmt 1 view .LVU109
+ 461              	.LBB60:
+ 462              	.LBI60:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 463              		.loc 2 25 8 view .LVU110
+ 464              	.LBB61:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 465              		.loc 2 25 17 view .LVU111
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 466              		.loc 2 25 23 is_stmt 0 view .LVU112
+ 467 001e 4FF08F43 		mov	r3, #1199570944
+ 468 0022 2B64     		str	r3, [r5, #64]	@ float
+ 469              	.LVL31:
+  25:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 470              		.loc 2 25 23 view .LVU113
+ 471              	.LBE61:
+ 472              	.LBE60:
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+ 473              		.loc 1 34 3 is_stmt 1 view .LVU114
+ 474              	.LBB62:
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+ 475              		.loc 1 34 20 view .LVU115
+ 476              	.L23:
+  35:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 477              		.loc 1 35 5 discriminator 2 view .LVU116
+  35:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 478              		.loc 1 35 23 is_stmt 0 discriminator 2 view .LVU117
+ 479 0024 2B68     		ldr	r3, [r5]
+  35:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 480              		.loc 1 35 21 discriminator 2 view .LVU118
+ 481 0026 2146     		mov	r1, r4
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+ 482              		.loc 1 34 3 discriminator 2 view .LVU119
+ 483 0028 0134     		adds	r4, r4, #1
+ 484              	.LVL32:
+  35:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 485              		.loc 1 35 21 discriminator 2 view .LVU120
+ 486 002a 2846     		mov	r0, r5
+ 487 002c DB6A     		ldr	r3, [r3, #44]
+ 488 002e 9847     		blx	r3
+ 489              	.LVL33:
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+ 490              		.loc 1 34 3 is_stmt 1 discriminator 2 view .LVU121
+  34:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****     ParameterChanged(i);
+ 491              		.loc 1 34 20 discriminator 2 view .LVU122
+ 492 0030 032C     		cmp	r4, #3
+ 493 0032 F7D1     		bne	.L23
+ 494              	.LBE62:
+  36:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+ 495              		.loc 1 36 1 is_stmt 0 view .LVU123
+ 496 0034 BDEC028B 		vldm	sp!, {d8}
+ 497              		.cfi_restore 80
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 13
+
+
+ 498              		.cfi_restore 81
+ 499              		.cfi_def_cfa_offset 16
+ 500              	.LVL34:
+  36:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+ 501              		.loc 1 36 1 view .LVU124
+ 502 0038 38BD     		pop	{r3, r4, r5, pc}
+  36:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+ 503              		.loc 1 36 1 view .LVU125
+ 504              		.cfi_endproc
+ 505              	.LFE4751:
+ 507 003a 00BF     		.section	.text._ZN10bkshepherd13CrusherModule11ProcessMonoEf,"ax",%progbits
+ 508              		.align	1
+ 509              		.p2align 2,,3
+ 510              		.global	_ZN10bkshepherd13CrusherModule11ProcessMonoEf
+ 511              		.syntax unified
+ 512              		.thumb
+ 513              		.thumb_func
+ 514              		.fpu fpv5-d16
+ 516              	_ZN10bkshepherd13CrusherModule11ProcessMonoEf:
+ 517              	.LVL35:
+ 518              	.LFB4753:
+  48:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  49:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** void CrusherModule::ProcessMono(float in)
+  50:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 519              		.loc 1 50 1 is_stmt 1 view -0
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 0
+ 522              		@ frame_needed = 0, uses_anonymous_args = 0
+  51:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::ProcessMono(in);
+ 523              		.loc 1 51 3 view .LVU127
+  50:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::ProcessMono(in);
+ 524              		.loc 1 50 1 is_stmt 0 view .LVU128
+ 525 0000 10B5     		push	{r4, lr}
+ 526              		.cfi_def_cfa_offset 8
+ 527              		.cfi_offset 4, -8
+ 528              		.cfi_offset 14, -4
+ 529 0002 0446     		mov	r4, r0
+ 530 0004 2DED028B 		vpush.64	{d8}
+ 531              		.cfi_def_cfa_offset 16
+ 532              		.cfi_offset 80, -16
+ 533              		.cfi_offset 81, -12
+  50:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::ProcessMono(in);
+ 534              		.loc 1 50 1 view .LVU129
+ 535 0008 B0EE408A 		vmov.f32	s16, s0
+ 536              		.loc 1 51 32 view .LVU130
+ 537 000c FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule11ProcessMonoEf
+ 538              	.LVL36:
+  52:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   float out = m_bitcrusher.Process(in);
+ 539              		.loc 1 52 3 is_stmt 1 view .LVU131
+ 540              	.LBB63:
+ 541              	.LBI63:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 542              		.loc 2 27 9 view .LVU132
+ 543              	.LBB64:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 544              		.loc 2 27 29 view .LVU133
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 14
+
+
+ 545              		.loc 2 27 48 is_stmt 0 view .LVU134
+ 546 0010 94ED107A 		vldr.32	s14, [r4, #64]
+ 547              	.LBE64:
+ 548              	.LBE63:
+  53:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = m_audioLeft = out * m_level;
+ 549              		.loc 1 53 36 view .LVU135
+ 550 0014 D4ED156A 		vldr.32	s13, [r4, #84]
+ 551              	.LBB67:
+ 552              	.LBB65:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 553              		.loc 2 27 42 view .LVU136
+ 554 0018 28EE078A 		vmul.f32	s16, s16, s14
+ 555              	.LVL37:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 556              		.loc 2 27 42 view .LVU137
+ 557 001c B6EEC88A 		vrintz.f32	s16, s16
+ 558              	.LVL38:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 559              		.loc 2 27 42 view .LVU138
+ 560              	.LBE65:
+ 561              	.LBE67:
+ 562              		.loc 1 53 3 is_stmt 1 view .LVU139
+ 563              	.LBB68:
+ 564              	.LBB66:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 565              		.loc 2 27 57 is_stmt 0 view .LVU140
+ 566 0020 C8EE077A 		vdiv.f32	s15, s16, s14
+ 567              	.LVL39:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 568              		.loc 2 27 57 view .LVU141
+ 569              	.LBE66:
+ 570              	.LBE68:
+  54:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 571              		.loc 1 54 1 view .LVU142
+ 572 0024 BDEC028B 		vldm	sp!, {d8}
+ 573              		.cfi_restore 80
+ 574              		.cfi_restore 81
+ 575              		.cfi_def_cfa_offset 8
+  53:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = m_audioLeft = out * m_level;
+ 576              		.loc 1 53 36 view .LVU143
+ 577 0028 67EEA67A 		vmul.f32	s15, s15, s13
+ 578              	.LVL40:
+  53:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = m_audioLeft = out * m_level;
+ 579              		.loc 1 53 30 view .LVU144
+ 580 002c C4ED057A 		vstr.32	s15, [r4, #20]
+  53:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = m_audioLeft = out * m_level;
+ 581              		.loc 1 53 16 view .LVU145
+ 582 0030 C4ED067A 		vstr.32	s15, [r4, #24]
+ 583              		.loc 1 54 1 view .LVU146
+ 584 0034 10BD     		pop	{r4, pc}
+ 585              		.loc 1 54 1 view .LVU147
+ 586              		.cfi_endproc
+ 587              	.LFE4753:
+ 589 0036 00BF     		.section	.text._ZN10bkshepherd13CrusherModule13ProcessStereoEff,"ax",%progbits
+ 590              		.align	1
+ 591              		.p2align 2,,3
+ 592              		.global	_ZN10bkshepherd13CrusherModule13ProcessStereoEff
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 15
+
+
+ 593              		.syntax unified
+ 594              		.thumb
+ 595              		.thumb_func
+ 596              		.fpu fpv5-d16
+ 598              	_ZN10bkshepherd13CrusherModule13ProcessStereoEff:
+ 599              	.LVL41:
+ 600              	.LFB4754:
+  55:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** 
+  56:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** void CrusherModule::ProcessStereo(float inL, float inR)
+  57:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
+ 601              		.loc 1 57 1 is_stmt 1 view -0
+ 602              		.cfi_startproc
+ 603              		@ args = 0, pretend = 0, frame = 0
+ 604              		@ frame_needed = 0, uses_anonymous_args = 0
+  58:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::ProcessStereo(inL, inR);
+ 605              		.loc 1 58 3 view .LVU149
+  57:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::ProcessStereo(inL, inR);
+ 606              		.loc 1 57 1 is_stmt 0 view .LVU150
+ 607 0000 10B5     		push	{r4, lr}
+ 608              		.cfi_def_cfa_offset 8
+ 609              		.cfi_offset 4, -8
+ 610              		.cfi_offset 14, -4
+ 611 0002 0446     		mov	r4, r0
+ 612 0004 2DED028B 		vpush.64	{d8}
+ 613              		.cfi_def_cfa_offset 16
+ 614              		.cfi_offset 80, -16
+ 615              		.cfi_offset 81, -12
+  57:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   BaseEffectModule::ProcessStereo(inL, inR);
+ 616              		.loc 1 57 1 view .LVU151
+ 617 0008 F0EE408A 		vmov.f32	s17, s0
+ 618 000c B0EE608A 		vmov.f32	s16, s1
+ 619              		.loc 1 58 34 view .LVU152
+ 620 0010 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule13ProcessStereoEff
+ 621              	.LVL42:
+  59:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   float outL = m_bitcrusher.Process(inL);
+ 622              		.loc 1 59 3 is_stmt 1 view .LVU153
+ 623              	.LBB69:
+ 624              	.LBI69:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 625              		.loc 2 27 9 view .LVU154
+ 626              	.LBB70:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 627              		.loc 2 27 29 view .LVU155
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 628              		.loc 2 27 48 is_stmt 0 view .LVU156
+ 629 0014 D4ED107A 		vldr.32	s15, [r4, #64]
+ 630              	.LBE70:
+ 631              	.LBE69:
+  60:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   float outR = m_bitcrusher.Process(inR);
+  61:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioLeft = outL * m_level;
+ 632              		.loc 1 61 24 view .LVU157
+ 633 0018 94ED156A 		vldr.32	s12, [r4, #84]
+ 634              	.LBB74:
+ 635              	.LBB71:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 636              		.loc 2 27 42 view .LVU158
+ 637 001c 68EEA78A 		vmul.f32	s17, s17, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 16
+
+
+ 638              	.LVL43:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 639              		.loc 2 27 42 view .LVU159
+ 640              	.LBE71:
+ 641              	.LBE74:
+ 642              	.LBB75:
+ 643              	.LBB76:
+ 644 0020 28EE278A 		vmul.f32	s16, s16, s15
+ 645              	.LVL44:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 646              		.loc 2 27 42 view .LVU160
+ 647              	.LBE76:
+ 648              	.LBE75:
+ 649              	.LBB80:
+ 650              	.LBB72:
+ 651 0024 F6EEE88A 		vrintz.f32	s17, s17
+ 652              	.LVL45:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 653              		.loc 2 27 42 view .LVU161
+ 654              	.LBE72:
+ 655              	.LBE80:
+  60:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   float outR = m_bitcrusher.Process(inR);
+ 656              		.loc 1 60 3 is_stmt 1 view .LVU162
+ 657              	.LBB81:
+ 658              	.LBI75:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 659              		.loc 2 27 9 view .LVU163
+ 660              	.LBB77:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 661              		.loc 2 27 29 view .LVU164
+ 662              	.LBE77:
+ 663              	.LBE81:
+ 664              	.LBB82:
+ 665              	.LBB73:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 666              		.loc 2 27 57 is_stmt 0 view .LVU165
+ 667 0028 C8EEA76A 		vdiv.f32	s13, s17, s15
+ 668              	.LVL46:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 669              		.loc 2 27 57 view .LVU166
+ 670              	.LBE73:
+ 671              	.LBE82:
+ 672              	.LBB83:
+ 673              	.LBB78:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 674              		.loc 2 27 42 view .LVU167
+ 675 002c B6EEC88A 		vrintz.f32	s16, s16
+ 676              	.LVL47:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 677              		.loc 2 27 42 view .LVU168
+ 678              	.LBE78:
+ 679              	.LBE83:
+ 680              		.loc 1 61 3 is_stmt 1 view .LVU169
+ 681              	.LBB84:
+ 682              	.LBB79:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 683              		.loc 2 27 57 is_stmt 0 view .LVU170
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 17
+
+
+ 684 0030 88EE277A 		vdiv.f32	s14, s16, s15
+ 685              	.LVL48:
+  27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
+ 686              		.loc 2 27 57 view .LVU171
+ 687              	.LBE79:
+ 688              	.LBE84:
+  62:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = outR * m_level;
+  63:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** }
+ 689              		.loc 1 63 1 view .LVU172
+ 690 0034 BDEC028B 		vldm	sp!, {d8}
+ 691              		.cfi_restore 80
+ 692              		.cfi_restore 81
+ 693              		.cfi_def_cfa_offset 8
+  61:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = outR * m_level;
+ 694              		.loc 1 61 22 view .LVU173
+ 695 0038 66EE866A 		vmul.f32	s13, s13, s12
+ 696              	.LVL49:
+  61:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = outR * m_level;
+ 697              		.loc 1 61 15 view .LVU174
+ 698 003c C4ED056A 		vstr.32	s13, [r4, #20]
+  62:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = outR * m_level;
+ 699              		.loc 1 62 3 is_stmt 1 view .LVU175
+  62:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = outR * m_level;
+ 700              		.loc 1 62 23 is_stmt 0 view .LVU176
+ 701 0040 67EE067A 		vmul.f32	s15, s14, s12
+ 702              	.LVL50:
+  62:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_audioRight = outR * m_level;
+ 703              		.loc 1 62 16 view .LVU177
+ 704 0044 C4ED067A 		vstr.32	s15, [r4, #24]
+ 705              		.loc 1 63 1 view .LVU178
+ 706 0048 10BD     		pop	{r4, pc}
+ 707              		.loc 1 63 1 view .LVU179
+ 708              		.cfi_endproc
+ 709              	.LFE4754:
+ 711              		.global	_ZTVN10bkshepherd13CrusherModuleE
+ 712 004a 00BF     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 713              		.align	2
+ 714              	.LC1:
+ 715 0000 4C657665 		.ascii	"Level\000"
+ 715      6C00
+ 716 0006 0000     		.align	2
+ 717              	.LC2:
+ 718 0008 42697473 		.ascii	"Bits\000"
+ 718      00
+ 719 000d 000000   		.align	2
+ 720              	.LC3:
+ 721 0010 4375746F 		.ascii	"Cutoff\000"
+ 721      666600
+ 722              		.section	.rodata._ZL10s_metaData,"a"
+ 723              		.align	2
+ 724              		.set	.LANCHOR1,. + 0
+ 727              	_ZL10s_metaData:
+ 728 0000 00000000 		.word	.LC1
+ 729 0004 01       		.byte	1
+ 730 0005 000000   		.space	3
+ 731 0008 00000000 		.word	0
+ 732 000c 00000000 		.space	4
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 18
+
+
+ 733 0010 28       		.byte	40
+ 734 0011 000000   		.space	3
+ 735 0014 00000000 		.word	0
+ 736 0018 FFFFFFFF 		.word	-1
+ 737 001c 08000000 		.word	.LC2
+ 738 0020 03       		.byte	3
+ 739 0021 000000   		.space	3
+ 740 0024 20000000 		.word	32
+ 741 0028 00000000 		.space	4
+ 742 002c 20       		.byte	32
+ 743 002d 000000   		.space	3
+ 744 0030 01000000 		.word	1
+ 745 0034 FFFFFFFF 		.word	-1
+ 746 0038 10000000 		.word	.LC3
+ 747 003c 01       		.byte	1
+ 748 003d 000000   		.space	3
+ 749 0040 00000000 		.word	0
+ 750 0044 00000000 		.space	4
+ 751 0048 40       		.byte	64
+ 752 0049 000000   		.space	3
+ 753 004c 02000000 		.word	2
+ 754 0050 FFFFFFFF 		.word	-1
+ 755              		.section	.rodata._ZTVN10bkshepherd13CrusherModuleE,"a"
+ 756              		.align	2
+ 757              		.set	.LANCHOR0,. + 0
+ 760              	_ZTVN10bkshepherd13CrusherModuleE:
+ 761 0000 00000000 		.word	0
+ 762 0004 00000000 		.word	0
+ 763 0008 00000000 		.word	_ZN10bkshepherd13CrusherModuleD1Ev
+ 764 000c 00000000 		.word	_ZN10bkshepherd13CrusherModuleD0Ev
+ 765 0010 00000000 		.word	_ZN10bkshepherd13CrusherModule4InitEf
+ 766 0014 00000000 		.word	_ZN10bkshepherd13CrusherModule11ProcessMonoEf
+ 767 0018 00000000 		.word	_ZN10bkshepherd13CrusherModule13ProcessStereoEff
+ 768 001c 00000000 		.word	_ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi
+ 769 0020 00000000 		.word	_ZN10bkshepherd16BaseEffectModule10SetEnabledEb
+ 770 0024 00000000 		.word	_ZN10bkshepherd16BaseEffectModule8SetTempoEm
+ 771 0028 00000000 		.word	_ZN10bkshepherd16BaseEffectModule8UpdateUIEf
+ 772 002c 00000000 		.word	_ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb
+ 773 0030 00000000 		.word	_ZN10bkshepherd16BaseEffectModule10InitParamsEi
+ 774 0034 00000000 		.word	_ZN10bkshepherd13CrusherModule16ParameterChangedEi
+ 775              		.text
+ 776              	.Letext0:
+ 777              		.file 4 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 778              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 779              		.file 6 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 780              		.file 7 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 781              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 782              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 783              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 784              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 785              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 786              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 787              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cwchar"
+ 788              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 789              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 790              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 791              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\clocale"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 19
+
+
+ 792              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 793              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\basic_stri
+ 794              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\charconv.h
+ 795              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 796              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 797              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+ 798              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 799              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 800              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 801              		.file 28 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 802              		.file 29 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 803              		.file 30 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 804              		.file 31 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 805              		.file 32 "../../DaisySP/Source/Control/adenv.h"
+ 806              		.file 33 "../../DaisySP/Source/Utility/dsp.h"
+ 807              		.file 34 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 808              		.file 35 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\wchar.h"
+ 809              		.file 36 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\locale.h"
+ 810              		.file 37 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 811              		.file 38 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 812              		.file 39 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 813              		.file 40 "../../libDaisy/src/daisy_core.h"
+ 814              		.file 41 "../../libDaisy/src/util/wav_format.h"
+ 815              		.file 42 "../../libDaisy/src/dev/max11300.h"
+ 816              		.file 43 "../../libDaisy/src/daisy_seed.h"
+ 817              		.file 44 "gml/GuitarPedal/Effect-Modules/base_effect_module.h"
+ 818              		.file 45 "../../libDaisy/src/dev/sr_595.h"
+ 819              		.file 46 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\new"
+ 820              		.file 47 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s 			page 20
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 crusher_module.cpp
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:17     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:26     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 _ZN10bkshepherd13CrusherModuleD2Ev
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:74     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000010 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:26     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 _ZN10bkshepherd13CrusherModuleD1Ev
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:81     .text._ZN10bkshepherd13CrusherModuleD0Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:89     .text._ZN10bkshepherd13CrusherModuleD0Ev:00000000 _ZN10bkshepherd13CrusherModuleD0Ev
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:145    .text._ZN10bkshepherd13CrusherModuleD0Ev:00000018 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:150    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:158    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:00000000 _ZN10bkshepherd13CrusherModule16ParameterChangedEi
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:307    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:000000a4 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:314    .rodata._ZN10bkshepherd13CrusherModuleC2Ev.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:318    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:326    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 _ZN10bkshepherd13CrusherModuleC2Ev
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:404    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000040 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:326    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 _ZN10bkshepherd13CrusherModuleC1Ev
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:417    .text._ZN10bkshepherd13CrusherModule4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:425    .text._ZN10bkshepherd13CrusherModule4InitEf:00000000 _ZN10bkshepherd13CrusherModule4InitEf
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:508    .text._ZN10bkshepherd13CrusherModule11ProcessMonoEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:516    .text._ZN10bkshepherd13CrusherModule11ProcessMonoEf:00000000 _ZN10bkshepherd13CrusherModule11ProcessMonoEf
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:590    .text._ZN10bkshepherd13CrusherModule13ProcessStereoEff:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:598    .text._ZN10bkshepherd13CrusherModule13ProcessStereoEff:00000000 _ZN10bkshepherd13CrusherModule13ProcessStereoEff
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:760    .rodata._ZTVN10bkshepherd13CrusherModuleE:00000000 _ZTVN10bkshepherd13CrusherModuleE
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:713    .rodata.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:723    .rodata._ZL10s_metaData:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:727    .rodata._ZL10s_metaData:00000000 _ZL10s_metaData
+C:\Users\aydan\AppData\Local\Temp\cc0roFSC.s:756    .rodata._ZTVN10bkshepherd13CrusherModuleE:00000000 $d
+
+UNDEFINED SYMBOLS
+_ZN10bkshepherd16BaseEffectModuleD2Ev
+_ZdlPvj
+_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+_ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi
+_ZN7daisysp4Tone21CalculateCoefficientsEv
+powf
+_ZN10bkshepherd16BaseEffectModuleC2Ev
+_ZN10bkshepherd16BaseEffectModule10InitParamsEi
+_ZN10bkshepherd16BaseEffectModule4InitEf
+_ZN7daisysp4Tone4InitEf
+_ZN10bkshepherd16BaseEffectModule11ProcessMonoEf
+_ZN10bkshepherd16BaseEffectModule13ProcessStereoEff
+_ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi
+_ZN10bkshepherd16BaseEffectModule10SetEnabledEb
+_ZN10bkshepherd16BaseEffectModule8SetTempoEm
+_ZN10bkshepherd16BaseEffectModule8UpdateUIEf
+_ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb

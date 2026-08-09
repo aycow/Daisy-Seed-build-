@@ -93,28 +93,28 @@ build/telemetry.o: src/telemetry.cpp \
  ../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  ../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  ../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hcd.h \
- src/telemetry.h src/app_config.h ../../libDaisy/src/daisy_seed.h \
- ../../libDaisy/src/daisy.h ../../libDaisy/src/daisy_core.h \
- ../../libDaisy/src/version.h ../../libDaisy/src/sys/system.h \
- ../../libDaisy/src/per/tim.h ../../libDaisy/src/per/qspi.h \
- ../../libDaisy/src/per/dac.h ../../libDaisy/src/per/gpio.h \
- ../../libDaisy/src/dev/leddriver.h ../../libDaisy/src/per/i2c.h \
- ../../libDaisy/src/dev/mpr121.h ../../libDaisy/src/dev/sdram.h \
- ../../libDaisy/src/dev/sr_4021.h ../../libDaisy/src/sys/system.h \
- ../../libDaisy/src/hid/audio.h ../../libDaisy/src/per/sai.h \
- ../../libDaisy/src/util/unique_id.h ../../libDaisy/src/per/adc.h \
- ../../libDaisy/src/per/uart.h ../../libDaisy/src/hid/midi.h \
- ../../libDaisy/src/util/ringbuffer.h ../../libDaisy/src/util/FIFO.h \
- ../../libDaisy/src/hid/midi_parser.h ../../libDaisy/src/hid/MidiEvent.h \
- ../../libDaisy/src/hid/usb_midi.h ../../libDaisy/src/hid/usb.h \
- ../../libDaisy/src/sys/dma.h ../../libDaisy/src/hid/encoder.h \
- ../../libDaisy/src/hid/switch.h ../../libDaisy/src/hid/switch3.h \
- ../../libDaisy/src/hid/ctrl.h ../../libDaisy/src/hid/gatein.h \
- ../../libDaisy/src/hid/parameter.h ../../libDaisy/src/hid/logger.h \
- ../../libDaisy/src/hid/logger_impl.h ../../libDaisy/src/hid/usb_host.h \
- ../../libDaisy/src/per/sdmmc.h ../../libDaisy/src/per/spi.h \
- ../../libDaisy/src/per/spiMultislave.h ../../libDaisy/src/per/rng.h \
- ../../libDaisy/src/hid/disp/display.h \
+ src/telemetry.h src/app_config.h src/diagnostic_config.h \
+ ../../libDaisy/src/daisy_seed.h ../../libDaisy/src/daisy.h \
+ ../../libDaisy/src/daisy_core.h ../../libDaisy/src/version.h \
+ ../../libDaisy/src/sys/system.h ../../libDaisy/src/per/tim.h \
+ ../../libDaisy/src/per/qspi.h ../../libDaisy/src/per/dac.h \
+ ../../libDaisy/src/per/gpio.h ../../libDaisy/src/dev/leddriver.h \
+ ../../libDaisy/src/per/i2c.h ../../libDaisy/src/dev/mpr121.h \
+ ../../libDaisy/src/dev/sdram.h ../../libDaisy/src/dev/sr_4021.h \
+ ../../libDaisy/src/sys/system.h ../../libDaisy/src/hid/audio.h \
+ ../../libDaisy/src/per/sai.h ../../libDaisy/src/util/unique_id.h \
+ ../../libDaisy/src/per/adc.h ../../libDaisy/src/per/uart.h \
+ ../../libDaisy/src/hid/midi.h ../../libDaisy/src/util/ringbuffer.h \
+ ../../libDaisy/src/util/FIFO.h ../../libDaisy/src/hid/midi_parser.h \
+ ../../libDaisy/src/hid/MidiEvent.h ../../libDaisy/src/hid/usb_midi.h \
+ ../../libDaisy/src/hid/usb.h ../../libDaisy/src/sys/dma.h \
+ ../../libDaisy/src/hid/encoder.h ../../libDaisy/src/hid/switch.h \
+ ../../libDaisy/src/hid/switch3.h ../../libDaisy/src/hid/ctrl.h \
+ ../../libDaisy/src/hid/gatein.h ../../libDaisy/src/hid/parameter.h \
+ ../../libDaisy/src/hid/logger.h ../../libDaisy/src/hid/logger_impl.h \
+ ../../libDaisy/src/hid/usb_host.h ../../libDaisy/src/per/sdmmc.h \
+ ../../libDaisy/src/per/spi.h ../../libDaisy/src/per/spiMultislave.h \
+ ../../libDaisy/src/per/rng.h ../../libDaisy/src/hid/disp/display.h \
  ../../libDaisy/src/util/oled_fonts.h \
  ../../libDaisy/src/hid/disp/graphics_common.h \
  ../../libDaisy/src/hid/disp/oled_display.h \
@@ -145,7 +145,7 @@ build/telemetry.o: src/telemetry.cpp \
  ../../libDaisy/src/per/qspi.h ../../libDaisy/src/util/VoctCalibration.h \
  ../../libDaisy/src/util/WaveTableLoader.h ../../libDaisy/src/sys/fatfs.h \
  ../../libDaisy/src/util/WavWriter.h src/controls.h src/control_mailbox.h \
- src/tuner.h
+ src/thermal_monitor.h src/tuner.h
 ../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 ../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h750xx.h:
 ../../libDaisy/Drivers/CMSIS/Include/core_cm7.h:
@@ -242,6 +242,7 @@ build/telemetry.o: src/telemetry.cpp \
 ../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_hcd.h:
 src/telemetry.h:
 src/app_config.h:
+src/diagnostic_config.h:
 ../../libDaisy/src/daisy_seed.h:
 ../../libDaisy/src/daisy.h:
 ../../libDaisy/src/daisy_core.h:
@@ -330,4 +331,5 @@ src/app_config.h:
 ../../libDaisy/src/util/WavWriter.h:
 src/controls.h:
 src/control_mailbox.h:
+src/thermal_monitor.h:
 src/tuner.h:

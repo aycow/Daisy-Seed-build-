@@ -1,0 +1,72 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccsK7Wdp.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"granulardelay_module.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              	.Letext0:
+  17              		.file 1 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+  18              		.file 2 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+  19              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+  20              		.file 4 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+  21              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+  22              		.file 6 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+  23              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+  24              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+  25              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+  26              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+  27              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+  28              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+  29              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+  30              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+  31              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+  32              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+  33              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+  34              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cwchar"
+  35              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\clocale"
+  36              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\basic_stri
+  37              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_tempbu
+  38              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+  39              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+  40              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+  41              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+  42              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+  43              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+  44              		.file 28 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+  45              		.file 29 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+  46              		.file 30 "../../libDaisy/src/daisy_core.h"
+  47              		.file 31 "../../libDaisy/src/util/wav_format.h"
+  48              		.file 32 "../../libDaisy/src/dev/max11300.h"
+  49              		.file 33 "../../libDaisy/src/daisy_seed.h"
+  50              		.file 34 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+  51              		.file 35 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+  52              		.file 36 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+  53              		.file 37 "gml/GuitarPedal/Effect-Modules/base_effect_module.h"
+  54              		.file 38 "../../DaisySP/Source/Control/adenv.h"
+  55              		.file 39 "../../DaisySP/Source/Utility/dsp.h"
+  56              		.file 40 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\wchar.h"
+  57              		.file 41 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\locale.h"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccsK7Wdp.s 			page 2
+
+
+  58              		.file 42 "<built-in>"
+  59              		.file 43 "../../libDaisy/src/dev/sr_595.h"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccsK7Wdp.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 granulardelay_module.cpp
+
+NO UNDEFINED SYMBOLS

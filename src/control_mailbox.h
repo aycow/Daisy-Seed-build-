@@ -8,6 +8,12 @@
 namespace app
 {
 
+enum class SystemMode : uint8_t
+{
+    Normal = 0,
+    ThermalShutdown = 1
+};
+
 // Compact requested-control state crossing from the foreground loop into the
 // audio interrupt. Keep this trivially copyable and small so a seqlock retry is
 // cheap and no dynamic allocation or mutex is needed.
@@ -15,11 +21,14 @@ struct ControlSnapshot
 {
     uint8_t effect;
     uint8_t bypass;
+    uint8_t system_mode;
+    uint8_t reserved;
     uint16_t parameters[config::kPhysicalPotCount];
 };
 
 static_assert(std::is_trivially_copyable<ControlSnapshot>::value, "ControlSnapshot must be copied by value");
 static_assert(sizeof(ControlSnapshot) <= 16, "ControlSnapshot must stay small for interrupt transfer");
+static_assert(sizeof(ControlSnapshot) == 10, "ControlSnapshot layout changed unexpectedly");
 
 // Single-writer/single-reader mailbox for the main loop -> audio callback handoff.
 // The main loop is the only writer, and the audio interrupt is the only reader.
@@ -44,7 +53,7 @@ class ControlMailbox
 
 inline ControlMailbox::ControlMailbox()
 : sequence_(0),
-  snapshot_{config::FX_TUNER, 0, {0, 0, 0}}
+  snapshot_{config::FX_TUNER, 0, (uint8_t)SystemMode::Normal, 0, {0, 0, 0}}
 {
 }
 

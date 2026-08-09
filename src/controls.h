@@ -98,6 +98,7 @@ class Controls
     // state, publishes only meaningful changes, and returns telemetry hints.
     ControlTelemetryState Process(daisy::DaisySeed& hw, uint32_t now_ms);
     void ForcePublish();
+    void RequestThermalShutdown();
 
   private:
     static uint16_t FloatToU16(float value);
@@ -115,6 +116,7 @@ class Controls
     int press_count_;
     uint8_t requested_effect_;
     bool requested_bypass_;
+    bool thermal_shutdown_requested_;
 
     // Filtered float values are used only in the main loop. The mailbox carries
     // fixed-point uint16_t parameters so the interrupt boundary never shares floats.

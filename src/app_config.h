@@ -1,5 +1,6 @@
 #pragma once
 
+#include "diagnostic_config.h"
 #include "daisy_seed.h"
 
 #include <stdint.h>
@@ -34,6 +35,37 @@ static constexpr uint32_t kPotTelemetryHeartbeatMs = 500;
 static constexpr uint32_t kTunerAnalysisPeriodMs = 80;
 static constexpr uint32_t kTunerDisabledHeartbeatMs = 1000;
 static constexpr uint32_t kMainLoopDelayMs = 1;
+
+// Conservative firmware policy thresholds. These are not absolute STM32H750
+// device limits and must be validated on the assembled hardware.
+#ifndef THERMAL_MONITOR_ENABLED
+#define THERMAL_MONITOR_ENABLED 1
+#endif
+#ifndef THERMAL_DEBUG_TELEMETRY
+#define THERMAL_DEBUG_TELEMETRY 0
+#endif
+static constexpr float kThermalWarningC = 80.0f;
+static constexpr float kThermalTripC = 90.0f;
+static constexpr float kThermalCriticalC = 100.0f;
+static constexpr float kThermalWarningHysteresisC = 5.0f;
+static constexpr float kThermalPlausibleMinC = -20.0f;
+static constexpr float kThermalPlausibleMaxC = 130.0f;
+static constexpr uint32_t kThermalSamplePeriodMs = 100;
+static constexpr int kThermalTripConsecutiveSamples = 3;
+static constexpr int kThermalWarningConsecutiveSamples = 3;
+static constexpr int kThermalInvalidConsecutiveSamples = 3;
+static constexpr int kThermalFilterLength = 4;
+static constexpr int kThermalAdcAverageCount = 8;
+static constexpr float kThermalAudioFadeMs = 10.0f;
+static constexpr uint32_t kThermalSensorStartupDelayMs = 1;
+static constexpr uint32_t kThermalAdcSamplingTime = ADC_SAMPLETIME_810CYCLES_5;
+static constexpr uint32_t kThermalAdcPollTimeoutMs = 2;
+static constexpr uint32_t kThermalFaultLoopDelayMs = 10;
+static constexpr uint32_t kThermalLedShortMs = 100;
+static constexpr uint32_t kThermalLedPauseMs = 700;
+static constexpr uint32_t kThermalDebugTelemetryPeriodMs = 500;
+static constexpr bool kThermalFaultMessagesEnabled = true;
+static constexpr bool kThermalWarningMessagesEnabled = false;
 
 // Effect/bypass transitions use a short linear ramp to avoid clicks while keeping
 // switching responsive on stage.
@@ -107,7 +139,11 @@ static constexpr daisy::Pin kUartRxPin = daisy::seed::D14;
 // final. Values are raw normalized ADC centers in logical throw order 1..6; this
 // ladder descends as the throw number increases.
 #ifndef AUDIO_CPU_LOAD_DEBUG
+#if DIAG_ENGINE_PROCESS_FX && DIAG_STAGE != DIAG_STAGE_PRODUCTION
+#define AUDIO_CPU_LOAD_DEBUG 1
+#else
 #define AUDIO_CPU_LOAD_DEBUG 0
+#endif
 #endif
 #ifndef ROTARY_CALIBRATION_MODE
 #define ROTARY_CALIBRATION_MODE 0

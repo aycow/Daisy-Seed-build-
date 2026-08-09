@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   30              		.loc 1 26 1 view -0
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 2
 
 
   33              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   61:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****             }
   62:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         }
   63:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 	}
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 3
 
 
   64:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  118:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     // Make sure this is a Binned Int type parameter
  119:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     if (m_paramMetaData[parameter_id].valueType != 3)
  120:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 4
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 4
 
 
  121:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         return NULL;
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  175:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     }
  176:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
  177:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     return bin;
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 5
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 5
 
 
  178:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  232:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         ParameterChanged(parameter_id);
  233:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     }
  234:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 6
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 6
 
 
  235:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  289:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  290:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         rawValue = 127;
  291:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 7
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 7
 
 
  292:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   96              		.cfi_endproc
   97              	.LFE2586:
   99 000a 00BF     		.section	.text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi,"ax",%progbits
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 8
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 8
 
 
  100              		.align	1
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  132              		.section	.text._ZN10bkshepherd16BaseEffectModule10SetEnabledEb,"ax",%progbits
  133              		.align	1
  134              		.p2align 2,,3
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 9
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 9
 
 
  135              		.global	_ZN10bkshepherd16BaseEffectModule10SetEnabledEb
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  349:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
  174              		.loc 1 349 1 is_stmt 0 view .LVU25
  175 0000 7047     		bx	lr
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 10
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 10
 
 
  176              		.cfi_endproc
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  220              		.cfi_endproc
  221              	.LFE2594:
  223 0002 00BF     		.section	.text._ZN10bkshepherd16BaseEffectModuleD2Ev,"ax",%progbits
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 11
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 11
 
 
  224              		.align	1
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   23:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
  269              		.loc 1 23 1 view .LVU40
  270              		.align	2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 12
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 12
 
 
  271              	.L20:
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   21:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 	}
  319              		.loc 1 21 9 view .LVU49
   21:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 	}
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 13
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 13
 
 
  320              		.loc 1 21 19 is_stmt 0 view .LVU50
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   38:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         delete [] m_params;
  369              		.loc 1 38 9 view .LVU58
  370 0004 C068     		ldr	r0, [r0, #12]
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 14
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 14
 
 
  371              	.LVL19:
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  409              		.loc 1 49 44 is_stmt 0 view .LVU74
  410 0020 FFF7FEFF 		bl	_Znaj
  411              	.LVL22:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 15
 
 
  412              	.LBB182:
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  452 0046 02EB010C 		add	ip, r2, r1
   54:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****             {
  453              		.loc 1 54 13 view .LVU89
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 16
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 16
 
 
  454 004a 002A     		cmp	r2, #0
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  498              		.cfi_offset 14, -4
  499 0004 95B0     		sub	sp, sp, #84
  500              		.cfi_def_cfa_offset 120
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 17
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 17
 
 
  366:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     // By Default, the UI for an Effect Module is no different than it would be for the normal
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   36:../../libDaisy/src/hid/disp/graphics_common.h ****     Rectangle(const Rectangle& other) { *this = other; }
   37:../../libDaisy/src/hid/disp/graphics_common.h **** 
   38:../../libDaisy/src/hid/disp/graphics_common.h ****     Rectangle& operator=(const Rectangle& other)
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 18
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 18
 
 
   39:../../libDaisy/src/hid/disp/graphics_common.h ****     {
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   64:../../libDaisy/src/hid/disp/graphics_common.h **** 
   65:../../libDaisy/src/hid/disp/graphics_common.h ****     Rectangle WithX(int16_t x) const { return {x, y_, width_, height_}; }
   66:../../libDaisy/src/hid/disp/graphics_common.h ****     Rectangle WithY(int16_t y) const { return {x_, y, width_, height_}; }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 19
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 19
 
 
   67:../../libDaisy/src/hid/disp/graphics_common.h ****     Rectangle WithWidth(int16_t width) const
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   96:../../libDaisy/src/hid/disp/graphics_common.h ****     {
   97:../../libDaisy/src/hid/disp/graphics_common.h ****         return {int16_t(x_ + sizeToReduce),
   98:../../libDaisy/src/hid/disp/graphics_common.h ****                 int16_t(y_ + sizeToReduce),
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 20
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 20
 
 
   99:../../libDaisy/src/hid/disp/graphics_common.h ****                 int16_t(width_ - 2 * sizeToReduce),
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  153:../../libDaisy/src/hid/disp/graphics_common.h ****             x_, int16_t(y_ + pxToTrim), width_, int16_t(height_ - pxToTrim)};
  154:../../libDaisy/src/hid/disp/graphics_common.h ****     }
  155:../../libDaisy/src/hid/disp/graphics_common.h **** 
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 21
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 21
 
 
  156:../../libDaisy/src/hid/disp/graphics_common.h ****     Rectangle WithTrimmedBottom(int16_t pxToTrim) const
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  196:../../libDaisy/src/hid/disp/graphics_common.h ****         const auto result = this->WithHeight(min(pxToRemove, height_));
  576              		.loc 2 196 9 view .LVU114
  577              		.loc 2 196 9 is_stmt 0 view .LVU115
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 22
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 22
 
 
  578              	.LBE321:
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  249:../../libDaisy/src/hid/disp/graphics_common.h ****                         height_};
  250:../../libDaisy/src/hid/disp/graphics_common.h ****             case Alignment::centered:
  251:../../libDaisy/src/hid/disp/graphics_common.h ****                 return {int16_t(x_ + (other.GetCenterX() - GetCenterX())),
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 23
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 23
 
 
  252:../../libDaisy/src/hid/disp/graphics_common.h ****                         int16_t(y_ + (other.GetCenterY() - GetCenterY())),
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  616              		.loc 2 31 5 view .LVU123
  617              	.LBB309:
  618              	.LBI309:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 24
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 24
 
 
  261:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t min(int16_t a, int16_t b) { return (a < b) ? a : b; }
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  664 005c E280     		strh	r2, [r4, #6]	@ movhi
  197:../../libDaisy/src/hid/disp/graphics_common.h ****         height_ = max(height_ - pxToRemove, 0);
  665              		.loc 2 197 12 view .LVU135
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 25
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 25
 
 
  666 005e BDF81420 		ldrh	r2, [sp, #20]
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  706              	.LBB332:
  707              	.LBI332:
   67:../../libDaisy/src/hid/disp/graphics_common.h ****     {
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 26
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 26
 
 
  708              		.loc 2 67 15 view .LVU150
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  112:../../libDaisy/src/hid/disp/graphics_common.h ****     }
  754              		.loc 2 112 45 view .LVU161
  755 0070 02EB6A02 		add	r2, r2, r10, asr #1
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 27
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 27
 
 
  756              	.LBE361:
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  184:../../libDaisy/src/hid/disp/graphics_common.h ****     }
  799              		.loc 2 184 9 view .LVU171
  184:../../libDaisy/src/hid/disp/graphics_common.h ****     }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 28
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 28
 
 
  800              		.loc 2 184 9 is_stmt 0 view .LVU172
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   63:../../libDaisy/src/hid/disp/graphics_common.h **** 
  842              		.loc 2 63 34 is_stmt 0 view .LVU185
  843              	.LBE440:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 29
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 29
 
 
  844              	.LBE439:
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  887              	.LBB363:
  112:../../libDaisy/src/hid/disp/graphics_common.h ****     }
  888              		.loc 2 112 9 view .LVU197
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 30
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 30
 
 
  889              	.LBB357:
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  931              	.LBB421:
  932              	.LBI421:
   31:../../libDaisy/src/hid/disp/graphics_common.h ****     : x_(x), y_(y), width_(max(0, width)), height_(max(0, height))
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 31
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 31
 
 
  933              		.loc 2 31 5 view .LVU211
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  261:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t min(int16_t a, int16_t b) { return (a < b) ? a : b; }
  977              		.loc 2 261 41 view .LVU222
  978              	.LBB488:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 32
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 32
 
 
  979              	.LBB472:
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1021              	.LBI478:
  261:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t min(int16_t a, int16_t b) { return (a < b) ? a : b; }
  1022              		.loc 2 261 13 view .LVU235
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 33
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 33
 
 
  1023              	.LBE478:
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  173:../../libDaisy/src/hid/disp/graphics_common.h ****                 int16_t(y_ + centerY - GetCenterY()),
  1067              		.loc 2 173 38 view .LVU247
  1068              	.LBE449:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 34
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 34
 
 
  1069              	.LBE454:
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1115              	.LVL44:
  1116              		.loc 1 387 13 is_stmt 0 view .LVU259
  1117              	.LBE411:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 35
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 35
 
 
  1118              	.LBE506:
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   31:../../libDaisy/src/hid/disp/graphics_common.h ****     : x_(x), y_(y), width_(max(0, width)), height_(max(0, height))
  1162              		.loc 2 31 5 is_stmt 1 view .LVU272
  1163              	.LBB383:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 36
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 36
 
 
  1164              	.LBI383:
@@ -2158,7 +2158,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1205              		.loc 2 54 28 is_stmt 0 view .LVU285
  1206              	.LBE397:
  1207              	.LBE396:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 37
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 37
 
 
  385:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         {
@@ -2218,7 +2218,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1248              	.LBB379:
   61:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t GetCenterX() const { return x_ + width_ / 2; }
  1249              		.loc 2 61 43 view .LVU300
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 38
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 38
 
 
  1250 00ea 0BEB0901 		add	r1, fp, r9
@@ -2278,7 +2278,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1294              	.LBE405:
  1295              	.LBB406:
  1296              	.LBB393:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 39
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 39
 
 
  1297              	.LBB388:
@@ -2338,7 +2338,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1338              	.L56:
   54:../../libDaisy/src/hid/disp/graphics_common.h **** 
  1339              		.loc 2 54 49 view .LVU325
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 40
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 40
 
 
  1340 0120 2C46     		mov	r4, r5
@@ -2398,7 +2398,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   60:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t GetBottom() const { return y_ + height_; }
  1381              		.loc 2 60 42 is_stmt 0 view .LVU334
  1382 0140 09F10502 		add	r2, r9, #5
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 41
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 41
 
 
  1383              	.LBE517:
@@ -2458,7 +2458,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1429 0166 1946     		mov	r1, r3
  1430 0168 B847     		blx	r7
  1431              	.LVL58:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 42
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 42
 
 
  400:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
@@ -2518,7 +2518,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   41:../../libDaisy/src/hid/disp/graphics_common.h ****         width_  = other.width_;
  1474              		.loc 2 41 9 view .LVU360
   42:../../libDaisy/src/hid/disp/graphics_common.h ****         height_ = other.height_;
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 43
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 43
 
 
  1475              		.loc 2 42 9 view .LVU361
@@ -2578,7 +2578,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   61:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t GetCenterX() const { return x_ + width_ / 2; }
  1515              		.loc 2 61 13 view .LVU376
  1516              	.LBB522:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 44
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 44
 
 
   61:../../libDaisy/src/hid/disp/graphics_common.h ****     int16_t GetCenterX() const { return x_ + width_ / 2; }
@@ -2638,7 +2638,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1556 019a A8F10203 		sub	r3, r8, #2
  1557 019e 7A1C     		adds	r2, r7, #1
  107:../../libDaisy/src/hid/disp/graphics_common.h ****     }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 45
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 45
 
 
  1558              		.loc 2 107 49 view .LVU392
@@ -2698,7 +2698,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   41:../../libDaisy/src/hid/disp/graphics_common.h ****         width_  = other.width_;
  1603              		.loc 2 41 9 view .LVU402
   42:../../libDaisy/src/hid/disp/graphics_common.h ****         height_ = other.height_;
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 46
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 46
 
 
  1604              		.loc 2 42 9 view .LVU403
@@ -2758,7 +2758,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1643 01b2 4FF00109 		mov	r9, #1
  1644 01b6 10AE     		add	r6, sp, #64
  1645              	.LVL68:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 47
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 47
 
 
  1646              		.loc 1 407 89 view .LVU417
@@ -2818,7 +2818,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1691 01da ADF84430 		strh	r3, [sp, #68]	@ movhi
   43:../../libDaisy/src/hid/disp/graphics_common.h ****         return *this;
  1692              		.loc 2 43 9 is_stmt 1 view .LVU429
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 48
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 48
 
 
   44:../../libDaisy/src/hid/disp/graphics_common.h ****     }
@@ -2878,7 +2878,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1738              		.loc 2 41 9 is_stmt 1 view .LVU441
   41:../../libDaisy/src/hid/disp/graphics_common.h ****         width_  = other.width_;
  1739              		.loc 2 41 17 is_stmt 0 view .LVU442
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 49
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 49
 
 
  1740 01f8 6288     		ldrh	r2, [r4, #2]
@@ -2938,7 +2938,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1787              		.fpu fpv5-d16
  1789              	_ZN10bkshepherd16BaseEffectModuleC2Ev:
  1790              	.LVL75:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 50
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 50
 
 
  1791              	.LFB2561:
@@ -2998,7 +2998,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1831 001e 7047     		bx	lr
  1832              	.L65:
  1833              		.align	2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 51
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 51
 
 
  1834              	.L64:
@@ -3058,7 +3058,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   69:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
  1886              		.loc 1 69 1 is_stmt 0 view .LVU472
  1887 0000 007A     		ldrb	r0, [r0, #8]	@ zero_extendqisi2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 52
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 52
 
 
  1888              	.LVL79:
@@ -3118,7 +3118,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  1933              		.loc 1 79 42 view .LVU482
  1934 0016 53F82100 		ldr	r0, [r3, r1, lsl #2]
  1935              	.LVL82:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 53
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 53
 
 
   79:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
@@ -3178,7 +3178,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   90:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
  1983              		.loc 1 90 5 is_stmt 1 view .LVU492
   90:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 54
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 54
 
 
  1984              		.loc 1 90 42 is_stmt 0 view .LVU493
@@ -3238,7 +3238,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2031 000e 0369     		ldr	r3, [r0, #16]
   96:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  2032              		.loc 1 96 78 discriminator 3 view .LVU503
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 55
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 55
 
 
  2033 0010 43B1     		cbz	r3, .L85
@@ -3298,7 +3298,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2078 0000 C368     		ldr	r3, [r0, #12]
  113:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  2079              		.loc 1 113 26 is_stmt 0 view .LVU515
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 56
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 56
 
 
  2080 0002 8BB1     		cbz	r3, .L88
@@ -3358,7 +3358,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2122              		.section	.text._ZN10bkshepherd16BaseEffectModule15GetParameterRawEi,"ax",%progbits
  2123              		.align	1
  2124              		.p2align 2,,3
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 57
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 57
 
 
  2125              		.global	_ZN10bkshepherd16BaseEffectModule15GetParameterRawEi
@@ -3418,7 +3418,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2173              	.LVL102:
  2174              	.LFB2576:
  139:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     return (float)GetParameterRaw(parameter_id) / 127.0f;
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 58
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 58
 
 
  2175              		.loc 1 139 1 is_stmt 1 view -0
@@ -3478,7 +3478,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2216              	.LBE598:
  2217              	.LBE599:
  141:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 59
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 59
 
 
  2218              		.loc 1 141 1 view .LVU552
@@ -3538,7 +3538,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2267              	.LBB603:
  130:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  2268              		.loc 1 130 9 view .LVU560
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 60
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 60
 
 
  2269 0006 C468     		ldr	r4, [r0, #12]
@@ -3598,7 +3598,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2317              		.align	1
  2318              		.p2align 2,,3
  2319              		.global	_ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 61
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 61
 
 
  2320              		.syntax unified
@@ -3658,7 +3658,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2361 001a 1879     		ldrb	r0, [r3, #4]	@ zero_extendqisi2
  2362 001c 0328     		cmp	r0, #3
  2363 001e 25D1     		bne	.L114
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 62
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 62
 
 
  107:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
@@ -3718,7 +3718,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  164:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
  2400              		.loc 1 164 76 view .LVU600
  2401 003c DFED0E6A 		vldr.32	s13, .L115+8
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 63
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 63
 
 
  159:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     float midPoint = (0.5f - (1.0f / 128.0f));
@@ -3778,7 +3778,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2446              		.p2align 2,,3
  2447              		.global	_ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi
  2448              		.syntax unified
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 64
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 64
 
 
  2449              		.thumb
@@ -3838,7 +3838,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  184:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****         {
  2493              		.loc 1 184 27 is_stmt 1 discriminator 2 view .LVU623
  2494 0012 A042     		cmp	r0, r4
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 65
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 65
 
 
  2495 0014 06D0     		beq	.L121
@@ -3898,7 +3898,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2540              		.thumb
  2541              		.thumb_func
  2542              		.fpu fpv5-d16
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 66
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 66
 
 
  2544              	_ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi:
@@ -3958,7 +3958,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2586 0014 06D0     		beq	.L132
  2587              	.LVL132:
  2588              	.L130:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 67
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 67
 
 
  202:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****             {
@@ -4018,7 +4018,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2635              	_ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:
  2636              	.LVL136:
  2637              	.LFB2581:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 68
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 68
 
 
  213:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     // Make sure parameter_id is valid.
@@ -4078,7 +4078,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2679              	.L139:
  234:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
  2680              		.loc 1 234 1 view .LVU669
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 69
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 69
 
 
  2681 0028 30BD     		pop	{r4, r5, pc}
@@ -4138,7 +4138,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2730              	.LBI630:
  212:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** {
  2731              		.loc 1 212 6 view .LVU677
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 70
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 70
 
 
  2732              	.LBB631:
@@ -4198,7 +4198,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2775 0044 0AD1     		bne	.L148
  227:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  2776              		.loc 1 227 5 view .LVU689
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 71
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 71
 
 
  2777 0046 14F801C0 		ldrb	ip, [r4, r1]	@ zero_extendqisi2
@@ -4258,7 +4258,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2821              		.cfi_restore 4
  2822              		.cfi_def_cfa_offset 0
  2823              	.LBB639:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 72
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 72
 
 
  2824              	.LBB635:
@@ -4318,7 +4318,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2871              		.loc 1 215 5 view .LVU708
  215:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  2872              		.loc 1 215 26 is_stmt 0 view .LVU709
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 73
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 73
 
 
  2873 0006 0029     		cmp	r1, #0
@@ -4378,7 +4378,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  2914              	.LVL152:
  2915              	.L169:
  261:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 74
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 74
 
 
  2916              		.loc 1 261 9 is_stmt 1 view .LVU723
@@ -4438,7 +4438,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  232:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     }
  2958              		.loc 1 232 25 view .LVU736
  2959 0054 1847     		bx	r3	@ indirect register sibling call
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 75
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 75
 
 
  2960              	.LVL155:
@@ -4498,7 +4498,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
   96:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp ****     {
  3008              		.loc 1 96 46 view .LVU745
  3009 000a 8468     		ldr	r4, [r0, #8]
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 76
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 76
 
 
  3010 000c A142     		cmp	r1, r4
@@ -4558,7 +4558,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  3051 0034 07EE903A 		vmov	s15, r3	@ int
  277:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** 
  3052              		.loc 1 277 11 view .LVU759
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 77
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 77
 
 
  3053 0038 9FED0D6A 		vldr.32	s12, .L194
@@ -4618,7 +4618,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  3092              	.L195:
  293:gml/GuitarPedal/Effect-Modules/base_effect_module.cpp **** }
  3093              		.loc 1 293 20 view .LVU775
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 78
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 78
 
 
  3094              		.align	2
@@ -4678,7 +4678,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  3146              	.LFE2588:
  3148              		.section	.text._ZN10bkshepherd16BaseEffectModule9IsEnabledEv,"ax",%progbits
  3149              		.align	1
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 79
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 79
 
 
  3150              		.p2align 2,,3
@@ -4738,7 +4738,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  3204              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
  3205              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
  3206              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 80
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 80
 
 
  3207              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
@@ -4770,97 +4770,97 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 1
  3233              		.file 39 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\new"
  3234              		.file 40 "<built-in>"
  3235              		.file 41 "../../libDaisy/src/dev/sr_595.h"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 81
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 81
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 base_effect_module.cpp
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:17     .text._ZN10bkshepherd16BaseEffectModule4InitEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:26     .text._ZN10bkshepherd16BaseEffectModule4InitEf:00000000 _ZN10bkshepherd16BaseEffectModule4InitEf
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:44     .text._ZN10bkshepherd16BaseEffectModule11ProcessMonoEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:52     .text._ZN10bkshepherd16BaseEffectModule11ProcessMonoEf:00000000 _ZN10bkshepherd16BaseEffectModule11ProcessMonoEf
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:72     .text._ZN10bkshepherd16BaseEffectModule13ProcessStereoEff:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:80     .text._ZN10bkshepherd16BaseEffectModule13ProcessStereoEff:00000000 _ZN10bkshepherd16BaseEffectModule13ProcessStereoEff
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:100    .text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:108    .text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi:00000000 _ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:128    .text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi:00000014 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:133    .text._ZN10bkshepherd16BaseEffectModule10SetEnabledEb:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:141    .text._ZN10bkshepherd16BaseEffectModule10SetEnabledEb:00000000 _ZN10bkshepherd16BaseEffectModule10SetEnabledEb
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:158    .text._ZN10bkshepherd16BaseEffectModule8SetTempoEm:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:166    .text._ZN10bkshepherd16BaseEffectModule8SetTempoEm:00000000 _ZN10bkshepherd16BaseEffectModule8SetTempoEm
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:180    .text._ZN10bkshepherd16BaseEffectModule16ParameterChangedEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:188    .text._ZN10bkshepherd16BaseEffectModule16ParameterChangedEi:00000000 _ZN10bkshepherd16BaseEffectModule16ParameterChangedEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:202    .text._ZN10bkshepherd16BaseEffectModule8UpdateUIEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:210    .text._ZN10bkshepherd16BaseEffectModule8UpdateUIEf:00000000 _ZN10bkshepherd16BaseEffectModule8UpdateUIEf
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:224    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:232    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleD2Ev
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:272    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000014 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:232    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleD1Ev
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:279    .text._ZN10bkshepherd16BaseEffectModuleD0Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:287    .text._ZN10bkshepherd16BaseEffectModuleD0Ev:00000000 _ZN10bkshepherd16BaseEffectModuleD0Ev
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:339    .text._ZN10bkshepherd16BaseEffectModuleD0Ev:0000001c $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:344    .text._ZN10bkshepherd16BaseEffectModule10InitParamsEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:352    .text._ZN10bkshepherd16BaseEffectModule10InitParamsEi:00000000 _ZN10bkshepherd16BaseEffectModule10InitParamsEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:467    .rodata._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:471    .text._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:479    .text._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb:00000000 _ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1771   .text._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb:00000214 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1777   .rodata._ZN10bkshepherd16BaseEffectModuleC2Ev.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1781   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1789   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleC2Ev
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1835   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000020 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1789   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleC1Ev
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1843   .text._ZN10bkshepherd16BaseEffectModule7GetNameEv:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1851   .text._ZN10bkshepherd16BaseEffectModule7GetNameEv:00000000 _ZN10bkshepherd16BaseEffectModule7GetNameEv
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1869   .text._ZN10bkshepherd16BaseEffectModule17GetParameterCountEv:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1877   .text._ZN10bkshepherd16BaseEffectModule17GetParameterCountEv:00000000 _ZN10bkshepherd16BaseEffectModule17GetParameterCountEv
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1895   .rodata._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1899   .text._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1907   .text._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi:00000000 _ZN10bkshepherd16BaseEffectModule16GetParameterNameEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1948   .text._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi:00000020 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1953   .text._ZN10bkshepherd16BaseEffectModule16GetParameterTypeEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:1961   .text._ZN10bkshepherd16BaseEffectModule16GetParameterTypeEi:00000000 _ZN10bkshepherd16BaseEffectModule16GetParameterTypeEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2004   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinCountEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2012   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinCountEi:00000000 _ZN10bkshepherd16BaseEffectModule20GetParameterBinCountEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2061   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinNamesEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2069   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinNamesEi:00000000 _ZN10bkshepherd16BaseEffectModule20GetParameterBinNamesEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2123   .text._ZN10bkshepherd16BaseEffectModule15GetParameterRawEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2131   .text._ZN10bkshepherd16BaseEffectModule15GetParameterRawEi:00000000 _ZN10bkshepherd16BaseEffectModule15GetParameterRawEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2164   .text._ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2172   .text._ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi:00000000 _ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2223   .text._ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi:00000028 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2229   .text._ZN10bkshepherd16BaseEffectModule18GetParameterAsBoolEi:00000000 $t
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s 			page 82
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:17     .text._ZN10bkshepherd16BaseEffectModule4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:26     .text._ZN10bkshepherd16BaseEffectModule4InitEf:00000000 _ZN10bkshepherd16BaseEffectModule4InitEf
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:44     .text._ZN10bkshepherd16BaseEffectModule11ProcessMonoEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:52     .text._ZN10bkshepherd16BaseEffectModule11ProcessMonoEf:00000000 _ZN10bkshepherd16BaseEffectModule11ProcessMonoEf
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:72     .text._ZN10bkshepherd16BaseEffectModule13ProcessStereoEff:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:80     .text._ZN10bkshepherd16BaseEffectModule13ProcessStereoEff:00000000 _ZN10bkshepherd16BaseEffectModule13ProcessStereoEff
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:100    .text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:108    .text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi:00000000 _ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:128    .text._ZN10bkshepherd16BaseEffectModule19GetBrightnessForLEDEi:00000014 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:133    .text._ZN10bkshepherd16BaseEffectModule10SetEnabledEb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:141    .text._ZN10bkshepherd16BaseEffectModule10SetEnabledEb:00000000 _ZN10bkshepherd16BaseEffectModule10SetEnabledEb
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:158    .text._ZN10bkshepherd16BaseEffectModule8SetTempoEm:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:166    .text._ZN10bkshepherd16BaseEffectModule8SetTempoEm:00000000 _ZN10bkshepherd16BaseEffectModule8SetTempoEm
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:180    .text._ZN10bkshepherd16BaseEffectModule16ParameterChangedEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:188    .text._ZN10bkshepherd16BaseEffectModule16ParameterChangedEi:00000000 _ZN10bkshepherd16BaseEffectModule16ParameterChangedEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:202    .text._ZN10bkshepherd16BaseEffectModule8UpdateUIEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:210    .text._ZN10bkshepherd16BaseEffectModule8UpdateUIEf:00000000 _ZN10bkshepherd16BaseEffectModule8UpdateUIEf
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:224    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:232    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleD2Ev
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:272    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000014 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:232    .text._ZN10bkshepherd16BaseEffectModuleD2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleD1Ev
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:279    .text._ZN10bkshepherd16BaseEffectModuleD0Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:287    .text._ZN10bkshepherd16BaseEffectModuleD0Ev:00000000 _ZN10bkshepherd16BaseEffectModuleD0Ev
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:339    .text._ZN10bkshepherd16BaseEffectModuleD0Ev:0000001c $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:344    .text._ZN10bkshepherd16BaseEffectModule10InitParamsEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:352    .text._ZN10bkshepherd16BaseEffectModule10InitParamsEi:00000000 _ZN10bkshepherd16BaseEffectModule10InitParamsEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:467    .rodata._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:471    .text._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:479    .text._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb:00000000 _ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1771   .text._ZN10bkshepherd16BaseEffectModule6DrawUIERN5daisy21OneBitGraphicsDisplayEiiNS1_9RectangleEb:00000214 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1777   .rodata._ZN10bkshepherd16BaseEffectModuleC2Ev.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1781   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1789   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleC2Ev
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1835   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000020 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1789   .text._ZN10bkshepherd16BaseEffectModuleC2Ev:00000000 _ZN10bkshepherd16BaseEffectModuleC1Ev
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1843   .text._ZN10bkshepherd16BaseEffectModule7GetNameEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1851   .text._ZN10bkshepherd16BaseEffectModule7GetNameEv:00000000 _ZN10bkshepherd16BaseEffectModule7GetNameEv
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1869   .text._ZN10bkshepherd16BaseEffectModule17GetParameterCountEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1877   .text._ZN10bkshepherd16BaseEffectModule17GetParameterCountEv:00000000 _ZN10bkshepherd16BaseEffectModule17GetParameterCountEv
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1895   .rodata._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1899   .text._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1907   .text._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi:00000000 _ZN10bkshepherd16BaseEffectModule16GetParameterNameEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1948   .text._ZN10bkshepherd16BaseEffectModule16GetParameterNameEi:00000020 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1953   .text._ZN10bkshepherd16BaseEffectModule16GetParameterTypeEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:1961   .text._ZN10bkshepherd16BaseEffectModule16GetParameterTypeEi:00000000 _ZN10bkshepherd16BaseEffectModule16GetParameterTypeEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2004   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinCountEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2012   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinCountEi:00000000 _ZN10bkshepherd16BaseEffectModule20GetParameterBinCountEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2061   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinNamesEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2069   .text._ZN10bkshepherd16BaseEffectModule20GetParameterBinNamesEi:00000000 _ZN10bkshepherd16BaseEffectModule20GetParameterBinNamesEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2123   .text._ZN10bkshepherd16BaseEffectModule15GetParameterRawEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2131   .text._ZN10bkshepherd16BaseEffectModule15GetParameterRawEi:00000000 _ZN10bkshepherd16BaseEffectModule15GetParameterRawEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2164   .text._ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2172   .text._ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi:00000000 _ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2223   .text._ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi:00000028 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2229   .text._ZN10bkshepherd16BaseEffectModule18GetParameterAsBoolEi:00000000 $t
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s 			page 82
 
 
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2237   .text._ZN10bkshepherd16BaseEffectModule18GetParameterAsBoolEi:00000000 _ZN10bkshepherd16BaseEffectModule18GetParameterAsBoolEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2317   .text._ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2325   .text._ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi:00000000 _ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2438   .text._ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi:00000070 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2445   .text._ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2453   .text._ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi:00000000 _ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2536   .text._ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2544   .text._ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi:00000000 _ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2627   .text._ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2635   .text._ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:00000000 _ZN10bkshepherd16BaseEffectModule15SetParameterRawEih
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2698   .text._ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:00000030 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2703   .text._ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2711   .text._ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif:00000000 _ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2832   .text._ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif:00000070 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2841   .text._ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2849   .text._ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib:00000000 _ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2965   .text._ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib:00000058 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2972   .text._ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:2980   .text._ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih:00000000 _ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3096   .text._ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih:00000070 $d
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3101   .text._ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3109   .text._ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv:00000000 _ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3125   .text._ZN10bkshepherd16BaseEffectModule13GetAudioRightEv:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3133   .text._ZN10bkshepherd16BaseEffectModule13GetAudioRightEv:00000000 _ZN10bkshepherd16BaseEffectModule13GetAudioRightEv
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3149   .text._ZN10bkshepherd16BaseEffectModule9IsEnabledEv:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3157   .text._ZN10bkshepherd16BaseEffectModule9IsEnabledEv:00000000 _ZN10bkshepherd16BaseEffectModule9IsEnabledEv
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3180   .rodata._ZTVN10bkshepherd16BaseEffectModuleE:00000000 _ZTVN10bkshepherd16BaseEffectModuleE
-C:\Users\aydan\AppData\Local\Temp\ccGcofBk.s:3176   .rodata._ZTVN10bkshepherd16BaseEffectModuleE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2237   .text._ZN10bkshepherd16BaseEffectModule18GetParameterAsBoolEi:00000000 _ZN10bkshepherd16BaseEffectModule18GetParameterAsBoolEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2317   .text._ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2325   .text._ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi:00000000 _ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2438   .text._ZN10bkshepherd16BaseEffectModule25GetParameterAsBinnedValueEi:00000070 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2445   .text._ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2453   .text._ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi:00000000 _ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2536   .text._ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2544   .text._ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi:00000000 _ZN10bkshepherd16BaseEffectModule29GetMappedParameterIDForMidiCCEi
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2627   .text._ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2635   .text._ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:00000000 _ZN10bkshepherd16BaseEffectModule15SetParameterRawEih
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2698   .text._ZN10bkshepherd16BaseEffectModule15SetParameterRawEih:00000030 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2703   .text._ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2711   .text._ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif:00000000 _ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2832   .text._ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif:00000070 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2841   .text._ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2849   .text._ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib:00000000 _ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2965   .text._ZN10bkshepherd16BaseEffectModule18SetParameterAsBoolEib:00000058 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2972   .text._ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:2980   .text._ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih:00000000 _ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3096   .text._ZN10bkshepherd16BaseEffectModule25SetParameterAsBinnedValueEih:00000070 $d
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3101   .text._ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3109   .text._ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv:00000000 _ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3125   .text._ZN10bkshepherd16BaseEffectModule13GetAudioRightEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3133   .text._ZN10bkshepherd16BaseEffectModule13GetAudioRightEv:00000000 _ZN10bkshepherd16BaseEffectModule13GetAudioRightEv
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3149   .text._ZN10bkshepherd16BaseEffectModule9IsEnabledEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3157   .text._ZN10bkshepherd16BaseEffectModule9IsEnabledEv:00000000 _ZN10bkshepherd16BaseEffectModule9IsEnabledEv
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3180   .rodata._ZTVN10bkshepherd16BaseEffectModuleE:00000000 _ZTVN10bkshepherd16BaseEffectModuleE
+C:\Users\aydan\AppData\Local\Temp\cc5yBP9p.s:3176   .rodata._ZTVN10bkshepherd16BaseEffectModuleE:00000000 $d
 
 UNDEFINED SYMBOLS
 _ZdaPv

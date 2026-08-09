@@ -1,0 +1,2020 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"reverbsc.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi:
+  27              	.LVL0:
+  28              	.LFB557:
+  29              		.file 1 "../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp"
+   1:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #include <math.h>
+   2:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #include <stdlib.h>
+   3:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #include <stdint.h>
+   4:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #include <string.h>
+   5:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #include "reverbsc.h"
+   6:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+   7:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define REVSC_OK 0
+   8:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define REVSC_NOT_OK 1
+   9:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  10:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define DEFAULT_SRATE 48000.0
+  11:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define MIN_SRATE 5000.0
+  12:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define MAX_SRATE 1000000.0
+  13:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define MAX_PITCHMOD 20.0
+  14:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define DELAYPOS_SHIFT 28
+  15:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define DELAYPOS_SCALE 0x10000000
+  16:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define DELAYPOS_MASK 0x0FFFFFFF
+  17:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  18:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #ifndef M_PI
+  19:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #define M_PI 3.14159265358979323846 /* pi */
+  20:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** #endif
+  21:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  22:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** using namespace daisysp;
+  23:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  24:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** /* kReverbParams[n][0] = delay time (in seconds)                     */
+  25:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** /* kReverbParams[n][1] = random variation in delay time (in seconds) */
+  26:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** /* kReverbParams[n][2] = random variation frequency (in 1/sec)       */
+  27:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** /* kReverbParams[n][3] = random seed (0 - 32767)                     */
+  28:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  29:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static const float kReverbParams[8][4]
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 2
+
+
+  30:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     = {{(2473.0 / DEFAULT_SRATE), 0.0010, 3.100, 1966.0},
+  31:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(2767.0 / DEFAULT_SRATE), 0.0011, 3.500, 29491.0},
+  32:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(3217.0 / DEFAULT_SRATE), 0.0017, 1.110, 22937.0},
+  33:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(3557.0 / DEFAULT_SRATE), 0.0006, 3.973, 9830.0},
+  34:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(3907.0 / DEFAULT_SRATE), 0.0010, 2.341, 20643.0},
+  35:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(4127.0 / DEFAULT_SRATE), 0.0011, 1.897, 22937.0},
+  36:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(2143.0 / DEFAULT_SRATE), 0.0017, 0.891, 29491.0},
+  37:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****        {(1933.0 / DEFAULT_SRATE), 0.0006, 3.221, 14417.0}};
+  38:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  39:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static int DelayLineMaxSamples(float sr, float i_pitch_mod, int n);
+  40:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** //static int InitDelayLine(dsy_reverbsc_dl *lp, int n);
+  41:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static int         DelayLineBytesAlloc(float sr, float i_pitch_mod, int n);
+  42:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static const float kOutputGain = 0.35;
+  43:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static const float kJpScale    = 0.25;
+  44:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  45:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** int ReverbSc::Init(float sr)
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+  47:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_sample_rate_ = sr;
+  48:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     sample_rate_   = sr;
+  49:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     feedback_      = 0.97;
+  50:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lpfreq_        = 10000;
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_pitch_mod_   = 1;
+  52:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_skip_init_   = 0;
+  53:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     damp_fact_     = 1.0;
+  54:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_lpfreq_    = 0.0;
+  55:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     init_done_     = 1;
+  56:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int i, n_bytes = 0;
+  57:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     n_bytes = 0;
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(i = 0; i < 8; i++)
+  59:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+  60:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(n_bytes > DSY_REVERBSC_MAX_SIZE)
+  61:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             return 1;
+  62:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         delay_lines_[i].buf = (aux_) + n_bytes;
+  63:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         InitDelayLine(&delay_lines_[i], i);
+  64:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         n_bytes += DelayLineBytesAlloc(sr, 1, i);
+  65:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+  66:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return 0;
+  67:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+  68:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  69:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static int DelayLineMaxSamples(float sr, float i_pitch_mod, int n)
+  70:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+  71:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float max_del;
+  72:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  73:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del = kReverbParams[n][0];
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del += (kReverbParams[n][1] * (float)i_pitch_mod * 1.125);
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+  76:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+  77:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  78:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** static int DelayLineBytesAlloc(float sr, float i_pitch_mod, int n)
+  79:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+  80:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int n_bytes = 0;
+  81:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  82:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     n_bytes += (DelayLineMaxSamples(sr, i_pitch_mod, n) * (int)sizeof(float));
+  83:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return n_bytes;
+  84:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+  85:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  86:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** void ReverbSc::NextRandomLineseg(ReverbScDl *lp, int n)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 3
+
+
+  87:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+  30              		.loc 1 87 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  88:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float prv_del, nxt_del, phs_inc_val;
+  35              		.loc 1 88 5 view .LVU1
+  89:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+  90:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* update random seed */
+  91:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lp->seed_val < 0)
+  36              		.loc 1 91 5 view .LVU2
+  37              		.loc 1 91 12 is_stmt 0 view .LVU3
+  38 0000 8B69     		ldr	r3, [r1, #24]
+  92:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->seed_val += 0x10000;
+  93:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->seed_val = (lp->seed_val * 15625 + 1) & 0xFFFF;
+  39              		.loc 1 93 34 view .LVU4
+  40 0002 43F6095C 		movw	ip, #15625
+  94:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lp->seed_val >= 0x8000)
+  95:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->seed_val -= 0x10000;
+  96:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* length of next segment in samples */
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->rand_line_cnt = (int)((sample_rate_ / kReverbParams[n][2]) + 0.5);
+  41              		.loc 1 97 32 view .LVU5
+  42 0006 90ED056A 		vldr.32	s12, [r0, #20]
+  43              		.loc 1 97 68 view .LVU6
+  44 000a B6EE004B 		vmov.f64	d4, #5.0e-1
+  91:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->seed_val += 0x10000;
+  45              		.loc 1 91 5 view .LVU7
+  46 000e 002B     		cmp	r3, #0
+  92:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->seed_val += 0x10000;
+  47              		.loc 1 92 9 is_stmt 1 view .LVU8
+  93:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lp->seed_val >= 0x8000)
+  48              		.loc 1 93 5 view .LVU9
+  98:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  99:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del -= ((float)lp->read_pos
+ 100:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 + ((float)lp->read_pos_frac / (float)DELAYPOS_SCALE));
+  49              		.loc 1 100 17 is_stmt 0 view .LVU10
+  50 0010 9FED395A 		vldr.32	s10, .L13
+  92:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->seed_val = (lp->seed_val * 15625 + 1) & 0xFFFF;
+  51              		.loc 1 92 22 view .LVU11
+  52 0014 B8BF     		it	lt
+  53 0016 03F58033 		addlt	r3, r3, #65536
+  93:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lp->seed_val >= 0x8000)
+  54              		.loc 1 93 34 view .LVU12
+  55 001a 0CFB03F3 		mul	r3, ip, r3
+  87:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float prv_del, nxt_del, phs_inc_val;
+  56              		.loc 1 87 1 view .LVU13
+  57 001e 10B4     		push	{r4}
+  58              		.cfi_def_cfa_offset 4
+  59              		.cfi_offset 4, -4
+  93:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lp->seed_val >= 0x8000)
+  60              		.loc 1 93 42 view .LVU14
+  61 0020 03F1010C 		add	ip, r3, #1
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  62              		.loc 1 97 65 view .LVU15
+  63 0024 354C     		ldr	r4, .L13+4
+  93:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lp->seed_val >= 0x8000)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 4
+
+
+  64              		.loc 1 93 47 view .LVU16
+  65 0026 1FFA8CF3 		uxth	r3, ip
+  94:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->seed_val -= 0x10000;
+  66              		.loc 1 94 5 is_stmt 1 view .LVU17
+  67 002a 1CF4004F 		tst	ip, #32768
+  95:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* length of next segment in samples */
+  68              		.loc 1 95 9 view .LVU18
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  69              		.loc 1 97 65 is_stmt 0 view .LVU19
+  70 002e 04EB021C 		add	ip, r4, r2, lsl #4
+  95:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* length of next segment in samples */
+  71              		.loc 1 95 22 view .LVU20
+  72 0032 18BF     		it	ne
+  73 0034 A3F58033 		subne	r3, r3, #65536
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  74              		.loc 1 97 65 view .LVU21
+  75 0038 1201     		lsls	r2, r2, #4
+  76              	.LVL1:
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  77              		.loc 1 97 45 view .LVU22
+  78 003a DCED027A 		vldr.32	s15, [ip, #8]
+  95:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* length of next segment in samples */
+  79              		.loc 1 95 22 view .LVU23
+  80 003e 8B61     		str	r3, [r1, #24]
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  81              		.loc 1 97 5 is_stmt 1 view .LVU24
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  82              		.loc 1 97 45 is_stmt 0 view .LVU25
+  83 0040 86EE277A 		vdiv.f32	s14, s12, s15
+  84 0044 B7EEC77A 		vcvt.f64.f32	d7, s14
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  85              		.loc 1 97 68 view .LVU26
+  86 0048 37EE047B 		vadd.f64	d7, d7, d4
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  87              		.loc 1 97 25 view .LVU27
+  88 004c BDEEC77B 		vcvt.s32.f64	s14, d7
+  89              		.loc 1 100 20 view .LVU28
+  90 0050 D1ED037A 		vldr.32	s15, [r1, #12]	@ int
+  91 0054 F8EEE75A 		vcvt.f32.s32	s11, s15
+  99:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 + ((float)lp->read_pos_frac / (float)DELAYPOS_SCALE));
+  92              		.loc 1 99 17 view .LVU29
+  93 0058 D1ED027A 		vldr.32	s15, [r1, #8]	@ int
+  97:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del           = (float)lp->write_pos;
+  94              		.loc 1 97 23 view .LVU30
+  95 005c 81ED077A 		vstr.32	s14, [r1, #28]	@ int
+  98:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del -= ((float)lp->read_pos
+  96              		.loc 1 98 5 is_stmt 1 view .LVU31
+  99:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 + ((float)lp->read_pos_frac / (float)DELAYPOS_SCALE));
+  97              		.loc 1 99 17 is_stmt 0 view .LVU32
+  98 0060 F8EEE77A 		vcvt.f32.s32	s15, s15
+  99              		.loc 1 100 17 view .LVU33
+ 100 0064 E5EE857A 		vfma.f32	s15, s11, s10
+ 101 0068 F0EE676A 		vmov.f32	s13, s15
+  98:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del -= ((float)lp->read_pos
+ 102              		.loc 1 98 23 view .LVU34
+ 103 006c D1ED007A 		vldr.32	s15, [r1]	@ int
+ 104 0070 F8EEE77A 		vcvt.f32.s32	s15, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 5
+
+
+ 105              	.LVL2:
+  99:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 + ((float)lp->read_pos_frac / (float)DELAYPOS_SCALE));
+ 106              		.loc 1 99 5 is_stmt 1 view .LVU35
+  99:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 + ((float)lp->read_pos_frac / (float)DELAYPOS_SCALE));
+ 107              		.loc 1 99 13 is_stmt 0 view .LVU36
+ 108 0074 77EEE67A 		vsub.f32	s15, s15, s13
+ 109              	.LVL3:
+ 101:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     while(prv_del < 0.0)
+ 110              		.loc 1 101 5 is_stmt 1 view .LVU37
+ 111              		.loc 1 101 19 view .LVU38
+ 112 0078 F5EEC07A 		vcmpe.f32	s15, #0
+ 113 007c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 114 0080 0AD5     		bpl	.L5
+ 102:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         prv_del += lp->buffer_size;
+ 115              		.loc 1 102 17 is_stmt 0 view .LVU39
+ 116 0082 D1ED016A 		vldr.32	s13, [r1, #4]	@ int
+ 117 0086 F8EEE66A 		vcvt.f32.s32	s13, s13
+ 118              	.L7:
+ 119              		.loc 1 102 9 is_stmt 1 view .LVU40
+ 120              		.loc 1 102 17 is_stmt 0 view .LVU41
+ 121 008a 77EEA67A 		vadd.f32	s15, s15, s13
+ 122              	.LVL4:
+ 101:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     while(prv_del < 0.0)
+ 123              		.loc 1 101 5 is_stmt 1 view .LVU42
+ 101:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     while(prv_del < 0.0)
+ 124              		.loc 1 101 19 view .LVU43
+ 125 008e F5EEC07A 		vcmpe.f32	s15, #0
+ 126 0092 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 127 0096 F8D4     		bmi	.L7
+ 128              	.L5:
+ 103:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_del = prv_del / sample_rate_; /* previous delay time in seconds */
+ 129              		.loc 1 103 5 view .LVU44
+ 130              		.loc 1 103 13 is_stmt 0 view .LVU45
+ 131 0098 C7EE865A 		vdiv.f32	s11, s15, s12
+ 132              	.LVL5:
+ 104:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     nxt_del = (float)lp->seed_val * kReverbParams[n][1] / 32768.0;
+ 133              		.loc 1 104 5 is_stmt 1 view .LVU46
+ 134              		.loc 1 104 15 is_stmt 0 view .LVU47
+ 135 009c 07EE903A 		vmov	s15, r3	@ int
+ 136              		.loc 1 104 55 view .LVU48
+ 137 00a0 2244     		add	r2, r2, r4
+ 138              		.loc 1 104 13 view .LVU49
+ 139 00a2 DFED172A 		vldr.32	s5, .L13+8
+ 105:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* next delay time in seconds */
+ 106:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     nxt_del = kReverbParams[n][0] + (nxt_del * (float)i_pitch_mod_);
+ 140              		.loc 1 106 13 view .LVU50
+ 141 00a6 90ED033A 		vldr.32	s6, [r0, #12]
+ 104:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     nxt_del = (float)lp->seed_val * kReverbParams[n][1] / 32768.0;
+ 142              		.loc 1 104 35 view .LVU51
+ 143 00aa D2ED014A 		vldr.32	s9, [r2, #4]
+ 144              		.loc 1 106 13 view .LVU52
+ 145 00ae 92ED005A 		vldr.32	s10, [r2]
+ 104:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     nxt_del = (float)lp->seed_val * kReverbParams[n][1] / 32768.0;
+ 146              		.loc 1 104 15 view .LVU53
+ 147 00b2 F8EEE76A 		vcvt.f32.s32	s13, s15
+ 107:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* calculate phase increment per sample */
+ 108:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     phs_inc_val           = (prv_del - nxt_del) / (float)lp->rand_line_cnt;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 6
+
+
+ 109:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     phs_inc_val           = phs_inc_val * sample_rate_ + 1.0;
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos_frac_inc = (int)(phs_inc_val * DELAYPOS_SCALE + 0.5);
+ 148              		.loc 1 110 47 view .LVU54
+ 149 00b6 DFED133A 		vldr.32	s7, .L13+12
+ 108:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     phs_inc_val           = phs_inc_val * sample_rate_ + 1.0;
+ 150              		.loc 1 108 51 view .LVU55
+ 151 00ba F8EEC77A 		vcvt.f32.s32	s15, s14
+ 111:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 152              		.loc 1 111 1 view .LVU56
+ 153 00be 5DF8044B 		ldr	r4, [sp], #4
+ 154              		.cfi_restore 4
+ 155              		.cfi_def_cfa_offset 0
+ 109:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos_frac_inc = (int)(phs_inc_val * DELAYPOS_SCALE + 0.5);
+ 156              		.loc 1 109 27 view .LVU57
+ 157 00c2 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 104:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* next delay time in seconds */
+ 158              		.loc 1 104 35 view .LVU58
+ 159 00c6 66EEA46A 		vmul.f32	s13, s13, s9
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 160              		.loc 1 110 64 view .LVU59
+ 161 00ca B6EE004B 		vmov.f64	d4, #5.0e-1
+ 104:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* next delay time in seconds */
+ 162              		.loc 1 104 13 view .LVU60
+ 163 00ce 66EEA26A 		vmul.f32	s13, s13, s5
+ 164              	.LVL6:
+ 106:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* calculate phase increment per sample */
+ 165              		.loc 1 106 5 is_stmt 1 view .LVU61
+ 106:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* calculate phase increment per sample */
+ 166              		.loc 1 106 13 is_stmt 0 view .LVU62
+ 167 00d2 A3EE265A 		vfma.f32	s10, s6, s13
+ 168              	.LVL7:
+ 108:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     phs_inc_val           = phs_inc_val * sample_rate_ + 1.0;
+ 169              		.loc 1 108 5 is_stmt 1 view .LVU63
+ 108:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     phs_inc_val           = phs_inc_val * sample_rate_ + 1.0;
+ 170              		.loc 1 108 38 is_stmt 0 view .LVU64
+ 171 00d6 75EEC56A 		vsub.f32	s13, s11, s10
+ 108:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     phs_inc_val           = phs_inc_val * sample_rate_ + 1.0;
+ 172              		.loc 1 108 27 view .LVU65
+ 173 00da C6EEA75A 		vdiv.f32	s11, s13, s15
+ 174              	.LVL8:
+ 109:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos_frac_inc = (int)(phs_inc_val * DELAYPOS_SCALE + 0.5);
+ 175              		.loc 1 109 5 is_stmt 1 view .LVU66
+ 109:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos_frac_inc = (int)(phs_inc_val * DELAYPOS_SCALE + 0.5);
+ 176              		.loc 1 109 27 is_stmt 0 view .LVU67
+ 177 00de A6EE257A 		vfma.f32	s14, s12, s11
+ 178              	.LVL9:
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 179              		.loc 1 110 5 is_stmt 1 view .LVU68
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 180              		.loc 1 110 47 is_stmt 0 view .LVU69
+ 181 00e2 27EE237A 		vmul.f32	s14, s14, s7
+ 182              	.LVL10:
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 183              		.loc 1 110 47 view .LVU70
+ 184 00e6 B7EEC77A 		vcvt.f64.f32	d7, s14
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 185              		.loc 1 110 64 view .LVU71
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 7
+
+
+ 186 00ea 37EE047B 		vadd.f64	d7, d7, d4
+ 110:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 187              		.loc 1 110 29 view .LVU72
+ 188 00ee BDEEC77B 		vcvt.s32.f64	s14, d7
+ 189 00f2 81ED047A 		vstr.32	s14, [r1, #16]	@ int
+ 190              		.loc 1 111 1 view .LVU73
+ 191 00f6 7047     		bx	lr
+ 192              	.L14:
+ 193              		.align	2
+ 194              	.L13:
+ 195 00f8 00008031 		.word	830472192
+ 196 00fc 00000000 		.word	.LANCHOR0
+ 197 0100 00000038 		.word	939524096
+ 198 0104 0000804D 		.word	1300234240
+ 199              		.cfi_endproc
+ 200              	.LFE557:
+ 202              		.section	.text._ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi,"ax",%progbits
+ 203              		.align	1
+ 204              		.p2align 2,,3
+ 205              		.global	_ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 209              		.fpu fpv5-d16
+ 211              	_ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi:
+ 212              	.LVL11:
+ 213              	.LFB558:
+ 112:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 113:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** int ReverbSc::InitDelayLine(ReverbScDl *lp, int n)
+ 114:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+ 214              		.loc 1 114 1 is_stmt 1 view -0
+ 215              		.cfi_startproc
+ 216              		@ args = 0, pretend = 0, frame = 0
+ 217              		@ frame_needed = 0, uses_anonymous_args = 0
+ 115:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float read_pos;
+ 218              		.loc 1 115 5 view .LVU75
+ 116:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* int     i; */
+ 117:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 118:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* calculate length of delay line */
+ 119:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->buffer_size = DelayLineMaxSamples(sample_rate_, 1, n);
+ 219              		.loc 1 119 5 view .LVU76
+ 114:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float read_pos;
+ 220              		.loc 1 114 1 is_stmt 0 view .LVU77
+ 221 0000 38B5     		push	{r3, r4, r5, lr}
+ 222              		.cfi_def_cfa_offset 16
+ 223              		.cfi_offset 3, -16
+ 224              		.cfi_offset 4, -12
+ 225              		.cfi_offset 5, -8
+ 226              		.cfi_offset 14, -4
+ 227              	.LBB11:
+ 228              	.LBB12:
+  73:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del += (kReverbParams[n][1] * (float)i_pitch_mod * 1.125);
+ 229              		.loc 1 73 13 view .LVU78
+ 230 0002 354B     		ldr	r3, .L18+8
+ 231              	.LBE12:
+ 232              	.LBE11:
+ 120:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->dummy       = 0;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 8
+
+
+ 121:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->write_pos   = 0;
+ 122:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set random seed */
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->seed_val = (int)(kReverbParams[n][3] + 0.5);
+ 233              		.loc 1 123 46 view .LVU79
+ 234 0004 B6EE005B 		vmov.f64	d5, #5.0e-1
+ 124:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 125:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (float)lp->seed_val * kReverbParams[n][1] / 32768;
+ 126:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = kReverbParams[n][0] + (read_pos * (float)i_pitch_mod_);
+ 235              		.loc 1 126 18 view .LVU80
+ 236 0008 90ED037A 		vldr.32	s14, [r0, #12]
+ 237              	.LBB19:
+ 238              	.LBB13:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 239              		.loc 1 74 13 view .LVU81
+ 240 000c B7EE022B 		vmov.f64	d2, #1.125e+0
+  73:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del += (kReverbParams[n][1] * (float)i_pitch_mod * 1.125);
+ 241              		.loc 1 73 13 view .LVU82
+ 242 0010 03EB0213 		add	r3, r3, r2, lsl #4
+ 243              	.LBE13:
+ 244              	.LBE19:
+ 119:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->dummy       = 0;
+ 245              		.loc 1 119 42 view .LVU83
+ 246 0014 90ED050A 		vldr.32	s0, [r0, #20]
+ 247              	.LVL12:
+ 248              	.LBB20:
+ 249              	.LBI11:
+  69:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+ 250              		.loc 1 69 12 is_stmt 1 view .LVU84
+ 251              	.LBB14:
+  71:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 252              		.loc 1 71 5 view .LVU85
+  73:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del += (kReverbParams[n][1] * (float)i_pitch_mod * 1.125);
+ 253              		.loc 1 73 5 view .LVU86
+ 254              	.LBE14:
+ 255              	.LBE20:
+ 127:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (float)lp->buffer_size - (read_pos * sample_rate_);
+ 128:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos = (int)read_pos;
+ 129:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (read_pos - (float)lp->read_pos) * (float)DELAYPOS_SCALE;
+ 256              		.loc 1 129 18 is_stmt 0 view .LVU87
+ 257 0018 DFED300A 		vldr.32	s1, .L18+12
+ 120:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->write_pos   = 0;
+ 258              		.loc 1 120 21 view .LVU88
+ 259 001c 0025     		movs	r5, #0
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 260              		.loc 1 123 44 view .LVU89
+ 261 001e 93ED034A 		vldr.32	s8, [r3, #12]
+ 262              	.LBB21:
+ 263              	.LBB15:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 264              		.loc 1 74 35 view .LVU90
+ 265 0022 D3ED017A 		vldr.32	s15, [r3, #4]
+ 266              	.LBE15:
+ 267              	.LBE21:
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 268              		.loc 1 123 44 view .LVU91
+ 269 0026 B7EEC44A 		vcvt.f64.f32	d4, s8
+ 270              	.LBB22:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 9
+
+
+ 271              	.LBB16:
+  73:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del += (kReverbParams[n][1] * (float)i_pitch_mod * 1.125);
+ 272              		.loc 1 73 13 view .LVU92
+ 273 002a 93ED006A 		vldr.32	s12, [r3]
+ 274              	.LVL13:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 275              		.loc 1 74 5 is_stmt 1 view .LVU93
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 276              		.loc 1 74 37 is_stmt 0 view .LVU94
+ 277 002e B7EEE71A 		vcvt.f64.f32	d1, s15
+ 278              	.LBE16:
+ 279              	.LBE22:
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 280              		.loc 1 123 46 view .LVU95
+ 281 0032 34EE054B 		vadd.f64	d4, d4, d5
+ 114:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float read_pos;
+ 282              		.loc 1 114 1 view .LVU96
+ 283 0036 2DED028B 		vpush.64	{d8}
+ 284              		.cfi_def_cfa_offset 24
+ 285              		.cfi_offset 80, -24
+ 286              		.cfi_offset 81, -20
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 287              		.loc 1 123 20 view .LVU97
+ 288 003a BDEEC44B 		vcvt.s32.f64	s8, d4
+ 125:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = kReverbParams[n][0] + (read_pos * (float)i_pitch_mod_);
+ 289              		.loc 1 125 18 view .LVU98
+ 290 003e 9FED288A 		vldr.32	s16, .L18+16
+ 126:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (float)lp->buffer_size - (read_pos * sample_rate_);
+ 291              		.loc 1 126 18 view .LVU99
+ 292 0042 F0EE464A 		vmov.f32	s9, s12
+ 120:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->write_pos   = 0;
+ 293              		.loc 1 120 21 view .LVU100
+ 294 0046 4D61     		str	r5, [r1, #20]
+ 121:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set random seed */
+ 295              		.loc 1 121 21 view .LVU101
+ 296 0048 0D60     		str	r5, [r1]
+ 125:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = kReverbParams[n][0] + (read_pos * (float)i_pitch_mod_);
+ 297              		.loc 1 125 20 view .LVU102
+ 298 004a F8EEC46A 		vcvt.f32.s32	s13, s8
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 299              		.loc 1 123 18 view .LVU103
+ 300 004e 81ED064A 		vstr.32	s8, [r1, #24]	@ int
+ 301              	.LBB23:
+ 302              	.LBB17:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 303              		.loc 1 75 31 view .LVU104
+ 304 0052 9FED1F3B 		vldr.64	d3, .L18
+ 305              	.LBE17:
+ 306              	.LBE23:
+ 125:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = kReverbParams[n][0] + (read_pos * (float)i_pitch_mod_);
+ 307              		.loc 1 125 40 view .LVU105
+ 308 0056 66EEA76A 		vmul.f32	s13, s13, s15
+ 125:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = kReverbParams[n][0] + (read_pos * (float)i_pitch_mod_);
+ 309              		.loc 1 125 18 view .LVU106
+ 310 005a 66EE886A 		vmul.f32	s13, s13, s16
+ 126:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (float)lp->buffer_size - (read_pos * sample_rate_);
+ 311              		.loc 1 126 18 view .LVU107
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 10
+
+
+ 312 005e E7EE264A 		vfma.f32	s9, s14, s13
+ 313              	.LBB24:
+ 314              	.LBB18:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 315              		.loc 1 74 13 view .LVU108
+ 316 0062 B7EEC66A 		vcvt.f64.f32	d6, s12
+ 317              	.LVL14:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 318              		.loc 1 74 13 view .LVU109
+ 319 0066 A1EE026B 		vfma.f64	d6, d1, d2
+ 320              	.LVL15:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 321              		.loc 1 75 5 is_stmt 1 view .LVU110
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 322              		.loc 1 74 13 is_stmt 0 view .LVU111
+ 323 006a B7EEC67B 		vcvt.f32.f64	s14, d6
+ 324              	.LVL16:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 325              		.loc 1 75 26 view .LVU112
+ 326 006e 27EE007A 		vmul.f32	s14, s14, s0
+ 327              	.LVL17:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 328              		.loc 1 75 26 view .LVU113
+ 329 0072 B7EEC77A 		vcvt.f64.f32	d7, s14
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 330              		.loc 1 75 31 view .LVU114
+ 331 0076 37EE037B 		vadd.f64	d7, d7, d3
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 332              		.loc 1 75 37 view .LVU115
+ 333 007a BDEEC77B 		vcvt.s32.f64	s14, d7
+ 334              	.LVL18:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 335              		.loc 1 75 37 view .LVU116
+ 336              	.LBE18:
+ 337              	.LBE24:
+ 127:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos = (int)read_pos;
+ 338              		.loc 1 127 20 view .LVU117
+ 339 007e F8EEC77A 		vcvt.f32.s32	s15, s14
+ 119:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->dummy       = 0;
+ 340              		.loc 1 119 21 view .LVU118
+ 341 0082 81ED017A 		vstr.32	s14, [r1, #4]	@ int
+ 120:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->write_pos   = 0;
+ 342              		.loc 1 120 5 is_stmt 1 view .LVU119
+ 121:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set random seed */
+ 343              		.loc 1 121 5 view .LVU120
+ 123:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* set initial delay time */
+ 344              		.loc 1 123 5 view .LVU121
+ 125:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = kReverbParams[n][0] + (read_pos * (float)i_pitch_mod_);
+ 345              		.loc 1 125 5 view .LVU122
+ 346              	.LVL19:
+ 126:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (float)lp->buffer_size - (read_pos * sample_rate_);
+ 347              		.loc 1 126 5 view .LVU123
+ 127:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos = (int)read_pos;
+ 348              		.loc 1 127 5 view .LVU124
+ 127:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos = (int)read_pos;
+ 349              		.loc 1 127 18 is_stmt 0 view .LVU125
+ 350 0086 E0EE647A 		vfms.f32	s15, s0, s9
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 11
+
+
+ 351              	.LVL20:
+ 128:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (read_pos - (float)lp->read_pos) * (float)DELAYPOS_SCALE;
+ 352              		.loc 1 128 5 is_stmt 1 view .LVU126
+ 128:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (read_pos - (float)lp->read_pos) * (float)DELAYPOS_SCALE;
+ 353              		.loc 1 128 20 is_stmt 0 view .LVU127
+ 354 008a FDEEE76A 		vcvt.s32.f32	s13, s15
+ 355              		.loc 1 129 32 view .LVU128
+ 356 008e B8EEE67A 		vcvt.f32.s32	s14, s13
+ 128:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     read_pos     = (read_pos - (float)lp->read_pos) * (float)DELAYPOS_SCALE;
+ 357              		.loc 1 128 18 view .LVU129
+ 358 0092 C1ED026A 		vstr.32	s13, [r1, #8]	@ int
+ 359              		.loc 1 129 5 is_stmt 1 view .LVU130
+ 360              		.loc 1 129 30 is_stmt 0 view .LVU131
+ 361 0096 37EEC77A 		vsub.f32	s14, s15, s14
+ 362              	.LVL21:
+ 130:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos_frac = (int)(read_pos + 0.5);
+ 363              		.loc 1 130 5 is_stmt 1 view .LVU132
+ 129:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->read_pos_frac = (int)(read_pos + 0.5);
+ 364              		.loc 1 129 18 is_stmt 0 view .LVU133
+ 365 009a 27EE207A 		vmul.f32	s14, s14, s1
+ 366              	.LVL22:
+ 367              		.loc 1 130 31 view .LVU134
+ 368 009e B7EEC77A 		vcvt.f64.f32	d7, s14
+ 369              	.LVL23:
+ 370              		.loc 1 130 40 view .LVU135
+ 371 00a2 37EE057B 		vadd.f64	d7, d7, d5
+ 372              		.loc 1 130 25 view .LVU136
+ 373 00a6 BDEEC77B 		vcvt.s32.f64	s14, d7
+ 374 00aa 81ED037A 		vstr.32	s14, [r1, #12]	@ int
+ 131:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* initialise first random line segment */
+ 132:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     NextRandomLineseg(lp, n);
+ 375              		.loc 1 132 5 is_stmt 1 view .LVU137
+ 376              		.loc 1 132 22 is_stmt 0 view .LVU138
+ 377 00ae FFF7FEFF 		bl	_ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi
+ 378              	.LVL24:
+ 133:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* clear delay line to zero */
+ 134:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lp->filter_state = 0.0;
+ 379              		.loc 1 134 5 is_stmt 1 view .LVU139
+ 380              	.LBB25:
+ 135:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(int i = 0; i < lp->buffer_size; i++)
+ 381              		.loc 1 135 28 is_stmt 0 view .LVU140
+ 382 00b2 4A68     		ldr	r2, [r1, #4]
+ 383              	.LBE25:
+ 134:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(int i = 0; i < lp->buffer_size; i++)
+ 384              		.loc 1 134 22 view .LVU141
+ 385 00b4 0023     		movs	r3, #0
+ 386              	.LBB26:
+ 387              		.loc 1 135 22 view .LVU142
+ 388 00b6 AA42     		cmp	r2, r5
+ 389              	.LBE26:
+ 134:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(int i = 0; i < lp->buffer_size; i++)
+ 390              		.loc 1 134 22 view .LVU143
+ 391 00b8 0B62     		str	r3, [r1, #32]	@ float
+ 392              		.loc 1 135 5 is_stmt 1 view .LVU144
+ 393              	.LVL25:
+ 394              	.LBB27:
+ 395              		.loc 1 135 22 view .LVU145
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 12
+
+
+ 396 00ba 05DD     		ble	.L16
+ 397 00bc 0C46     		mov	r4, r1
+ 136:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 137:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->buf[i] = 0;
+ 398              		.loc 1 137 20 is_stmt 0 view .LVU146
+ 399 00be 9200     		lsls	r2, r2, #2
+ 400 00c0 2946     		mov	r1, r5
+ 401              	.LVL26:
+ 402              		.loc 1 137 20 view .LVU147
+ 403 00c2 606A     		ldr	r0, [r4, #36]
+ 404              	.LVL27:
+ 405              		.loc 1 137 20 view .LVU148
+ 406 00c4 FFF7FEFF 		bl	memset
+ 407              	.LVL28:
+ 408              	.L16:
+ 409              		.loc 1 137 20 view .LVU149
+ 410              	.LBE27:
+ 138:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 139:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return REVSC_OK;
+ 411              		.loc 1 139 5 is_stmt 1 view .LVU150
+ 140:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 412              		.loc 1 140 1 is_stmt 0 view .LVU151
+ 413 00c8 0020     		movs	r0, #0
+ 414 00ca BDEC028B 		vldm	sp!, {d8}
+ 415              		.cfi_restore 80
+ 416              		.cfi_restore 81
+ 417              		.cfi_def_cfa_offset 16
+ 418 00ce 38BD     		pop	{r3, r4, r5, pc}
+ 419              	.L19:
+ 420              		.align	3
+ 421              	.L18:
+ 422 00d0 00000000 		.word	0
+ 423 00d4 00803040 		.word	1076920320
+ 424 00d8 00000000 		.word	.LANCHOR0
+ 425 00dc 0000804D 		.word	1300234240
+ 426 00e0 00000038 		.word	939524096
+ 427              		.cfi_endproc
+ 428              	.LFE558:
+ 430              		.section	.text._ZN7daisysp8ReverbSc4InitEf,"ax",%progbits
+ 431              		.align	1
+ 432              		.p2align 2,,3
+ 433              		.global	_ZN7daisysp8ReverbSc4InitEf
+ 434              		.syntax unified
+ 435              		.thumb
+ 436              		.thumb_func
+ 437              		.fpu fpv5-d16
+ 439              	_ZN7daisysp8ReverbSc4InitEf:
+ 440              	.LVL29:
+ 441              	.LFB554:
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_sample_rate_ = sr;
+ 442              		.loc 1 46 1 is_stmt 1 view -0
+ 443              		.cfi_startproc
+ 444              		@ args = 0, pretend = 0, frame = 0
+ 445              		@ frame_needed = 0, uses_anonymous_args = 0
+  47:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     sample_rate_   = sr;
+ 446              		.loc 1 47 5 view .LVU153
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_sample_rate_ = sr;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 13
+
+
+ 447              		.loc 1 46 1 is_stmt 0 view .LVU154
+ 448 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 449              		.cfi_def_cfa_offset 32
+ 450              		.cfi_offset 3, -32
+ 451              		.cfi_offset 4, -28
+ 452              		.cfi_offset 5, -24
+ 453              		.cfi_offset 6, -20
+ 454              		.cfi_offset 7, -16
+ 455              		.cfi_offset 8, -12
+ 456              		.cfi_offset 9, -8
+ 457              		.cfi_offset 14, -4
+  50:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_pitch_mod_   = 1;
+ 458              		.loc 1 50 20 view .LVU155
+ 459 0004 3049     		ldr	r1, .L26+8
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_sample_rate_ = sr;
+ 460              		.loc 1 46 1 view .LVU156
+ 461 0006 8046     		mov	r8, r0
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_skip_init_   = 0;
+ 462              		.loc 1 51 20 view .LVU157
+ 463 0008 4FF07E52 		mov	r2, #1065353216
+  52:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     damp_fact_     = 1.0;
+ 464              		.loc 1 52 20 view .LVU158
+ 465 000c 0023     		movs	r3, #0
+  49:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lpfreq_        = 10000;
+ 466              		.loc 1 49 20 view .LVU159
+ 467 000e 2F48     		ldr	r0, .L26+12
+ 468              	.LVL30:
+  57:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(i = 0; i < 8; i++)
+ 469              		.loc 1 57 13 view .LVU160
+ 470 0010 0024     		movs	r4, #0
+  62:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         InitDelayLine(&delay_lines_[i], i);
+ 471              		.loc 1 62 32 view .LVU161
+ 472 0012 08F5B279 		add	r9, r8, #356
+ 473 0016 08F12407 		add	r7, r8, #36
+ 474 001a 2D4E     		ldr	r6, .L26+16
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 475              		.loc 1 58 11 view .LVU162
+ 476 001c 2546     		mov	r5, r4
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_sample_rate_ = sr;
+ 477              		.loc 1 46 1 view .LVU163
+ 478 001e 2DED028B 		vpush.64	{d8}
+ 479              		.cfi_def_cfa_offset 40
+ 480              		.cfi_offset 80, -40
+ 481              		.cfi_offset 81, -36
+  50:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_pitch_mod_   = 1;
+ 482              		.loc 1 50 20 view .LVU164
+ 483 0022 C8F80410 		str	r1, [r8, #4]	@ float
+  55:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int i, n_bytes = 0;
+ 484              		.loc 1 55 20 view .LVU165
+ 485 0026 0121     		movs	r1, #1
+  46:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_sample_rate_ = sr;
+ 486              		.loc 1 46 1 view .LVU166
+ 487 0028 B0EE408A 		vmov.f32	s16, s0
+  47:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     sample_rate_   = sr;
+ 488              		.loc 1 47 20 view .LVU167
+ 489 002c 88ED020A 		vstr.32	s0, [r8, #8]
+  48:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     feedback_      = 0.97;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 14
+
+
+ 490              		.loc 1 48 5 is_stmt 1 view .LVU168
+  48:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     feedback_      = 0.97;
+ 491              		.loc 1 48 20 is_stmt 0 view .LVU169
+ 492 0030 88ED050A 		vstr.32	s0, [r8, #20]
+  49:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lpfreq_        = 10000;
+ 493              		.loc 1 49 5 is_stmt 1 view .LVU170
+  49:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     lpfreq_        = 10000;
+ 494              		.loc 1 49 20 is_stmt 0 view .LVU171
+ 495 0034 C8F80000 		str	r0, [r8]	@ float
+  50:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_pitch_mod_   = 1;
+ 496              		.loc 1 50 5 is_stmt 1 view .LVU172
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_skip_init_   = 0;
+ 497              		.loc 1 51 5 view .LVU173
+  51:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     i_skip_init_   = 0;
+ 498              		.loc 1 51 20 is_stmt 0 view .LVU174
+ 499 0038 C8F80C20 		str	r2, [r8, #12]	@ float
+  52:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     damp_fact_     = 1.0;
+ 500              		.loc 1 52 5 is_stmt 1 view .LVU175
+  52:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     damp_fact_     = 1.0;
+ 501              		.loc 1 52 20 is_stmt 0 view .LVU176
+ 502 003c C8F81030 		str	r3, [r8, #16]	@ float
+  53:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_lpfreq_    = 0.0;
+ 503              		.loc 1 53 5 is_stmt 1 view .LVU177
+  53:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     prv_lpfreq_    = 0.0;
+ 504              		.loc 1 53 20 is_stmt 0 view .LVU178
+ 505 0040 C8F81820 		str	r2, [r8, #24]	@ float
+  54:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     init_done_     = 1;
+ 506              		.loc 1 54 5 is_stmt 1 view .LVU179
+  54:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     init_done_     = 1;
+ 507              		.loc 1 54 20 is_stmt 0 view .LVU180
+ 508 0044 C8F81C30 		str	r3, [r8, #28]	@ float
+  55:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int i, n_bytes = 0;
+ 509              		.loc 1 55 5 is_stmt 1 view .LVU181
+  55:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int i, n_bytes = 0;
+ 510              		.loc 1 55 20 is_stmt 0 view .LVU182
+ 511 0048 C8F82010 		str	r1, [r8, #32]
+  56:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     n_bytes = 0;
+ 512              		.loc 1 56 5 is_stmt 1 view .LVU183
+ 513              	.LVL31:
+  57:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(i = 0; i < 8; i++)
+ 514              		.loc 1 57 5 view .LVU184
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 515              		.loc 1 58 5 view .LVU185
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 516              		.loc 1 58 18 view .LVU186
+  60:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             return 1;
+ 517              		.loc 1 60 9 view .LVU187
+ 518 004c 01E0     		b	.L21
+ 519              	.LVL32:
+ 520              	.L23:
+  60:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             return 1;
+ 521              		.loc 1 60 9 is_stmt 0 view .LVU188
+ 522 004e 9C42     		cmp	r4, r3
+ 523 0050 30DC     		bgt	.L24
+ 524              	.LVL33:
+ 525              	.L21:
+  62:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         InitDelayLine(&delay_lines_[i], i);
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 15
+
+
+ 526              		.loc 1 62 9 is_stmt 1 discriminator 2 view .LVU189
+  62:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         InitDelayLine(&delay_lines_[i], i);
+ 527              		.loc 1 62 38 is_stmt 0 discriminator 2 view .LVU190
+ 528 0052 09EB8403 		add	r3, r9, r4, lsl #2
+  63:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         n_bytes += DelayLineBytesAlloc(sr, 1, i);
+ 529              		.loc 1 63 22 discriminator 2 view .LVU191
+ 530 0056 2A46     		mov	r2, r5
+ 531 0058 3946     		mov	r1, r7
+ 532 005a 4046     		mov	r0, r8
+  62:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         InitDelayLine(&delay_lines_[i], i);
+ 533              		.loc 1 62 29 discriminator 2 view .LVU192
+ 534 005c 7B62     		str	r3, [r7, #36]
+  63:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         n_bytes += DelayLineBytesAlloc(sr, 1, i);
+ 535              		.loc 1 63 9 is_stmt 1 discriminator 2 view .LVU193
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 536              		.loc 1 58 5 is_stmt 0 discriminator 2 view .LVU194
+ 537 005e 0135     		adds	r5, r5, #1
+ 538              	.LVL34:
+  63:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         n_bytes += DelayLineBytesAlloc(sr, 1, i);
+ 539              		.loc 1 63 22 discriminator 2 view .LVU195
+ 540 0060 FFF7FEFF 		bl	_ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi
+ 541              	.LVL35:
+  64:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 542              		.loc 1 64 9 is_stmt 1 discriminator 2 view .LVU196
+ 543              	.LBB28:
+ 544              	.LBI28:
+  78:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+ 545              		.loc 1 78 12 discriminator 2 view .LVU197
+ 546              	.LBB29:
+  80:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 547              		.loc 1 80 5 discriminator 2 view .LVU198
+  82:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return n_bytes;
+ 548              		.loc 1 82 5 discriminator 2 view .LVU199
+ 549              	.LBB30:
+ 550              	.LBI30:
+  69:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+ 551              		.loc 1 69 12 discriminator 2 view .LVU200
+ 552              	.LBB31:
+  71:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 553              		.loc 1 71 5 discriminator 2 view .LVU201
+  73:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     max_del += (kReverbParams[n][1] * (float)i_pitch_mod * 1.125);
+ 554              		.loc 1 73 5 discriminator 2 view .LVU202
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 555              		.loc 1 74 5 discriminator 2 view .LVU203
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 556              		.loc 1 74 37 is_stmt 0 discriminator 2 view .LVU204
+ 557 0064 96ED015A 		vldr.32	s10, [r6, #4]
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 558              		.loc 1 74 13 discriminator 2 view .LVU205
+ 559 0068 96ED006A 		vldr.32	s12, [r6]
+ 560 006c B7EE027B 		vmov.f64	d7, #1.125e+0
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 561              		.loc 1 74 37 discriminator 2 view .LVU206
+ 562 0070 B7EEC55A 		vcvt.f64.f32	d5, s10
+ 563              	.LBE31:
+ 564              	.LBE30:
+ 565              	.LBE29:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 16
+
+
+ 566              	.LBE28:
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 567              		.loc 1 58 18 discriminator 2 view .LVU207
+ 568 0074 082D     		cmp	r5, #8
+ 569              	.LBB40:
+ 570              	.LBB38:
+ 571              	.LBB35:
+ 572              	.LBB32:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 573              		.loc 1 74 13 discriminator 2 view .LVU208
+ 574 0076 B7EEC66A 		vcvt.f64.f32	d6, s12
+ 575              	.LBE32:
+ 576              	.LBE35:
+ 577              	.LBE38:
+ 578              	.LBE40:
+  60:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             return 1;
+ 579              		.loc 1 60 9 discriminator 2 view .LVU209
+ 580 007a 164B     		ldr	r3, .L26+20
+ 581 007c 07F12807 		add	r7, r7, #40
+ 582 0080 06F11006 		add	r6, r6, #16
+ 583              	.LVL36:
+ 584              	.LBB41:
+ 585              	.LBB39:
+ 586              	.LBB36:
+ 587              	.LBB33:
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 588              		.loc 1 74 13 discriminator 2 view .LVU210
+ 589 0084 A5EE076B 		vfma.f64	d6, d5, d7
+ 590              	.LVL37:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 591              		.loc 1 75 5 is_stmt 1 discriminator 2 view .LVU211
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 592              		.loc 1 75 5 is_stmt 0 discriminator 2 view .LVU212
+ 593              	.LBE33:
+ 594              	.LBE36:
+  83:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 595              		.loc 1 83 5 is_stmt 1 discriminator 2 view .LVU213
+ 596              	.LBB37:
+ 597              	.LBB34:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 598              		.loc 1 75 31 is_stmt 0 discriminator 2 view .LVU214
+ 599 0088 9FED0D4B 		vldr.64	d4, .L26
+  74:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return (int)(max_del * sr + 16.5);
+ 600              		.loc 1 74 13 discriminator 2 view .LVU215
+ 601 008c B7EEC67B 		vcvt.f32.f64	s14, d6
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 602              		.loc 1 75 26 discriminator 2 view .LVU216
+ 603 0090 27EE087A 		vmul.f32	s14, s14, s16
+ 604              	.LVL38:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 605              		.loc 1 75 26 discriminator 2 view .LVU217
+ 606 0094 B7EEC77A 		vcvt.f64.f32	d7, s14
+ 607              	.LVL39:
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 608              		.loc 1 75 31 discriminator 2 view .LVU218
+ 609 0098 37EE047B 		vadd.f64	d7, d7, d4
+  75:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 17
+
+
+ 610              		.loc 1 75 37 discriminator 2 view .LVU219
+ 611 009c BDEEC77B 		vcvt.s32.f64	s14, d7
+ 612              	.LBE34:
+ 613              	.LBE37:
+ 614              	.LBE39:
+ 615              	.LBE41:
+  64:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 616              		.loc 1 64 17 discriminator 2 view .LVU220
+ 617 00a0 17EE102A 		vmov	r2, s14	@ int
+ 618 00a4 04EB8204 		add	r4, r4, r2, lsl #2
+ 619              	.LVL40:
+  60:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             return 1;
+ 620              		.loc 1 60 9 is_stmt 1 discriminator 2 view .LVU221
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 621              		.loc 1 58 5 discriminator 2 view .LVU222
+  58:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 622              		.loc 1 58 18 discriminator 2 view .LVU223
+ 623 00a8 D1D1     		bne	.L23
+  66:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 624              		.loc 1 66 12 is_stmt 0 view .LVU224
+ 625 00aa 0020     		movs	r0, #0
+  67:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 626              		.loc 1 67 1 view .LVU225
+ 627 00ac BDEC028B 		vldm	sp!, {d8}
+ 628              		.cfi_remember_state
+ 629              		.cfi_restore 80
+ 630              		.cfi_restore 81
+ 631              		.cfi_def_cfa_offset 32
+ 632              	.LVL41:
+  67:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 633              		.loc 1 67 1 view .LVU226
+ 634 00b0 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 635              	.LVL42:
+ 636              	.L24:
+ 637              		.cfi_restore_state
+  67:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 638              		.loc 1 67 1 view .LVU227
+ 639 00b4 BDEC028B 		vldm	sp!, {d8}
+ 640              		.cfi_restore 80
+ 641              		.cfi_restore 81
+ 642              		.cfi_def_cfa_offset 32
+ 643              	.LVL43:
+  61:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         delay_lines_[i].buf = (aux_) + n_bytes;
+ 644              		.loc 1 61 20 view .LVU228
+ 645 00b8 0120     		movs	r0, #1
+  67:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 646              		.loc 1 67 1 view .LVU229
+ 647 00ba BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 648              	.LVL44:
+ 649              	.L27:
+  67:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 650              		.loc 1 67 1 view .LVU230
+ 651 00be 00BF     		.align	3
+ 652              	.L26:
+ 653 00c0 00000000 		.word	0
+ 654 00c4 00803040 		.word	1076920320
+ 655 00c8 00401C46 		.word	1176256512
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 18
+
+
+ 656 00cc EC51783F 		.word	1064849900
+ 657 00d0 00000000 		.word	.LANCHOR0
+ 658 00d4 78820100 		.word	98936
+ 659              		.cfi_endproc
+ 660              	.LFE554:
+ 662              		.section	.text._ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_,"ax",%progbits
+ 663              		.align	1
+ 664              		.p2align 2,,3
+ 665              		.global	_ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_
+ 666              		.syntax unified
+ 667              		.thumb
+ 668              		.thumb_func
+ 669              		.fpu fpv5-d16
+ 671              	_ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_:
+ 672              	.LVL45:
+ 673              	.LFB559:
+ 141:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 142:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** int ReverbSc::Process(const float &in1,
+ 143:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                       const float &in2,
+ 144:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                       float *      out1,
+ 145:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                       float *      out2)
+ 146:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** {
+ 674              		.loc 1 146 1 is_stmt 1 view -0
+ 675              		.cfi_startproc
+ 676              		@ args = 4, pretend = 0, frame = 0
+ 677              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float       a_in_l, a_in_r, a_out_l, a_out_r;
+ 678              		.loc 1 147 5 view .LVU232
+ 148:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float       vm1, v0, v1, v2, am1, a0, a1, a2, frac;
+ 679              		.loc 1 148 5 view .LVU233
+ 149:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     ReverbScDl *lp;
+ 680              		.loc 1 149 5 view .LVU234
+ 150:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int         read_pos;
+ 681              		.loc 1 150 5 view .LVU235
+ 151:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     uint32_t    n;
+ 682              		.loc 1 151 5 view .LVU236
+ 152:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     int         buffer_size; /* Local copy */
+ 683              		.loc 1 152 5 view .LVU237
+ 153:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float       damp_fact = damp_fact_;
+ 684              		.loc 1 153 5 view .LVU238
+ 154:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 155:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     //if (init_done_ <= 0) return REVSC_NOT_OK;
+ 156:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(init_done_ <= 0)
+ 685              		.loc 1 156 5 view .LVU239
+ 146:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float       a_in_l, a_in_r, a_out_l, a_out_r;
+ 686              		.loc 1 146 1 is_stmt 0 view .LVU240
+ 687 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 688              		.cfi_def_cfa_offset 32
+ 689              		.cfi_offset 3, -32
+ 690              		.cfi_offset 4, -28
+ 691              		.cfi_offset 5, -24
+ 692              		.cfi_offset 6, -20
+ 693              		.cfi_offset 7, -16
+ 694              		.cfi_offset 8, -12
+ 695              		.cfi_offset 9, -8
+ 696              		.cfi_offset 14, -4
+ 697 0004 1F46     		mov	r7, r3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 19
+
+
+ 698              		.loc 1 156 5 view .LVU241
+ 699 0006 036A     		ldr	r3, [r0, #32]
+ 700              	.LVL46:
+ 701              		.loc 1 156 5 view .LVU242
+ 702 0008 002B     		cmp	r3, #0
+ 146:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     float       a_in_l, a_in_r, a_out_l, a_out_r;
+ 703              		.loc 1 146 1 view .LVU243
+ 704 000a 2DED028B 		vpush.64	{d8}
+ 705              		.cfi_def_cfa_offset 40
+ 706              		.cfi_offset 80, -40
+ 707              		.cfi_offset 81, -36
+ 708              		.loc 1 156 5 view .LVU244
+ 709 000e 40F33581 		ble	.L53
+ 157:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         return REVSC_NOT_OK;
+ 158:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 159:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* calculate tone filter coefficient if frequency changed */
+ 160:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     if(lpfreq_ != prv_lpfreq_)
+ 710              		.loc 1 160 8 view .LVU245
+ 711 0012 D0ED017A 		vldr.32	s15, [r0, #4]
+ 712 0016 8146     		mov	r9, r0
+ 713              		.loc 1 160 5 view .LVU246
+ 714 0018 90ED077A 		vldr.32	s14, [r0, #28]
+ 715 001c 0D46     		mov	r5, r1
+ 716 001e 1446     		mov	r4, r2
+ 717              		.loc 1 160 5 is_stmt 1 view .LVU247
+ 718 0020 F4EE477A 		vcmp.f32	s15, s14
+ 719 0024 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 720 0028 40F0E580 		bne	.L30
+ 153:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 721              		.loc 1 153 17 is_stmt 0 view .LVU248
+ 722 002c 90ED061A 		vldr.32	s2, [r0, #24]
+ 723              	.LVL47:
+ 724              	.L31:
+ 161:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 162:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         prv_lpfreq_ = lpfreq_;
+ 163:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact
+ 164:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = 2.0f - cosf(prv_lpfreq_ * (2.0f * (float)M_PI) / sample_rate_);
+ 165:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact = damp_fact_
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = damp_fact - sqrtf(damp_fact * damp_fact - 1.0f);
+ 167:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 168:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 169:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* calculate "resultant junction pressure" and mix to input signals */
+ 170:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 171:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_l = a_out_l = a_out_r = 0.0;
+ 725              		.loc 1 171 5 is_stmt 1 view .LVU249
+ 172:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(n = 0; n < 8; n++)
+ 726              		.loc 1 172 5 view .LVU250
+ 727              		.loc 1 172 18 view .LVU251
+ 728 0030 4B46     		mov	r3, r9
+ 171:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(n = 0; n < 8; n++)
+ 729              		.loc 1 171 12 is_stmt 0 view .LVU252
+ 730 0032 DFED9B7A 		vldr.32	s15, .L65+8
+ 731 0036 09F5A070 		add	r0, r9, #320
+ 732              	.LVL48:
+ 733              	.L35:
+ 173:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 174:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a_in_l += delay_lines_[n].filter_state;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 20
+
+
+ 734              		.loc 1 174 9 is_stmt 1 discriminator 2 view .LVU253
+ 735              		.loc 1 174 16 is_stmt 0 discriminator 2 view .LVU254
+ 736 003a 93ED117A 		vldr.32	s14, [r3, #68]
+ 172:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 737              		.loc 1 172 18 discriminator 2 view .LVU255
+ 738 003e 2833     		adds	r3, r3, #40
+ 739 0040 9842     		cmp	r0, r3
+ 740              		.loc 1 174 16 discriminator 2 view .LVU256
+ 741 0042 77EE877A 		vadd.f32	s15, s15, s14
+ 742              	.LVL49:
+ 172:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 743              		.loc 1 172 5 is_stmt 1 discriminator 2 view .LVU257
+ 172:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 744              		.loc 1 172 18 discriminator 2 view .LVU258
+ 745 0046 F8D1     		bne	.L35
+ 175:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 176:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_l *= kJpScale;
+ 746              		.loc 1 176 5 view .LVU259
+ 747              	.LVL50:
+ 177:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_r = a_in_l + in2;
+ 748              		.loc 1 177 5 view .LVU260
+ 749              		.loc 1 177 12 is_stmt 0 view .LVU261
+ 750 0048 B5EE007A 		vmov.f32	s14, #2.5e-1
+ 178:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_l = a_in_l + in1;
+ 751              		.loc 1 178 12 view .LVU262
+ 752 004c D5ED000A 		vldr.32	s1, [r5]
+ 177:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_r = a_in_l + in2;
+ 753              		.loc 1 177 12 view .LVU263
+ 754 0050 94ED000A 		vldr.32	s0, [r4]
+ 179:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 180:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* loop through all delay lines */
+ 181:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(n = 0; n < 8; n++)
+ 755              		.loc 1 182 11 view .LVU264
+ 756 0054 4FF00008 		mov	r8, #0
+ 171:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(n = 0; n < 8; n++)
+ 757              		.loc 1 171 32 view .LVU265
+ 758 0058 9FED912A 		vldr.32	s4, .L65+8
+ 759 005c 09F14C04 		add	r4, r9, #76
+ 760              	.LVL51:
+ 178:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_l = a_in_l + in1;
+ 761              		.loc 1 178 12 view .LVU266
+ 762 0060 E7EE870A 		vfma.f32	s1, s15, s14
+ 183:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 184:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp          = &delay_lines_[n];
+ 185:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         buffer_size = lp->buffer_size;
+ 763              		.loc 1 185 21 view .LVU267
+ 764 0064 D9F82860 		ldr	r6, [r9, #40]
+ 177:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     a_in_l = a_in_l + in1;
+ 765              		.loc 1 177 12 view .LVU268
+ 766 0068 A7EE870A 		vfma.f32	s0, s15, s14
+ 767              	.LVL52:
+ 178:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 768              		.loc 1 178 5 is_stmt 1 view .LVU269
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 769              		.loc 1 182 5 view .LVU270
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 21
+
+
+ 770              		.loc 1 182 18 view .LVU271
+ 184:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         buffer_size = lp->buffer_size;
+ 771              		.loc 1 184 9 view .LVU272
+ 772              		.loc 1 185 9 view .LVU273
+ 186:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 187:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* send input signal and feedback to delay line */
+ 188:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 189:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->buf[lp->write_pos]
+ 773              		.loc 1 189 9 view .LVU274
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = (float)((n & 1 ? a_in_r : a_in_l) - lp->filter_state);
+ 774              		.loc 1 190 26 is_stmt 0 view .LVU275
+ 775 006c 4046     		mov	r0, r8
+ 171:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     for(n = 0; n < 8; n++)
+ 776              		.loc 1 171 22 view .LVU276
+ 777 006e F0EE421A 		vmov.f32	s3, s4
+ 778              		.loc 1 190 30 view .LVU277
+ 779 0072 F0EE607A 		vmov.f32	s15, s1
+ 780 0076 16E0     		b	.L36
+ 781              	.LVL53:
+ 782              	.L64:
+ 191:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 192:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 193:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->write_pos -= buffer_size;
+ 194:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 195:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 196:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* read from delay line with cubic interpolation */
+ 197:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 198:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(lp->read_pos_frac >= DELAYPOS_SCALE)
+ 199:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 200:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos += (lp->read_pos_frac >> DELAYPOS_SHIFT);
+ 201:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos_frac &= DELAYPOS_MASK;
+ 202:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 203:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(lp->read_pos >= buffer_size)
+ 204:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos -= buffer_size;
+ 205:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         read_pos = lp->read_pos;
+ 206:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         frac     = (float)lp->read_pos_frac * (1.0 / (float)DELAYPOS_SCALE);
+ 207:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 208:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* calculate interpolation coefficients */
+ 209:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 210:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 = frac * frac;
+ 211:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 -= 1.0;
+ 212:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 *= (1.0 / 6.0);
+ 213:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 = frac;
+ 214:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 += 1.0;
+ 215:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 *= 0.5;
+ 216:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         am1 = a1 - 1.0;
+ 217:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0  = 3.0 * a2;
+ 218:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 -= a0;
+ 219:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         am1 -= a2;
+ 220:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0 -= frac;
+ 221:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 222:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* read four samples for interpolation */
+ 223:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 224:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(read_pos > 0 && read_pos < (buffer_size - 2))
+ 225:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 226:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             vm1 = (float)(lp->buf[read_pos - 1]);
+ 227:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0  = (float)(lp->buf[read_pos]);
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 22
+
+
+ 228:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v1  = (float)(lp->buf[read_pos + 1]);
+ 229:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v2  = (float)(lp->buf[read_pos + 2]);
+ 230:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 231:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         else
+ 232:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 233:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             /* at buffer wrap-around, need to check index */
+ 234:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 235:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(--read_pos < 0)
+ 236:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos += buffer_size;
+ 237:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             vm1 = (float)lp->buf[read_pos];
+ 238:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 239:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 240:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0 = (float)lp->buf[read_pos];
+ 241:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 242:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 243:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v1 = (float)lp->buf[read_pos];
+ 244:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 245:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 246:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v2 = (float)lp->buf[read_pos];
+ 247:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         v0 = (am1 * vm1 + a0 * v0 + a1 * v1 + a2 * v2) * frac + v0;
+ 249:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 250:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* update buffer read position */
+ 251:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 252:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->read_pos_frac += lp->read_pos_frac_inc;
+ 253:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 254:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* apply feedback gain and lowpass filter */
+ 255:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 256:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         v0 *= (float)feedback_;
+ 257:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         v0               = (lp->filter_state - v0) * damp_fact + v0;
+ 258:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->filter_state = v0;
+ 259:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 260:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* mix to output */
+ 261:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 262:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(n & 1)
+ 263:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 264:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             a_out_r += v0;
+ 783              		.loc 1 264 13 is_stmt 1 view .LVU278
+ 265:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 266:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         else
+ 267:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 268:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             a_out_l += v0;
+ 269:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 270:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 271:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         /* start next random line segment if current one has reached endpoint */
+ 272:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 273:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(--(lp->rand_line_cnt) <= 0)
+ 784              		.loc 1 273 12 is_stmt 0 view .LVU279
+ 785 0078 54F80C3C 		ldr	r3, [r4, #-12]
+ 264:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 786              		.loc 1 264 21 view .LVU280
+ 787 007c 32EE272A 		vadd.f32	s4, s4, s15
+ 788              	.LVL54:
+ 789              		.loc 1 273 9 is_stmt 1 view .LVU281
+ 790              		.loc 1 273 12 is_stmt 0 view .LVU282
+ 791 0080 013B     		subs	r3, r3, #1
+ 792              		.loc 1 273 9 view .LVU283
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 23
+
+
+ 793 0082 002B     		cmp	r3, #0
+ 794              		.loc 1 273 34 view .LVU284
+ 795 0084 44F80C3C 		str	r3, [r4, #-12]
+ 796              		.loc 1 273 9 view .LVU285
+ 797 0088 40F39B80 		ble	.L62
+ 798              	.L50:
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 799              		.loc 1 182 5 is_stmt 1 discriminator 2 view .LVU286
+ 800 008c 08F10108 		add	r8, r8, #1
+ 801              	.LVL55:
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 802              		.loc 1 182 18 discriminator 2 view .LVU287
+ 803 0090 B8F1080F 		cmp	r8, #8
+ 804 0094 00F09F80 		beq	.L63
+ 805              	.LVL56:
+ 806              	.L51:
+ 184:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         buffer_size = lp->buffer_size;
+ 807              		.loc 1 184 9 view .LVU288
+ 185:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 808              		.loc 1 185 9 view .LVU289
+ 185:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 809              		.loc 1 185 21 is_stmt 0 view .LVU290
+ 810 0098 6668     		ldr	r6, [r4, #4]
+ 811              	.LVL57:
+ 189:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = (float)((n & 1 ? a_in_r : a_in_l) - lp->filter_state);
+ 812              		.loc 1 189 9 is_stmt 1 view .LVU291
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 813              		.loc 1 190 30 is_stmt 0 view .LVU292
+ 814 009a 18F00100 		ands	r0, r8, #1
+ 815 009e 04F12804 		add	r4, r4, #40
+ 816              	.LVL58:
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 817              		.loc 1 190 30 view .LVU293
+ 818 00a2 40FE807A 		vseleq.f32	s15, s1, s0
+ 819              	.LVL59:
+ 820              	.L36:
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 821              		.loc 1 190 49 discriminator 4 view .LVU294
+ 822 00a6 14ED027A 		vldr.32	s14, [r4, #-8]
+ 823 00aa A4F12801 		sub	r1, r4, #40
+ 189:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = (float)((n & 1 ? a_in_r : a_in_l) - lp->filter_state);
+ 824              		.loc 1 189 30 discriminator 4 view .LVU295
+ 825 00ae 54F8282C 		ldr	r2, [r4, #-40]
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 826              		.loc 1 190 13 discriminator 4 view .LVU296
+ 827 00b2 54F8043C 		ldr	r3, [r4, #-4]
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 828              		.loc 1 190 49 discriminator 4 view .LVU297
+ 829 00b6 77EEC77A 		vsub.f32	s15, s15, s14
+ 190:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         if(++lp->write_pos >= buffer_size)
+ 830              		.loc 1 190 13 discriminator 4 view .LVU298
+ 831 00ba 03EB8203 		add	r3, r3, r2, lsl #2
+ 832 00be C3ED007A 		vstr.32	s15, [r3]
+ 191:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 833              		.loc 1 191 9 is_stmt 1 discriminator 4 view .LVU299
+ 191:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 834              		.loc 1 191 12 is_stmt 0 discriminator 4 view .LVU300
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 24
+
+
+ 835 00c2 54F8285C 		ldr	r5, [r4, #-40]
+ 836 00c6 0135     		adds	r5, r5, #1
+ 191:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 837              		.loc 1 191 9 discriminator 4 view .LVU301
+ 838 00c8 B542     		cmp	r5, r6
+ 193:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 839              		.loc 1 193 13 is_stmt 1 discriminator 4 view .LVU302
+ 193:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 840              		.loc 1 193 27 is_stmt 0 discriminator 4 view .LVU303
+ 841 00ca A8BF     		it	ge
+ 842 00cc AD1B     		subge	r5, r5, r6
+ 843 00ce 44F8285C 		str	r5, [r4, #-40]
+ 198:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 844              		.loc 1 198 9 is_stmt 1 discriminator 4 view .LVU304
+ 200:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos_frac &= DELAYPOS_MASK;
+ 845              		.loc 1 200 26 is_stmt 0 discriminator 4 view .LVU305
+ 846 00d2 54E90852 		ldrd	r5, r2, [r4, #-32]
+ 198:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 847              		.loc 1 198 9 discriminator 4 view .LVU306
+ 848 00d6 B2F1805F 		cmp	r2, #268435456
+ 849 00da 06DB     		blt	.L40
+ 200:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos_frac &= DELAYPOS_MASK;
+ 850              		.loc 1 200 13 is_stmt 1 view .LVU307
+ 201:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 851              		.loc 1 201 31 is_stmt 0 view .LVU308
+ 852 00dc 22F07043 		bic	r3, r2, #-268435456
+ 200:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos_frac &= DELAYPOS_MASK;
+ 853              		.loc 1 200 26 view .LVU309
+ 854 00e0 05EB2275 		add	r5, r5, r2, asr #28
+ 855 00e4 1A46     		mov	r2, r3
+ 856 00e6 44E90853 		strd	r5, r3, [r4, #-32]
+ 201:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 857              		.loc 1 201 13 is_stmt 1 view .LVU310
+ 858              	.L40:
+ 203:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             lp->read_pos -= buffer_size;
+ 859              		.loc 1 203 9 view .LVU311
+ 860 00ea B542     		cmp	r5, r6
+ 861 00ec 02DB     		blt	.L41
+ 204:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         read_pos = lp->read_pos;
+ 862              		.loc 1 204 13 view .LVU312
+ 204:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         read_pos = lp->read_pos;
+ 863              		.loc 1 204 26 is_stmt 0 view .LVU313
+ 864 00ee AD1B     		subs	r5, r5, r6
+ 865 00f0 44F8205C 		str	r5, [r4, #-32]
+ 866              	.L41:
+ 205:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         frac     = (float)lp->read_pos_frac * (1.0 / (float)DELAYPOS_SCALE);
+ 867              		.loc 1 205 9 is_stmt 1 view .LVU314
+ 868              	.LVL60:
+ 206:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 869              		.loc 1 206 9 view .LVU315
+ 211:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 *= (1.0 / 6.0);
+ 870              		.loc 1 211 12 is_stmt 0 view .LVU316
+ 871 00f4 BFEE007A 		vmov.f32	s14, #-1.0e+0
+ 206:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 872              		.loc 1 206 18 view .LVU317
+ 873 00f8 05EE102A 		vmov	s10, r2	@ int
+ 214:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 *= 0.5;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 25
+
+
+ 874              		.loc 1 214 12 view .LVU318
+ 875 00fc F7EE005A 		vmov.f32	s11, #1.0e+0
+ 224:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 876              		.loc 1 224 9 view .LVU319
+ 877 0100 002D     		cmp	r5, #0
+ 206:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 878              		.loc 1 206 18 view .LVU320
+ 879 0102 BAEEC25A 		vcvt.f32.s32	s10, s10, #28
+ 880              	.LVL61:
+ 210:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 -= 1.0;
+ 881              		.loc 1 210 9 is_stmt 1 view .LVU321
+ 211:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 *= (1.0 / 6.0);
+ 882              		.loc 1 211 9 view .LVU322
+ 211:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 *= (1.0 / 6.0);
+ 883              		.loc 1 211 12 is_stmt 0 view .LVU323
+ 884 0106 B0EE476A 		vmov.f32	s12, s14
+ 216:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0  = 3.0 * a2;
+ 885              		.loc 1 216 13 view .LVU324
+ 886 010a F6EE004A 		vmov.f32	s9, #5.0e-1
+ 214:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 *= 0.5;
+ 887              		.loc 1 214 12 view .LVU325
+ 888 010e 75EE255A 		vadd.f32	s11, s10, s11
+ 211:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a2 *= (1.0 / 6.0);
+ 889              		.loc 1 211 12 view .LVU326
+ 890 0112 A5EE056A 		vfma.f32	s12, s10, s10
+ 891              	.LVL62:
+ 212:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 = frac;
+ 892              		.loc 1 212 9 is_stmt 1 view .LVU327
+ 217:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 -= a0;
+ 893              		.loc 1 217 13 is_stmt 0 view .LVU328
+ 894 0116 F0EE087A 		vmov.f32	s15, #3.0e+0
+ 216:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0  = 3.0 * a2;
+ 895              		.loc 1 216 13 view .LVU329
+ 896 011a A5EEA47A 		vfma.f32	s14, s11, s9
+ 212:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 = frac;
+ 897              		.loc 1 212 12 view .LVU330
+ 898 011e 9FED5E3B 		vldr.64	d3, .L65
+ 899 0122 B7EEC66A 		vcvt.f64.f32	d6, s12
+ 900              	.LVL63:
+ 212:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 = frac;
+ 901              		.loc 1 212 12 view .LVU331
+ 902 0126 26EE036B 		vmul.f64	d6, d6, d3
+ 903 012a B7EEC66B 		vcvt.f32.f64	s12, d6
+ 904              	.LVL64:
+ 213:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 += 1.0;
+ 905              		.loc 1 213 9 is_stmt 1 view .LVU332
+ 214:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 *= 0.5;
+ 906              		.loc 1 214 9 view .LVU333
+ 215:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         am1 = a1 - 1.0;
+ 907              		.loc 1 215 9 view .LVU334
+ 216:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0  = 3.0 * a2;
+ 908              		.loc 1 216 9 view .LVU335
+ 217:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 -= a0;
+ 909              		.loc 1 217 9 view .LVU336
+ 217:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a1 -= a0;
+ 910              		.loc 1 217 13 is_stmt 0 view .LVU337
+ 911 012e 66EE277A 		vmul.f32	s15, s12, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 26
+
+
+ 912              	.LVL65:
+ 218:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         am1 -= a2;
+ 913              		.loc 1 218 9 is_stmt 1 view .LVU338
+ 219:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0 -= frac;
+ 914              		.loc 1 219 13 is_stmt 0 view .LVU339
+ 915 0132 77EE466A 		vsub.f32	s13, s14, s12
+ 218:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         am1 -= a2;
+ 916              		.loc 1 218 12 view .LVU340
+ 917 0136 B0EE674A 		vmov.f32	s8, s15
+ 220:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 918              		.loc 1 220 12 view .LVU341
+ 919 013a 77EEC57A 		vsub.f32	s15, s15, s10
+ 920              	.LVL66:
+ 218:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         am1 -= a2;
+ 921              		.loc 1 218 12 view .LVU342
+ 922 013e 95EEA44A 		vfnms.f32	s8, s11, s9
+ 923              	.LVL67:
+ 219:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         a0 -= frac;
+ 924              		.loc 1 219 9 is_stmt 1 view .LVU343
+ 220:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 925              		.loc 1 220 9 view .LVU344
+ 224:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 926              		.loc 1 224 9 view .LVU345
+ 927 0142 78DD     		ble	.L42
+ 224:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 928              		.loc 1 224 52 is_stmt 0 discriminator 1 view .LVU346
+ 929 0144 B31E     		subs	r3, r6, #2
+ 224:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 930              		.loc 1 224 25 discriminator 1 view .LVU347
+ 931 0146 AB42     		cmp	r3, r5
+ 932 0148 40F39680 		ble	.L43
+ 226:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0  = (float)(lp->buf[read_pos]);
+ 933              		.loc 1 226 13 is_stmt 1 view .LVU348
+ 226:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0  = (float)(lp->buf[read_pos]);
+ 934              		.loc 1 226 47 is_stmt 0 view .LVU349
+ 935 014c 6FF04046 		mvn	r6, #-1073741824
+ 936              	.LVL68:
+ 226:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0  = (float)(lp->buf[read_pos]);
+ 937              		.loc 1 226 31 view .LVU350
+ 938 0150 54F8043C 		ldr	r3, [r4, #-4]
+ 939              	.LVL69:
+ 226:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0  = (float)(lp->buf[read_pos]);
+ 940              		.loc 1 226 47 view .LVU351
+ 941 0154 2E44     		add	r6, r6, r5
+ 226:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0  = (float)(lp->buf[read_pos]);
+ 942              		.loc 1 226 17 view .LVU352
+ 943 0156 03EB8603 		add	r3, r3, r6, lsl #2
+ 944 015a D3ED004A 		vldr.32	s9, [r3]
+ 945              	.LVL70:
+ 227:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v1  = (float)(lp->buf[read_pos + 1]);
+ 946              		.loc 1 227 13 is_stmt 1 view .LVU353
+ 227:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v1  = (float)(lp->buf[read_pos + 1]);
+ 947              		.loc 1 227 17 is_stmt 0 view .LVU354
+ 948 015e D3ED015A 		vldr.32	s11, [r3, #4]
+ 949              	.LVL71:
+ 228:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v2  = (float)(lp->buf[read_pos + 2]);
+ 950              		.loc 1 228 13 is_stmt 1 view .LVU355
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 27
+
+
+ 228:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v2  = (float)(lp->buf[read_pos + 2]);
+ 951              		.loc 1 228 17 is_stmt 0 view .LVU356
+ 952 0162 93ED023A 		vldr.32	s6, [r3, #8]
+ 953              	.LVL72:
+ 229:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 954              		.loc 1 229 13 is_stmt 1 view .LVU357
+ 229:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 955              		.loc 1 229 17 is_stmt 0 view .LVU358
+ 956 0166 D3ED033A 		vldr.32	s7, [r3, #12]
+ 957              	.LVL73:
+ 958              	.L44:
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 959              		.loc 1 248 9 is_stmt 1 view .LVU359
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 960              		.loc 1 248 30 is_stmt 0 view .LVU360
+ 961 016a 65EEA77A 		vmul.f32	s15, s11, s15
+ 962              	.LVL74:
+ 252:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 963              		.loc 1 252 27 view .LVU361
+ 964 016e 54F8183C 		ldr	r3, [r4, #-24]
+ 257:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->filter_state = v0;
+ 965              		.loc 1 257 46 view .LVU362
+ 966 0172 14ED027A 		vldr.32	s14, [r4, #-8]
+ 252:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 967              		.loc 1 252 27 view .LVU363
+ 968 0176 1344     		add	r3, r3, r2
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 969              		.loc 1 248 25 view .LVU364
+ 970 0178 E4EEA67A 		vfma.f32	s15, s9, s13
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 971              		.loc 1 248 12 view .LVU365
+ 972 017c F0EE656A 		vmov.f32	s13, s11
+ 973              	.LVL75:
+ 252:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 974              		.loc 1 252 27 view .LVU366
+ 975 0180 44F81C3C 		str	r3, [r4, #-28]
+ 256:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         v0               = (lp->filter_state - v0) * damp_fact + v0;
+ 976              		.loc 1 256 22 view .LVU367
+ 977 0184 D9ED004A 		vldr.32	s9, [r9]
+ 978              	.LVL76:
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 979              		.loc 1 248 35 view .LVU368
+ 980 0188 E3EE047A 		vfma.f32	s15, s6, s8
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 981              		.loc 1 248 45 view .LVU369
+ 982 018c E3EE867A 		vfma.f32	s15, s7, s12
+ 248:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 983              		.loc 1 248 12 view .LVU370
+ 984 0190 E7EE856A 		vfma.f32	s13, s15, s10
+ 985              	.LVL77:
+ 252:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 986              		.loc 1 252 9 is_stmt 1 view .LVU371
+ 256:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         v0               = (lp->filter_state - v0) * damp_fact + v0;
+ 987              		.loc 1 256 9 view .LVU372
+ 257:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->filter_state = v0;
+ 988              		.loc 1 257 9 view .LVU373
+ 257:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->filter_state = v0;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 28
+
+
+ 989              		.loc 1 257 46 is_stmt 0 view .LVU374
+ 990 0194 F0EE477A 		vmov.f32	s15, s14
+ 991 0198 E4EEE67A 		vfms.f32	s15, s9, s13
+ 257:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->filter_state = v0;
+ 992              		.loc 1 257 52 view .LVU375
+ 993 019c 67EE817A 		vmul.f32	s15, s15, s2
+ 257:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         lp->filter_state = v0;
+ 994              		.loc 1 257 26 view .LVU376
+ 995 01a0 E4EEA67A 		vfma.f32	s15, s9, s13
+ 996              	.LVL78:
+ 258:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 997              		.loc 1 258 9 is_stmt 1 view .LVU377
+ 258:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 998              		.loc 1 258 26 is_stmt 0 view .LVU378
+ 999 01a4 44ED027A 		vstr.32	s15, [r4, #-8]
+ 262:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 1000              		.loc 1 262 9 is_stmt 1 view .LVU379
+ 1001 01a8 0028     		cmp	r0, #0
+ 1002 01aa 7FF465AF 		bne	.L64
+ 268:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 1003              		.loc 1 268 13 view .LVU380
+ 1004              		.loc 1 273 12 is_stmt 0 view .LVU381
+ 1005 01ae 54F80C3C 		ldr	r3, [r4, #-12]
+ 268:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 1006              		.loc 1 268 21 view .LVU382
+ 1007 01b2 71EEA71A 		vadd.f32	s3, s3, s15
+ 1008              	.LVL79:
+ 1009              		.loc 1 273 9 is_stmt 1 view .LVU383
+ 1010              		.loc 1 273 12 is_stmt 0 view .LVU384
+ 1011 01b6 013B     		subs	r3, r3, #1
+ 1012              		.loc 1 273 9 view .LVU385
+ 1013 01b8 002B     		cmp	r3, #0
+ 1014              		.loc 1 273 34 view .LVU386
+ 1015 01ba 44F80C3C 		str	r3, [r4, #-12]
+ 1016              		.loc 1 273 9 view .LVU387
+ 1017 01be 3FF765AF 		bgt	.L50
+ 1018              	.L62:
+ 274:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         {
+ 275:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             NextRandomLineseg(lp, n);
+ 1019              		.loc 1 275 13 is_stmt 1 view .LVU388
+ 1020              		.loc 1 275 30 is_stmt 0 view .LVU389
+ 1021 01c2 4246     		mov	r2, r8
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 1022              		.loc 1 182 5 view .LVU390
+ 1023 01c4 08F10108 		add	r8, r8, #1
+ 1024              		.loc 1 275 30 view .LVU391
+ 1025 01c8 4846     		mov	r0, r9
+ 1026 01ca FFF7FEFF 		bl	_ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi
+ 1027              	.LVL80:
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 1028              		.loc 1 182 5 is_stmt 1 view .LVU392
+ 182:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     {
+ 1029              		.loc 1 182 18 view .LVU393
+ 1030 01ce B8F1080F 		cmp	r8, #8
+ 1031 01d2 7FF461AF 		bne	.L51
+ 1032              	.L63:
+ 276:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 29
+
+
+ 277:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 278:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     /* someday, use a_out_r for multimono out */
+ 279:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 280:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out1 = a_out_l * kOutputGain;
+ 1033              		.loc 1 280 5 view .LVU394
+ 1034              		.loc 1 280 21 is_stmt 0 view .LVU395
+ 1035 01d6 DFED337A 		vldr.32	s15, .L65+12
+ 281:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 282:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     return REVSC_OK;
+ 1036              		.loc 1 282 12 view .LVU396
+ 1037 01da 0020     		movs	r0, #0
+ 281:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 1038              		.loc 1 281 11 view .LVU397
+ 1039 01dc 0A9B     		ldr	r3, [sp, #40]
+ 280:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 1040              		.loc 1 280 21 view .LVU398
+ 1041 01de 61EEA71A 		vmul.f32	s3, s3, s15
+ 1042              	.LVL81:
+ 281:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 1043              		.loc 1 281 21 view .LVU399
+ 1044 01e2 22EE272A 		vmul.f32	s4, s4, s15
+ 1045              	.LVL82:
+ 283:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 1046              		.loc 1 283 1 view .LVU400
+ 1047 01e6 BDEC028B 		vldm	sp!, {d8}
+ 1048              		.cfi_remember_state
+ 1049              		.cfi_restore 80
+ 1050              		.cfi_restore 81
+ 1051              		.cfi_def_cfa_offset 32
+ 280:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 1052              		.loc 1 280 11 view .LVU401
+ 1053 01ea C7ED001A 		vstr.32	s3, [r7]
+ 281:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 1054              		.loc 1 281 5 is_stmt 1 view .LVU402
+ 281:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     *out2 = a_out_r * kOutputGain;
+ 1055              		.loc 1 281 11 is_stmt 0 view .LVU403
+ 1056 01ee 83ED002A 		vstr.32	s4, [r3]
+ 282:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** }
+ 1057              		.loc 1 282 5 is_stmt 1 view .LVU404
+ 1058              		.loc 1 283 1 is_stmt 0 view .LVU405
+ 1059 01f2 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1060              	.LVL83:
+ 1061              	.L30:
+ 1062              		.cfi_restore_state
+ 162:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact
+ 1063              		.loc 1 162 9 is_stmt 1 view .LVU406
+ 164:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact = damp_fact_
+ 1064              		.loc 1 164 39 is_stmt 0 view .LVU407
+ 1065 01f6 9FED2C7A 		vldr.32	s14, .L65+16
+ 162:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact
+ 1066              		.loc 1 162 21 view .LVU408
+ 1067 01fa C0ED077A 		vstr.32	s15, [r0, #28]
+ 163:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = 2.0f - cosf(prv_lpfreq_ * (2.0f * (float)M_PI) / sample_rate_);
+ 1068              		.loc 1 163 9 is_stmt 1 view .LVU409
+ 164:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact = damp_fact_
+ 1069              		.loc 1 164 39 is_stmt 0 view .LVU410
+ 1070 01fe 67EE877A 		vmul.f32	s15, s15, s14
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 30
+
+
+ 164:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact = damp_fact_
+ 1071              		.loc 1 164 26 view .LVU411
+ 1072 0202 90ED050A 		vldr.32	s0, [r0, #20]
+ 1073 0206 87EE800A 		vdiv.f32	s0, s15, s0
+ 1074 020a FFF7FEFF 		bl	cosf
+ 1075              	.LVL84:
+ 164:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact = damp_fact_
+ 1076              		.loc 1 164 13 view .LVU412
+ 1077 020e F0EE007A 		vmov.f32	s15, #2.0e+0
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 1078              		.loc 1 166 32 view .LVU413
+ 1079 0212 BFEE007A 		vmov.f32	s14, #-1.0e+0
+ 164:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         damp_fact = damp_fact_
+ 1080              		.loc 1 164 13 view .LVU414
+ 1081 0216 37EEC08A 		vsub.f32	s16, s15, s0
+ 1082              	.LVL85:
+ 165:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             = damp_fact - sqrtf(damp_fact * damp_fact - 1.0f);
+ 1083              		.loc 1 165 9 is_stmt 1 view .LVU415
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 1084              		.loc 1 166 32 is_stmt 0 view .LVU416
+ 1085 021a A8EE087A 		vfma.f32	s14, s16, s16
+ 1086 021e B5EE407A 		vcmp.f32	s14, #0
+ 1087 0222 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1088 0226 2ED4     		bmi	.L58
+ 1089 0228 F1EEC77A 		vsqrt.f32	s15, s14
+ 1090              	.L34:
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 1091              		.loc 1 166 25 view .LVU417
+ 1092 022c 38EE671A 		vsub.f32	s2, s16, s15
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 1093              		.loc 1 166 13 view .LVU418
+ 1094 0230 89ED061A 		vstr.32	s2, [r9, #24]
+ 1095              	.LVL86:
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 1096              		.loc 1 166 13 view .LVU419
+ 1097 0234 FCE6     		b	.L31
+ 1098              	.LVL87:
+ 1099              	.L42:
+ 235:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos += buffer_size;
+ 1100              		.loc 1 235 13 is_stmt 1 view .LVU420
+ 235:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos += buffer_size;
+ 1101              		.loc 1 235 27 is_stmt 0 view .LVU421
+ 1102 0236 6B1E     		subs	r3, r5, #1
+ 1103              	.LVL88:
+ 236:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             vm1 = (float)lp->buf[read_pos];
+ 1104              		.loc 1 236 17 is_stmt 1 view .LVU422
+ 236:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             vm1 = (float)lp->buf[read_pos];
+ 1105              		.loc 1 236 26 is_stmt 0 view .LVU423
+ 1106 0238 3344     		add	r3, r3, r6
+ 1107              	.LVL89:
+ 238:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1108              		.loc 1 238 27 view .LVU424
+ 1109 023a 5D1C     		adds	r5, r3, #1
+ 1110              	.L52:
+ 237:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1111              		.loc 1 237 13 is_stmt 1 view .LVU425
+ 237:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 31
+
+
+ 1112              		.loc 1 237 30 is_stmt 0 view .LVU426
+ 1113 023c 54F804CC 		ldr	ip, [r4, #-4]
+ 238:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1114              		.loc 1 238 13 view .LVU427
+ 1115 0240 AE42     		cmp	r6, r5
+ 237:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1116              		.loc 1 237 17 view .LVU428
+ 1117 0242 0CEB8303 		add	r3, ip, r3, lsl #2
+ 1118              	.LVL90:
+ 239:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0 = (float)lp->buf[read_pos];
+ 1119              		.loc 1 239 26 view .LVU429
+ 1120 0246 D8BF     		it	le
+ 1121 0248 AD1B     		suble	r5, r5, r6
+ 237:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1122              		.loc 1 237 17 view .LVU430
+ 1123 024a D3ED004A 		vldr.32	s9, [r3]
+ 1124              	.LVL91:
+ 238:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1125              		.loc 1 238 13 is_stmt 1 view .LVU431
+ 239:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v0 = (float)lp->buf[read_pos];
+ 1126              		.loc 1 239 17 view .LVU432
+ 240:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1127              		.loc 1 240 13 view .LVU433
+ 240:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1128              		.loc 1 240 16 is_stmt 0 view .LVU434
+ 1129 024e 0CEB8503 		add	r3, ip, r5, lsl #2
+ 241:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1130              		.loc 1 241 27 view .LVU435
+ 1131 0252 0135     		adds	r5, r5, #1
+ 1132              	.LVL92:
+ 240:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1133              		.loc 1 240 16 view .LVU436
+ 1134 0254 D3ED005A 		vldr.32	s11, [r3]
+ 1135              	.LVL93:
+ 241:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1136              		.loc 1 241 13 is_stmt 1 view .LVU437
+ 241:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1137              		.loc 1 241 13 is_stmt 0 view .LVU438
+ 1138 0258 B542     		cmp	r5, r6
+ 242:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v1 = (float)lp->buf[read_pos];
+ 1139              		.loc 1 242 17 is_stmt 1 view .LVU439
+ 242:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v1 = (float)lp->buf[read_pos];
+ 1140              		.loc 1 242 26 is_stmt 0 view .LVU440
+ 1141 025a A8BF     		it	ge
+ 1142 025c AD1B     		subge	r5, r5, r6
+ 1143              	.LVL94:
+ 243:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1144              		.loc 1 243 13 is_stmt 1 view .LVU441
+ 243:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1145              		.loc 1 243 16 is_stmt 0 view .LVU442
+ 1146 025e 0CEB8503 		add	r3, ip, r5, lsl #2
+ 244:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1147              		.loc 1 244 27 view .LVU443
+ 1148 0262 0135     		adds	r5, r5, #1
+ 1149              	.LVL95:
+ 244:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1150              		.loc 1 244 13 view .LVU444
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 32
+
+
+ 1151 0264 B542     		cmp	r5, r6
+ 243:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             if(++read_pos >= buffer_size)
+ 1152              		.loc 1 243 16 view .LVU445
+ 1153 0266 93ED003A 		vldr.32	s6, [r3]
+ 1154              	.LVL96:
+ 244:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos -= buffer_size;
+ 1155              		.loc 1 244 13 is_stmt 1 view .LVU446
+ 245:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v2 = (float)lp->buf[read_pos];
+ 1156              		.loc 1 245 17 view .LVU447
+ 245:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****             v2 = (float)lp->buf[read_pos];
+ 1157              		.loc 1 245 26 is_stmt 0 view .LVU448
+ 1158 026a A8BF     		it	ge
+ 1159 026c AD1B     		subge	r5, r5, r6
+ 1160              	.LVL97:
+ 246:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 1161              		.loc 1 246 13 is_stmt 1 view .LVU449
+ 246:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 1162              		.loc 1 246 16 is_stmt 0 view .LVU450
+ 1163 026e 0CEB8505 		add	r5, ip, r5, lsl #2
+ 1164              	.LVL98:
+ 246:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 1165              		.loc 1 246 16 view .LVU451
+ 1166 0272 D5ED003A 		vldr.32	s7, [r5]
+ 1167              	.LVL99:
+ 246:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****         }
+ 1168              		.loc 1 246 16 view .LVU452
+ 1169 0276 78E7     		b	.L44
+ 1170              	.LVL100:
+ 1171              	.L43:
+ 235:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos += buffer_size;
+ 1172              		.loc 1 235 13 is_stmt 1 view .LVU453
+ 235:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos += buffer_size;
+ 1173              		.loc 1 235 27 is_stmt 0 view .LVU454
+ 1174 0278 6B1E     		subs	r3, r5, #1
+ 1175              	.LVL101:
+ 235:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****                 read_pos += buffer_size;
+ 1176              		.loc 1 235 27 view .LVU455
+ 1177 027a DFE7     		b	.L52
+ 1178              	.LVL102:
+ 1179              	.L53:
+ 1180              		.loc 1 283 1 view .LVU456
+ 1181 027c BDEC028B 		vldm	sp!, {d8}
+ 1182              		.cfi_remember_state
+ 1183              		.cfi_restore 80
+ 1184              		.cfi_restore 81
+ 1185              		.cfi_def_cfa_offset 32
+ 157:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp **** 
+ 1186              		.loc 1 157 16 view .LVU457
+ 1187 0280 0120     		movs	r0, #1
+ 1188              	.LVL103:
+ 1189              		.loc 1 283 1 view .LVU458
+ 1190 0282 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1191              	.LVL104:
+ 1192              	.L58:
+ 1193              		.cfi_restore_state
+ 166:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.cpp ****     }
+ 1194              		.loc 1 166 32 view .LVU459
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 33
+
+
+ 1195 0286 B0EE470A 		vmov.f32	s0, s14
+ 1196 028a FFF7FEFF 		bl	sqrtf
+ 1197              	.LVL105:
+ 1198 028e F0EE407A 		vmov.f32	s15, s0
+ 1199 0292 CBE7     		b	.L34
+ 1200              	.L66:
+ 1201 0294 AFF30080 		.align	3
+ 1202              	.L65:
+ 1203 0298 55555555 		.word	1431655765
+ 1204 029c 5555C53F 		.word	1069897045
+ 1205 02a0 00000000 		.word	0
+ 1206 02a4 3333B33E 		.word	1051931443
+ 1207 02a8 DB0FC940 		.word	1086918619
+ 1208              		.cfi_endproc
+ 1209              	.LFE559:
+ 1211              		.section	.rodata._ZL13kReverbParams,"a"
+ 1212              		.align	2
+ 1213              		.set	.LANCHOR0,. + 0
+ 1216              	_ZL13kReverbParams:
+ 1217 0000 8207533D 		.word	1028851586
+ 1218 0004 6F12833A 		.word	981668463
+ 1219 0008 66664640 		.word	1078355558
+ 1220 000c 00C0F544 		.word	1156956160
+ 1221 0010 0A1E6C3D 		.word	1030495754
+ 1222 0014 E02D903A 		.word	982527456
+ 1223 0018 00006040 		.word	1080033280
+ 1224 001c 0066E646 		.word	1189504512
+ 1225 0020 3842893D 		.word	1032405560
+ 1226 0024 89D2DE3A 		.word	987681417
+ 1227 0028 7B148E3F 		.word	1066275963
+ 1228 002c 0032B346 		.word	1186148864
+ 1229 0030 EDC3973D 		.word	1033356269
+ 1230 0034 52491D3A 		.word	974997842
+ 1231 0038 A2457E40 		.word	1082017186
+ 1232 003c 00981946 		.word	1176082432
+ 1233 0040 DCB2A63D 		.word	1034334940
+ 1234 0044 6F12833A 		.word	981668463
+ 1235 0048 F2D21540 		.word	1075172082
+ 1236 004c 0046A146 		.word	1184974336
+ 1237 0050 D815B03D 		.word	1034950104
+ 1238 0054 E02D903A 		.word	982527456
+ 1239 0058 E5D0F23F 		.word	1072877797
+ 1240 005c 0032B346 		.word	1186148864
+ 1241 0060 8DDE363D 		.word	1027006093
+ 1242 0064 89D2DE3A 		.word	987681417
+ 1243 0068 9318643F 		.word	1063524499
+ 1244 006c 0066E646 		.word	1189504512
+ 1245 0070 08F3243D 		.word	1025831688
+ 1246 0074 52491D3A 		.word	974997842
+ 1247 0078 DD244E40 		.word	1078863069
+ 1248 007c 00446146 		.word	1180779520
+ 1249              		.text
+ 1250              	.Letext0:
+ 1251              		.file 2 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1252              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1253              		.file 4 "../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 1254              		.file 5 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 34
+
+
+ 1255              		.file 6 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\cpp_type_tr
+ 1256              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 1257              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 1258              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 1259              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 1260              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 1261              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1262              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 1263              		.file 14 "../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_comp.h"
+ 1264              		.file 15 "../../libDaisy/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h"
+ 1265              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 1266              		.file 17 "../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h"
+ 1267              		.file 18 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 reverbsc.cpp
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:17     .text._ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:26     .text._ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi:00000000 _ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:195    .text._ZN7daisysp8ReverbSc17NextRandomLinesegEPNS_10ReverbScDlEi:000000f8 $d
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:203    .text._ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:211    .text._ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi:00000000 _ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:422    .text._ZN7daisysp8ReverbSc13InitDelayLineEPNS_10ReverbScDlEi:000000d0 $d
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:431    .text._ZN7daisysp8ReverbSc4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:439    .text._ZN7daisysp8ReverbSc4InitEf:00000000 _ZN7daisysp8ReverbSc4InitEf
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:653    .text._ZN7daisysp8ReverbSc4InitEf:000000c0 $d
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:663    .text._ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:671    .text._ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_:00000000 _ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:1203   .text._ZN7daisysp8ReverbSc7ProcessERKfS2_PfS3_:00000298 $d
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:1212   .rodata._ZL13kReverbParams:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\ccmy9AwM.s:1216   .rodata._ZL13kReverbParams:00000000 _ZL13kReverbParams
+
+UNDEFINED SYMBOLS
+memset
+cosf
+sqrtf

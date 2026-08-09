@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
   34              	.LBB18:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 2
 
 
   35              		.loc 1 24 29 is_stmt 0 view .LVU1
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
   38:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ~ReverbSc() {}
   52              		.loc 2 38 5 is_stmt 1 view .LVU5
   53              		.loc 2 38 5 is_stmt 0 view .LVU6
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 3
 
 
   54              	.LBE19:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  104              	.LBB25:
  105              	.LBI21:
   24:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 4
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 4
 
 
  106              		.loc 1 24 1 is_stmt 1 view .LVU15
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
   35:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** 
   36:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** void ReverbModule::ParameterChanged(int parameter_id)
   37:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** {
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 5
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 5
 
 
  151              		.loc 1 37 1 is_stmt 1 view -0
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  196              		.loc 1 42 14 view .LVU39
  197 002e 04F67C36 		addw	r6, r4, #2940
   39:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     float invertedFreq = 1.0f - GetParameterAsMagnitude(1);
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 6
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 6
 
 
  198              		.loc 1 39 70 view .LVU40
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  237              		.loc 1 43 5 is_stmt 1 view .LVU59
  238              		.loc 1 43 36 is_stmt 0 view .LVU60
  239 0072 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23GetParameterAsMagnitudeEi
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 7
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 7
 
 
  240              	.LVL16:
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  272              		.loc 2 55 48 view .LVU71
  273              		.loc 2 55 56 is_stmt 0 view .LVU72
  274 0082 3368     		ldr	r3, [r6]	@ float
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 8
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 8
 
 
  275 0084 AB62     		str	r3, [r5, #40]	@ float
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  325              	.LBI33:
   37:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ~ReverbSc() {}
  326              		.loc 2 37 5 is_stmt 1 view .LVU81
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 9
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 9
 
 
   37:../../DaisySP/DaisySP-LGPL/Source/Effects/reverbsc.h ****     ~ReverbSc() {}
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  367              		.loc 1 22 1 view .LVU95
  368 0056 2046     		mov	r0, r4
  369 0058 10BD     		pop	{r4, pc}
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 10
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 10
 
 
  370              	.LVL24:
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
   31:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     for(int i = 0; i < s_paramCount; ++i)
  420              		.loc 1 31 5 is_stmt 1 view .LVU102
  421              	.LBB34:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 11
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 11
 
 
   32:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****         ParameterChanged(i);
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  462              	.LFE4742:
  464              		.section	.text._ZN10bkshepherd12ReverbModule11ProcessMonoEf,"ax",%progbits
  465              		.align	1
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 12
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 12
 
 
  466              		.p2align 2,,3
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  508 0018 04F12400 		add	r0, r4, #36
   55:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     const float sendr = m_audioRight;
  509              		.loc 1 55 17 view .LVU130
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 13
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 13
 
 
  510 001c 0591     		str	r1, [sp, #20]	@ float
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  555              		.loc 1 59 1 view .LVU151
  556              		.align	2
  557              	.L22:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 14
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 14
 
 
  558 0060 800B0600 		.word	396160
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
   67:gml/GuitarPedal/Effect-Modules/reverb_module.cpp ****     const float sendr = m_audioRight;
  603              		.loc 1 67 17 view .LVU161
  604 001a A269     		ldr	r2, [r4, #24]	@ float
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 15
 
 
  605              		.loc 1 68 27 view .LVU162
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  649 005c C4ED067A 		vstr.32	s15, [r4, #24]
   71:gml/GuitarPedal/Effect-Modules/reverb_module.cpp **** }
  650              		.loc 1 71 1 view .LVU184
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 16
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 16
 
 
  651 0060 06B0     		add	sp, sp, #24
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  702              	.LC3:
  703 0010 4D697800 		.ascii	"Mix\000"
  704              		.section	.rodata._ZL10s_metaData,"a"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 17
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 17
 
 
  705              		.align	2
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  763              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
  764              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
  765              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 18
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 18
 
 
  766              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
@@ -1059,40 +1059,40 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 1
  801              		.file 45 "../../libDaisy/src/dev/sr_595.h"
  802              		.file 46 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\new"
  803              		.file 47 "<built-in>"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s 			page 19
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s 			page 19
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 reverb_module.cpp
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:17     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:26     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 _ZN10bkshepherd12ReverbModuleD2Ev
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:68     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000010 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:26     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 _ZN10bkshepherd12ReverbModuleD1Ev
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:75     .text._ZN10bkshepherd12ReverbModuleD0Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:83     .text._ZN10bkshepherd12ReverbModuleD0Ev:00000000 _ZN10bkshepherd12ReverbModuleD0Ev
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:134    .text._ZN10bkshepherd12ReverbModuleD0Ev:00000018 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:140    .text._ZN10bkshepherd12ReverbModule16ParameterChangedEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:148    .text._ZN10bkshepherd12ReverbModule16ParameterChangedEi:00000000 _ZN10bkshepherd12ReverbModule16ParameterChangedEi
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:287    .rodata._ZN10bkshepherd12ReverbModuleC2Ev.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:291    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:299    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 _ZN10bkshepherd12ReverbModuleC2Ev
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:375    .text._ZN10bkshepherd12ReverbModuleC2Ev:0000005c $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:299    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 _ZN10bkshepherd12ReverbModuleC1Ev
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:387    .text._ZN10bkshepherd12ReverbModule4InitEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:395    .text._ZN10bkshepherd12ReverbModule4InitEf:00000000 _ZN10bkshepherd12ReverbModule4InitEf
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:465    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:473    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000000 _ZN10bkshepherd12ReverbModule11ProcessMonoEf
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:558    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000060 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:563    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:571    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000000 _ZN10bkshepherd12ReverbModule13ProcessStereoEff
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:664    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000068 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:669    .text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:677    .text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:00000000 _ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:742    .rodata._ZTVN10bkshepherd12ReverbModuleE:00000000 _ZTVN10bkshepherd12ReverbModuleE
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:695    .rodata.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:705    .rodata._ZL10s_metaData:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:709    .rodata._ZL10s_metaData:00000000 _ZL10s_metaData
-C:\Users\aydan\AppData\Local\Temp\ccDUwiEI.s:738    .rodata._ZTVN10bkshepherd12ReverbModuleE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:17     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:26     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 _ZN10bkshepherd12ReverbModuleD2Ev
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:68     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000010 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:26     .text._ZN10bkshepherd12ReverbModuleD2Ev:00000000 _ZN10bkshepherd12ReverbModuleD1Ev
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:75     .text._ZN10bkshepherd12ReverbModuleD0Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:83     .text._ZN10bkshepherd12ReverbModuleD0Ev:00000000 _ZN10bkshepherd12ReverbModuleD0Ev
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:134    .text._ZN10bkshepherd12ReverbModuleD0Ev:00000018 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:140    .text._ZN10bkshepherd12ReverbModule16ParameterChangedEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:148    .text._ZN10bkshepherd12ReverbModule16ParameterChangedEi:00000000 _ZN10bkshepherd12ReverbModule16ParameterChangedEi
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:287    .rodata._ZN10bkshepherd12ReverbModuleC2Ev.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:291    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:299    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 _ZN10bkshepherd12ReverbModuleC2Ev
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:375    .text._ZN10bkshepherd12ReverbModuleC2Ev:0000005c $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:299    .text._ZN10bkshepherd12ReverbModuleC2Ev:00000000 _ZN10bkshepherd12ReverbModuleC1Ev
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:387    .text._ZN10bkshepherd12ReverbModule4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:395    .text._ZN10bkshepherd12ReverbModule4InitEf:00000000 _ZN10bkshepherd12ReverbModule4InitEf
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:465    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:473    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000000 _ZN10bkshepherd12ReverbModule11ProcessMonoEf
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:558    .text._ZN10bkshepherd12ReverbModule11ProcessMonoEf:00000060 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:563    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:571    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000000 _ZN10bkshepherd12ReverbModule13ProcessStereoEff
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:664    .text._ZN10bkshepherd12ReverbModule13ProcessStereoEff:00000068 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:669    .text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:677    .text._ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi:00000000 _ZN10bkshepherd12ReverbModule19GetBrightnessForLEDEi
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:742    .rodata._ZTVN10bkshepherd12ReverbModuleE:00000000 _ZTVN10bkshepherd12ReverbModuleE
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:695    .rodata.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:705    .rodata._ZL10s_metaData:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:709    .rodata._ZL10s_metaData:00000000 _ZL10s_metaData
+C:\Users\aydan\AppData\Local\Temp\cc6qc9jx.s:738    .rodata._ZTVN10bkshepherd12ReverbModuleE:00000000 $d
 
 UNDEFINED SYMBOLS
 _ZN10bkshepherd16BaseEffectModuleD2Ev

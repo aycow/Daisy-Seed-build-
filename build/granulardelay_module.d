@@ -199,7 +199,7 @@ build/granulardelay_module.o: \
  ../../DaisySP/Source/Utility/metro.h \
  ../../DaisySP/Source/Utility/samplehold.h \
  ../../DaisySP/Source/Utility/smooth_random.h \
- gml/GuitarPedal/Util/granularplayermod.h
+ gml/GuitarPedal/Util/granularplayermod.h src/diagnostic_config.h
 ../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 ../../libDaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h750xx.h:
 ../../libDaisy/Drivers/CMSIS/Include/core_cm7.h:
@@ -439,3 +439,4 @@ gml/GuitarPedal/Effect-Modules/base_effect_module.h:
 ../../DaisySP/Source/Utility/samplehold.h:
 ../../DaisySP/Source/Utility/smooth_random.h:
 gml/GuitarPedal/Util/granularplayermod.h:
+src/diagnostic_config.h:

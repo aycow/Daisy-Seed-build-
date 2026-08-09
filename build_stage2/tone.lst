@@ -1,0 +1,309 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"tone.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN7daisysp4Tone4InitEf,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN7daisysp4Tone4InitEf
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN7daisysp4Tone4InitEf:
+  27              	.LVL0:
+  28              	.LFB2796:
+  29              		.file 1 "../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp"
+   1:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** #include "tone.h"
+   2:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** #include <math.h>
+   3:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** #include "dsp.h"
+   4:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** 
+   5:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** using namespace daisysp;
+   6:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** 
+   7:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** void Tone::Init(float sample_rate)
+   8:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** {
+  30              		.loc 1 8 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+   9:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     prevout_     = 0.0f;
+  35              		.loc 1 9 5 view .LVU1
+  10:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     freq_        = 100.0f;
+  11:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1_          = 0.5f;
+  36              		.loc 1 11 18 is_stmt 0 view .LVU2
+  37 0000 4FF07C53 		mov	r3, #1056964608
+   9:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     prevout_     = 0.0f;
+  38              		.loc 1 9 18 view .LVU3
+  39 0004 0021     		movs	r1, #0
+  10:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     freq_        = 100.0f;
+  40              		.loc 1 10 18 view .LVU4
+  41 0006 044A     		ldr	r2, .L3
+   9:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     prevout_     = 0.0f;
+  42              		.loc 1 9 18 view .LVU5
+  43 0008 4160     		str	r1, [r0, #4]	@ float
+  10:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     freq_        = 100.0f;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s 			page 2
+
+
+  44              		.loc 1 10 5 is_stmt 1 view .LVU6
+  10:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     freq_        = 100.0f;
+  45              		.loc 1 10 18 is_stmt 0 view .LVU7
+  46 000a C260     		str	r2, [r0, #12]	@ float
+  47              		.loc 1 11 5 is_stmt 1 view .LVU8
+  48              		.loc 1 11 18 is_stmt 0 view .LVU9
+  49 000c 0361     		str	r3, [r0, #16]	@ float
+  12:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c2_          = 0.5f;
+  50              		.loc 1 12 5 is_stmt 1 view .LVU10
+  51              		.loc 1 12 18 is_stmt 0 view .LVU11
+  52 000e 4361     		str	r3, [r0, #20]	@ float
+  13:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     sample_rate_ = sample_rate;
+  53              		.loc 1 13 5 is_stmt 1 view .LVU12
+  54              		.loc 1 13 18 is_stmt 0 view .LVU13
+  55 0010 80ED060A 		vstr.32	s0, [r0, #24]
+  14:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** }
+  56              		.loc 1 14 1 view .LVU14
+  57 0014 7047     		bx	lr
+  58              	.L4:
+  59 0016 00BF     		.align	2
+  60              	.L3:
+  61 0018 0000C842 		.word	1120403456
+  62              		.cfi_endproc
+  63              	.LFE2796:
+  65              		.section	.text._ZN7daisysp4Tone7ProcessEf,"ax",%progbits
+  66              		.align	1
+  67              		.p2align 2,,3
+  68              		.global	_ZN7daisysp4Tone7ProcessEf
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  72              		.fpu fpv5-d16
+  74              	_ZN7daisysp4Tone7ProcessEf:
+  75              	.LVL1:
+  76              	.LFB2797:
+  15:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** 
+  16:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** float Tone::Process(float in)
+  17:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** {
+  77              		.loc 1 17 1 is_stmt 1 view -0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  18:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     float out;
+  82              		.loc 1 18 5 view .LVU16
+  19:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** 
+  20:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     out      = c1_ * in + c2_ * prevout_;
+  83              		.loc 1 20 5 view .LVU17
+  84              		.loc 1 20 31 is_stmt 0 view .LVU18
+  85 0000 D0ED016A 		vldr.32	s13, [r0, #4]
+  86 0004 D0ED057A 		vldr.32	s15, [r0, #20]
+  87              		.loc 1 20 14 view .LVU19
+  88 0008 90ED047A 		vldr.32	s14, [r0, #16]
+  89              		.loc 1 20 31 view .LVU20
+  90 000c 67EEA67A 		vmul.f32	s15, s15, s13
+  91              		.loc 1 20 14 view .LVU21
+  92 0010 E7EE007A 		vfma.f32	s15, s14, s0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s 			page 3
+
+
+  93              	.LVL2:
+  21:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     prevout_ = out;
+  94              		.loc 1 21 5 is_stmt 1 view .LVU22
+  22:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** 
+  23:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     return out;
+  24:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** }
+  95              		.loc 1 24 1 is_stmt 0 view .LVU23
+  96 0014 B0EE670A 		vmov.f32	s0, s15
+  97              	.LVL3:
+  21:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     prevout_ = out;
+  98              		.loc 1 21 14 view .LVU24
+  99 0018 C0ED017A 		vstr.32	s15, [r0, #4]
+  23:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** }
+ 100              		.loc 1 23 5 is_stmt 1 view .LVU25
+ 101              		.loc 1 24 1 is_stmt 0 view .LVU26
+ 102 001c 7047     		bx	lr
+ 103              		.cfi_endproc
+ 104              	.LFE2797:
+ 106 001e 00BF     		.section	.text._ZN7daisysp4Tone21CalculateCoefficientsEv,"ax",%progbits
+ 107              		.align	1
+ 108              		.p2align 2,,3
+ 109              		.global	_ZN7daisysp4Tone21CalculateCoefficientsEv
+ 110              		.syntax unified
+ 111              		.thumb
+ 112              		.thumb_func
+ 113              		.fpu fpv5-d16
+ 115              	_ZN7daisysp4Tone21CalculateCoefficientsEv:
+ 116              	.LVL4:
+ 117              	.LFB2798:
+  25:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** 
+  26:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** void Tone::CalculateCoefficients()
+  27:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** {
+ 118              		.loc 1 27 1 is_stmt 1 view -0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 0, uses_anonymous_args = 0
+  28:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     float b, c1, c2;
+ 122              		.loc 1 28 5 view .LVU28
+  29:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     b   = 2.0f - cosf(TWOPI_F * freq_ / sample_rate_);
+ 123              		.loc 1 29 5 view .LVU29
+ 124              		.loc 1 29 31 is_stmt 0 view .LVU30
+ 125 0000 9FED187A 		vldr.32	s14, .L13
+ 126 0004 D0ED037A 		vldr.32	s15, [r0, #12]
+ 127              		.loc 1 29 22 view .LVU31
+ 128 0008 90ED060A 		vldr.32	s0, [r0, #24]
+ 129              		.loc 1 29 31 view .LVU32
+ 130 000c 67EE877A 		vmul.f32	s15, s15, s14
+  27:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     float b, c1, c2;
+ 131              		.loc 1 27 1 view .LVU33
+ 132 0010 10B5     		push	{r4, lr}
+ 133              		.cfi_def_cfa_offset 8
+ 134              		.cfi_offset 4, -8
+ 135              		.cfi_offset 14, -4
+ 136              		.loc 1 29 22 view .LVU34
+ 137 0012 87EE800A 		vdiv.f32	s0, s15, s0
+  27:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     float b, c1, c2;
+ 138              		.loc 1 27 1 view .LVU35
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s 			page 4
+
+
+ 139 0016 0446     		mov	r4, r0
+ 140 0018 2DED028B 		vpush.64	{d8}
+ 141              		.cfi_def_cfa_offset 16
+ 142              		.cfi_offset 80, -16
+ 143              		.cfi_offset 81, -12
+ 144              		.loc 1 29 22 view .LVU36
+ 145 001c FFF7FEFF 		bl	cosf
+ 146              	.LVL5:
+ 147              		.loc 1 29 9 view .LVU37
+ 148 0020 F0EE007A 		vmov.f32	s15, #2.0e+0
+  30:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c2  = b - sqrtf(b * b - 1.0f);
+ 149              		.loc 1 30 20 view .LVU38
+ 150 0024 BFEE007A 		vmov.f32	s14, #-1.0e+0
+  29:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     b   = 2.0f - cosf(TWOPI_F * freq_ / sample_rate_);
+ 151              		.loc 1 29 9 view .LVU39
+ 152 0028 37EEC08A 		vsub.f32	s16, s15, s0
+ 153              	.LVL6:
+ 154              		.loc 1 30 5 is_stmt 1 view .LVU40
+ 155              		.loc 1 30 20 is_stmt 0 view .LVU41
+ 156 002c A8EE087A 		vfma.f32	s14, s16, s16
+ 157 0030 B5EE407A 		vcmp.f32	s14, #0
+ 158 0034 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 159 0038 0ED4     		bmi	.L11
+ 160 003a B1EEC70A 		vsqrt.f32	s0, s14
+ 161              	.L9:
+ 162              		.loc 1 30 9 view .LVU42
+ 163 003e 38EE408A 		vsub.f32	s16, s16, s0
+ 164              	.LVL7:
+  31:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1  = 1.0f - c2;
+ 165              		.loc 1 31 5 is_stmt 1 view .LVU43
+  32:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1_ = c1;
+ 166              		.loc 1 32 5 view .LVU44
+  31:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1  = 1.0f - c2;
+ 167              		.loc 1 31 9 is_stmt 0 view .LVU45
+ 168 0042 F7EE007A 		vmov.f32	s15, #1.0e+0
+  33:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c2_ = c2;
+ 169              		.loc 1 33 9 view .LVU46
+ 170 0046 84ED058A 		vstr.32	s16, [r4, #20]
+  31:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1  = 1.0f - c2;
+ 171              		.loc 1 31 9 view .LVU47
+ 172 004a 77EEC87A 		vsub.f32	s15, s15, s16
+ 173              	.LVL8:
+  34:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp **** }
+ 174              		.loc 1 34 1 view .LVU48
+ 175 004e BDEC028B 		vldm	sp!, {d8}
+ 176              		.cfi_remember_state
+ 177              		.cfi_restore 80
+ 178              		.cfi_restore 81
+ 179              		.cfi_def_cfa_offset 8
+ 180              	.LVL9:
+  32:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1_ = c1;
+ 181              		.loc 1 32 9 view .LVU49
+ 182 0052 C4ED047A 		vstr.32	s15, [r4, #16]
+  33:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c2_ = c2;
+ 183              		.loc 1 33 5 is_stmt 1 view .LVU50
+ 184              		.loc 1 34 1 is_stmt 0 view .LVU51
+ 185 0056 10BD     		pop	{r4, pc}
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s 			page 5
+
+
+ 186              	.LVL10:
+ 187              	.L11:
+ 188              		.cfi_restore_state
+  30:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.cpp ****     c1  = 1.0f - c2;
+ 189              		.loc 1 30 20 view .LVU52
+ 190 0058 B0EE470A 		vmov.f32	s0, s14
+ 191 005c FFF7FEFF 		bl	sqrtf
+ 192              	.LVL11:
+ 193 0060 EDE7     		b	.L9
+ 194              	.L14:
+ 195 0062 00BF     		.align	2
+ 196              	.L13:
+ 197 0064 DB0FC940 		.word	1086918619
+ 198              		.cfi_endproc
+ 199              	.LFE2798:
+ 201              		.text
+ 202              	.Letext0:
+ 203              		.file 2 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 204              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 205              		.file 4 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 206              		.file 5 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 207              		.file 6 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 208              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 209              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 210              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 211              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 212              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 213              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cwchar"
+ 214              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 215              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 216              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 217              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\clocale"
+ 218              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 219              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\basic_stri
+ 220              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\charconv.h
+ 221              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 222              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 223              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 224              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 225              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 226              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 227              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 228              		.file 27 "../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h"
+ 229              		.file 28 "../../DaisySP/Source/Utility/dsp.h"
+ 230              		.file 29 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 231              		.file 30 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\wchar.h"
+ 232              		.file 31 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\locale.h"
+ 233              		.file 32 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 234              		.file 33 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 tone.cpp
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:17     .text._ZN7daisysp4Tone4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:26     .text._ZN7daisysp4Tone4InitEf:00000000 _ZN7daisysp4Tone4InitEf
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:61     .text._ZN7daisysp4Tone4InitEf:00000018 $d
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:66     .text._ZN7daisysp4Tone7ProcessEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:74     .text._ZN7daisysp4Tone7ProcessEf:00000000 _ZN7daisysp4Tone7ProcessEf
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:107    .text._ZN7daisysp4Tone21CalculateCoefficientsEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:115    .text._ZN7daisysp4Tone21CalculateCoefficientsEv:00000000 _ZN7daisysp4Tone21CalculateCoefficientsEv
+C:\Users\aydan\AppData\Local\Temp\ccGcBkuo.s:197    .text._ZN7daisysp4Tone21CalculateCoefficientsEv:00000064 $d
+
+UNDEFINED SYMBOLS
+cosf
+sqrtf

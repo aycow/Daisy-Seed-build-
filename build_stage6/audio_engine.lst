@@ -1,0 +1,2496 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"audio_engine.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv5-d16
+  25              	_ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0:
+  26              	.LVL0:
+  27              	.LFB2602:
+  28              		.file 1 "src/audio_engine.cpp"
+   1:src/audio_engine.cpp **** #include "audio_engine.h"
+   2:src/audio_engine.cpp **** 
+   3:src/audio_engine.cpp **** namespace app
+   4:src/audio_engine.cpp **** {
+   5:src/audio_engine.cpp **** AudioEngine::AudioEngine()
+   6:src/audio_engine.cpp **** : mailbox_(0),
+   7:src/audio_engine.cpp ****   tuner_capture_(0)
+   8:src/audio_engine.cpp **** #if DIAG_FX_CHORUS
+   9:src/audio_engine.cpp ****   ,
+  10:src/audio_engine.cpp ****   chorus_()
+  11:src/audio_engine.cpp **** #endif
+  12:src/audio_engine.cpp **** #if DIAG_FX_REVERB
+  13:src/audio_engine.cpp ****   ,
+  14:src/audio_engine.cpp ****   reverb_()
+  15:src/audio_engine.cpp **** #endif
+  16:src/audio_engine.cpp **** #if DIAG_FX_CRUSHER
+  17:src/audio_engine.cpp ****   ,
+  18:src/audio_engine.cpp ****   crusher_()
+  19:src/audio_engine.cpp **** #endif
+  20:src/audio_engine.cpp **** #if DIAG_FX_GRANULAR
+  21:src/audio_engine.cpp ****   ,
+  22:src/audio_engine.cpp ****   granular_delay_()
+  23:src/audio_engine.cpp **** #endif
+  24:src/audio_engine.cpp ****   ,
+  25:src/audio_engine.cpp ****   effects_
+  26:src/audio_engine.cpp **** {
+  27:src/audio_engine.cpp ****     0,
+  28:src/audio_engine.cpp **** #if DIAG_FX_CHORUS
+  29:src/audio_engine.cpp ****         &chorus_,
+  30:src/audio_engine.cpp **** #else
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 2
+
+
+  31:src/audio_engine.cpp ****         0,
+  32:src/audio_engine.cpp **** #endif
+  33:src/audio_engine.cpp **** #if DIAG_FX_REVERB
+  34:src/audio_engine.cpp ****         &reverb_,
+  35:src/audio_engine.cpp **** #else
+  36:src/audio_engine.cpp ****         0,
+  37:src/audio_engine.cpp **** #endif
+  38:src/audio_engine.cpp **** #if DIAG_FX_CRUSHER
+  39:src/audio_engine.cpp ****         &crusher_,
+  40:src/audio_engine.cpp **** #else
+  41:src/audio_engine.cpp ****         0,
+  42:src/audio_engine.cpp **** #endif
+  43:src/audio_engine.cpp **** #if DIAG_FX_GRANULAR
+  44:src/audio_engine.cpp ****         &granular_delay_
+  45:src/audio_engine.cpp **** #else
+  46:src/audio_engine.cpp ****         0
+  47:src/audio_engine.cpp **** #endif
+  48:src/audio_engine.cpp **** }
+  49:src/audio_engine.cpp **** , maps_{{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}},
+  50:src/audio_engine.cpp ****     current_{config::FX_TUNER, 0, (uint8_t)SystemMode::Normal, 0, {0, 0, 0}},
+  51:src/audio_engine.cpp ****     applied_{0xffu,
+  52:src/audio_engine.cpp ****              0xffu,
+  53:src/audio_engine.cpp ****              (uint8_t)SystemMode::Normal,
+  54:src/audio_engine.cpp ****              0,
+  55:src/audio_engine.cpp ****              {0xffffu, 0xffffu, 0xffffu}},
+  56:src/audio_engine.cpp ****     mailbox_revision_(0), active_effect_(config::FX_TUNER),
+  57:src/audio_engine.cpp ****     active_bypass_(false), pending_effect_(config::FX_TUNER),
+  58:src/audio_engine.cpp ****     pending_bypass_(false), transition_(TRANSITION_STEADY), wet_gain_(0.0f),
+  59:src/audio_engine.cpp ****     wet_gain_step_(
+  60:src/audio_engine.cpp ****         1.0f / (config::kSampleRateHz * (config::kTransitionTimeMs * 0.001f))),
+  61:src/audio_engine.cpp ****     thermal_audio_state_(THERMAL_AUDIO_NORMAL), thermal_gain_(1.0f),
+  62:src/audio_engine.cpp ****     thermal_gain_step_(
+  63:src/audio_engine.cpp ****         1.0f / (config::kSampleRateHz * (config::kThermalAudioFadeMs * 0.001f)))
+  64:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+  65:src/audio_engine.cpp ****         ,
+  66:src/audio_engine.cpp ****     cpu_load_(), effect_peak_load_{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+  67:src/audio_engine.cpp ****     overrun_count_(0)
+  68:src/audio_engine.cpp **** #endif
+  69:src/audio_engine.cpp **** {
+  70:src/audio_engine.cpp **** }
+  71:src/audio_engine.cpp **** 
+  72:src/audio_engine.cpp **** void AudioEngine::Init(float           sample_rate,
+  73:src/audio_engine.cpp ****                        ControlMailbox& mailbox,
+  74:src/audio_engine.cpp ****                        TunerCapture&   tuner_capture)
+  75:src/audio_engine.cpp **** {
+  76:src/audio_engine.cpp ****     mailbox_       = &mailbox;
+  77:src/audio_engine.cpp ****     tuner_capture_ = &tuner_capture;
+  78:src/audio_engine.cpp **** 
+  79:src/audio_engine.cpp **** #if DIAG_FX_CHORUS
+  80:src/audio_engine.cpp ****     chorus_.Init(sample_rate);
+  81:src/audio_engine.cpp ****     chorus_.SetEnabled(true);
+  82:src/audio_engine.cpp **** #endif
+  83:src/audio_engine.cpp **** #if DIAG_FX_REVERB
+  84:src/audio_engine.cpp ****     reverb_.Init(sample_rate);
+  85:src/audio_engine.cpp ****     reverb_.SetEnabled(true);
+  86:src/audio_engine.cpp **** #endif
+  87:src/audio_engine.cpp **** #if DIAG_FX_CRUSHER
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 3
+
+
+  88:src/audio_engine.cpp ****     crusher_.Init(sample_rate);
+  89:src/audio_engine.cpp ****     crusher_.SetEnabled(true);
+  90:src/audio_engine.cpp **** #endif
+  91:src/audio_engine.cpp **** #if DIAG_FX_GRANULAR
+  92:src/audio_engine.cpp ****     granular_delay_.Init(sample_rate);
+  93:src/audio_engine.cpp ****     granular_delay_.SetEnabled(true);
+  94:src/audio_engine.cpp **** #endif
+  95:src/audio_engine.cpp **** 
+  96:src/audio_engine.cpp ****     BuildParamMaps();
+  97:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+  98:src/audio_engine.cpp ****     cpu_load_.Init(sample_rate, config::kAudioBlockSize);
+  99:src/audio_engine.cpp ****     for(int i = 0; i < config::FX_COUNT; ++i)
+ 100:src/audio_engine.cpp ****         effect_peak_load_[i] = 0.0f;
+ 101:src/audio_engine.cpp ****     overrun_count_ = 0;
+ 102:src/audio_engine.cpp **** #endif
+ 103:src/audio_engine.cpp **** #if DIAG_ENGINE_USE_MAILBOX
+ 104:src/audio_engine.cpp ****     ApplySnapshotIfChanged();
+ 105:src/audio_engine.cpp **** #endif
+ 106:src/audio_engine.cpp **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 107:src/audio_engine.cpp ****     current_.effect = (uint8_t)DIAG_FORCE_EFFECT;
+ 108:src/audio_engine.cpp ****     current_.bypass = 0;
+ 109:src/audio_engine.cpp **** #endif
+ 110:src/audio_engine.cpp ****     active_effect_  = current_.effect;
+ 111:src/audio_engine.cpp ****     active_bypass_  = current_.bypass != 0;
+ 112:src/audio_engine.cpp ****     pending_effect_ = active_effect_;
+ 113:src/audio_engine.cpp ****     pending_bypass_ = active_bypass_;
+ 114:src/audio_engine.cpp ****     wet_gain_
+ 115:src/audio_engine.cpp ****         = (active_effect_ == config::FX_TUNER || active_bypass_) ? 0.0f : 1.0f;
+ 116:src/audio_engine.cpp ****     thermal_audio_state_ = THERMAL_AUDIO_NORMAL;
+ 117:src/audio_engine.cpp ****     thermal_gain_        = 1.0f;
+ 118:src/audio_engine.cpp ****     thermal_gain_step_
+ 119:src/audio_engine.cpp ****         = 1.0f / (sample_rate * (config::kThermalAudioFadeMs * 0.001f));
+ 120:src/audio_engine.cpp **** }
+ 121:src/audio_engine.cpp **** 
+ 122:src/audio_engine.cpp **** // The callback reads one control snapshot per block, then keeps audio work
+ 123:src/audio_engine.cpp **** // deterministic: capture input, process the current effect, and apply any
+ 124:src/audio_engine.cpp **** // pending fade state sample by sample.
+ 125:src/audio_engine.cpp **** void AudioEngine::Process(daisy::AudioHandle::InputBuffer  in,
+ 126:src/audio_engine.cpp ****                           daisy::AudioHandle::OutputBuffer out,
+ 127:src/audio_engine.cpp ****                           size_t                           size)
+ 128:src/audio_engine.cpp **** {
+ 129:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 130:src/audio_engine.cpp ****     const uint8_t metered_effect = active_effect_;
+ 131:src/audio_engine.cpp ****     cpu_load_.OnBlockStart();
+ 132:src/audio_engine.cpp **** #endif
+ 133:src/audio_engine.cpp **** 
+ 134:src/audio_engine.cpp **** #if DIAG_ENGINE_USE_MAILBOX
+ 135:src/audio_engine.cpp ****     ApplySnapshotIfChanged();
+ 136:src/audio_engine.cpp **** #endif
+ 137:src/audio_engine.cpp **** 
+ 138:src/audio_engine.cpp **** #if DIAG_STAGE == DIAG_STAGE_AUDIOENGINE_PROCESS_DRY
+ 139:src/audio_engine.cpp ****     for(size_t i = 0; i < size; ++i)
+ 140:src/audio_engine.cpp ****     {
+ 141:src/audio_engine.cpp ****         const float x = in[0][i];
+ 142:src/audio_engine.cpp ****         out[0][i]     = x;
+ 143:src/audio_engine.cpp ****         out[1][i]     = x;
+ 144:src/audio_engine.cpp ****     }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 4
+
+
+ 145:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 146:src/audio_engine.cpp ****     cpu_load_.OnBlockEnd();
+ 147:src/audio_engine.cpp **** #endif
+ 148:src/audio_engine.cpp ****     return;
+ 149:src/audio_engine.cpp **** #endif
+ 150:src/audio_engine.cpp **** 
+ 151:src/audio_engine.cpp **** #if DIAG_ENFORCE_THERMAL_AUDIO_SHUTDOWN
+ 152:src/audio_engine.cpp ****     if(thermal_audio_state_ == THERMAL_AUDIO_MUTED)
+ 153:src/audio_engine.cpp ****     {
+ 154:src/audio_engine.cpp ****         for(size_t i = 0; i < size; ++i)
+ 155:src/audio_engine.cpp ****         {
+ 156:src/audio_engine.cpp ****             out[0][i] = 0.0f;
+ 157:src/audio_engine.cpp ****             out[1][i] = 0.0f;
+ 158:src/audio_engine.cpp ****         }
+ 159:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 160:src/audio_engine.cpp ****         cpu_load_.OnBlockEnd();
+ 161:src/audio_engine.cpp **** #endif
+ 162:src/audio_engine.cpp ****         return;
+ 163:src/audio_engine.cpp ****     }
+ 164:src/audio_engine.cpp **** #endif
+ 165:src/audio_engine.cpp **** 
+ 166:src/audio_engine.cpp **** #if DIAG_ENGINE_CAPTURE_TUNER
+ 167:src/audio_engine.cpp ****     if(tuner_capture_ && thermal_audio_state_ == THERMAL_AUDIO_NORMAL)
+ 168:src/audio_engine.cpp ****         tuner_capture_->WriteBlock(in[0], size);
+ 169:src/audio_engine.cpp **** #endif
+ 170:src/audio_engine.cpp **** 
+ 171:src/audio_engine.cpp ****     for(size_t i = 0; i < size; ++i)
+ 172:src/audio_engine.cpp ****     {
+ 173:src/audio_engine.cpp **** #if DIAG_ENFORCE_THERMAL_AUDIO_SHUTDOWN
+ 174:src/audio_engine.cpp ****         if(thermal_audio_state_ == THERMAL_AUDIO_MUTED)
+ 175:src/audio_engine.cpp ****         {
+ 176:src/audio_engine.cpp ****             out[0][i] = 0.0f;
+ 177:src/audio_engine.cpp ****             out[1][i] = 0.0f;
+ 178:src/audio_engine.cpp ****             continue;
+ 179:src/audio_engine.cpp ****         }
+ 180:src/audio_engine.cpp **** #endif
+ 181:src/audio_engine.cpp **** 
+ 182:src/audio_engine.cpp ****         const float x = in[0][i];
+ 183:src/audio_engine.cpp **** #if DIAG_ENGINE_TRANSITIONS
+ 184:src/audio_engine.cpp ****         float wet_l = x;
+ 185:src/audio_engine.cpp ****         float wet_r = x;
+ 186:src/audio_engine.cpp **** #endif
+ 187:src/audio_engine.cpp **** #if DIAG_ENGINE_DISPATCH
+ 188:src/audio_engine.cpp ****         bkshepherd::BaseEffectModule* fx = effects_[active_effect_];
+ 189:src/audio_engine.cpp **** 
+ 190:src/audio_engine.cpp **** #if DIAG_ENGINE_PROCESS_FX
+ 191:src/audio_engine.cpp ****         if(fx && active_effect_ != config::FX_TUNER
+ 192:src/audio_engine.cpp ****            && !(active_bypass_ && transition_ == TRANSITION_STEADY))
+ 193:src/audio_engine.cpp ****             ProcessEffectSample(fx, x, wet_l, wet_r);
+ 194:src/audio_engine.cpp **** #else
+ 195:src/audio_engine.cpp ****         (void)fx;
+ 196:src/audio_engine.cpp **** #endif
+ 197:src/audio_engine.cpp **** #endif
+ 198:src/audio_engine.cpp **** 
+ 199:src/audio_engine.cpp **** #if DIAG_ENGINE_TRANSITIONS
+ 200:src/audio_engine.cpp **** #if DIAG_ENFORCE_THERMAL_AUDIO_SHUTDOWN
+ 201:src/audio_engine.cpp ****         out[0][i] = thermal_gain_ * ClampOutput(x + wet_gain_ * (wet_l - x));
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 5
+
+
+ 202:src/audio_engine.cpp ****         out[1][i] = thermal_gain_ * ClampOutput(x + wet_gain_ * (wet_r - x));
+ 203:src/audio_engine.cpp **** #else
+ 204:src/audio_engine.cpp ****         out[0][i] = ClampOutput(x + wet_gain_ * (wet_l - x));
+ 205:src/audio_engine.cpp ****         out[1][i] = ClampOutput(x + wet_gain_ * (wet_r - x));
+ 206:src/audio_engine.cpp **** #endif
+ 207:src/audio_engine.cpp **** #else
+ 208:src/audio_engine.cpp ****         out[0][i] = x;
+ 209:src/audio_engine.cpp ****         out[1][i] = x;
+ 210:src/audio_engine.cpp **** #endif
+ 211:src/audio_engine.cpp **** 
+ 212:src/audio_engine.cpp **** #if DIAG_ENFORCE_THERMAL_AUDIO_SHUTDOWN
+ 213:src/audio_engine.cpp ****         if(thermal_audio_state_ == THERMAL_AUDIO_FADING)
+ 214:src/audio_engine.cpp ****         {
+ 215:src/audio_engine.cpp ****             thermal_gain_ -= thermal_gain_step_;
+ 216:src/audio_engine.cpp ****             if(thermal_gain_ <= 0.0f)
+ 217:src/audio_engine.cpp ****             {
+ 218:src/audio_engine.cpp ****                 thermal_gain_        = 0.0f;
+ 219:src/audio_engine.cpp ****                 thermal_audio_state_ = THERMAL_AUDIO_MUTED;
+ 220:src/audio_engine.cpp ****             }
+ 221:src/audio_engine.cpp ****         }
+ 222:src/audio_engine.cpp ****         else
+ 223:src/audio_engine.cpp **** #endif
+ 224:src/audio_engine.cpp **** #if DIAG_ENGINE_TRANSITIONS
+ 225:src/audio_engine.cpp ****         {
+ 226:src/audio_engine.cpp ****             StepTransition();
+ 227:src/audio_engine.cpp ****         }
+ 228:src/audio_engine.cpp **** #endif
+ 229:src/audio_engine.cpp ****     }
+ 230:src/audio_engine.cpp **** 
+ 231:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 232:src/audio_engine.cpp ****     cpu_load_.OnBlockEnd();
+ 233:src/audio_engine.cpp ****     const float peak = cpu_load_.GetMaxCpuLoad();
+ 234:src/audio_engine.cpp ****     if(metered_effect < config::FX_COUNT && peak == peak
+ 235:src/audio_engine.cpp ****        && peak > effect_peak_load_[metered_effect])
+ 236:src/audio_engine.cpp ****         effect_peak_load_[metered_effect] = peak;
+ 237:src/audio_engine.cpp ****     if(peak > 1.0f)
+ 238:src/audio_engine.cpp ****         ++overrun_count_;
+ 239:src/audio_engine.cpp **** #endif
+ 240:src/audio_engine.cpp **** }
+ 241:src/audio_engine.cpp **** 
+ 242:src/audio_engine.cpp **** // Case-insensitive substring helper used only while building parameter maps during initialization.
+ 243:src/audio_engine.cpp **** bool AudioEngine::StringContainsCi(const char* haystack, const char* needle)
+  29              		.loc 1 243 6 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              	.LBB13:
+ 244:src/audio_engine.cpp **** {
+ 245:src/audio_engine.cpp ****     if(!haystack || !needle)
+ 246:src/audio_engine.cpp ****         return false;
+ 247:src/audio_engine.cpp ****     for(const char* h = haystack; *h; ++h)
+  34              		.loc 1 247 35 view .LVU1
+  35 0000 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+  36 0002 33B3     		cbz	r3, .L8
+  37              	.LBE13:
+ 243:src/audio_engine.cpp **** {
+  38              		.loc 1 243 6 is_stmt 0 view .LVU2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 6
+
+
+  39 0004 F0B5     		push	{r4, r5, r6, r7, lr}
+  40              		.cfi_def_cfa_offset 20
+  41              		.cfi_offset 4, -20
+  42              		.cfi_offset 5, -16
+  43              		.cfi_offset 6, -12
+  44              		.cfi_offset 7, -8
+  45              		.cfi_offset 14, -4
+  46              	.LVL1:
+  47              	.L7:
+  48              	.LBB20:
+  49              	.LBB14:
+ 248:src/audio_engine.cpp ****     {
+ 249:src/audio_engine.cpp ****         const char* h2 = h;
+ 250:src/audio_engine.cpp ****         const char* n  = needle;
+ 251:src/audio_engine.cpp ****         while(*h2 && *n)
+  50              		.loc 1 251 9 is_stmt 1 view .LVU3
+  51              		.loc 1 251 19 view .LVU4
+  52              		.loc 1 251 19 is_stmt 0 view .LVU5
+  53 0006 8C46     		mov	ip, r1
+  54 0008 8646     		mov	lr, r0
+  55 000a 0AE0     		b	.L6
+  56              	.LVL2:
+  57              	.L18:
+  58              	.LBB15:
+ 252:src/audio_engine.cpp ****         {
+ 253:src/audio_engine.cpp ****             char ch = *h2;
+ 254:src/audio_engine.cpp ****             char cn = *n;
+ 255:src/audio_engine.cpp ****             if(ch >= 'A' && ch <= 'Z')
+  59              		.loc 1 255 13 view .LVU6
+  60 000c 192D     		cmp	r5, #25
+ 256:src/audio_engine.cpp ****                 ch = (char)(ch - 'A' + 'a');
+  61              		.loc 1 256 20 view .LVU7
+  62 000e 98BF     		it	ls
+  63 0010 FBB2     		uxtbls	r3, r7
+  64              	.LVL3:
+ 257:src/audio_engine.cpp ****             if(cn >= 'A' && cn <= 'Z')
+  65              		.loc 1 257 13 is_stmt 1 view .LVU8
+  66 0012 192C     		cmp	r4, #25
+ 258:src/audio_engine.cpp ****                 cn = (char)(cn - 'A' + 'a');
+  67              		.loc 1 258 20 is_stmt 0 view .LVU9
+  68 0014 98BF     		it	ls
+  69 0016 F2B2     		uxtbls	r2, r6
+  70              	.LVL4:
+ 259:src/audio_engine.cpp ****             if(ch != cn)
+  71              		.loc 1 259 13 is_stmt 1 view .LVU10
+  72 0018 9342     		cmp	r3, r2
+  73 001a 14D1     		bne	.L5
+  74              	.LBE15:
+ 251:src/audio_engine.cpp ****         {
+  75              		.loc 1 251 15 is_stmt 0 view .LVU11
+  76 001c 1EF8013F 		ldrb	r3, [lr, #1]!	@ zero_extendqisi2
+  77              	.LVL5:
+ 251:src/audio_engine.cpp ****         {
+  78              		.loc 1 251 19 view .LVU12
+  79 0020 6BB1     		cbz	r3, .L17
+  80              	.LVL6:
+  81              	.L6:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 7
+
+
+  82              	.LBB16:
+ 253:src/audio_engine.cpp ****             char cn = *n;
+  83              		.loc 1 253 13 is_stmt 1 view .LVU13
+ 254:src/audio_engine.cpp ****             if(ch >= 'A' && ch <= 'Z')
+  84              		.loc 1 254 13 view .LVU14
+ 256:src/audio_engine.cpp ****             if(cn >= 'A' && cn <= 'Z')
+  85              		.loc 1 256 17 view .LVU15
+ 258:src/audio_engine.cpp ****             if(ch != cn)
+  86              		.loc 1 258 17 view .LVU16
+ 260:src/audio_engine.cpp ****                 break;
+ 261:src/audio_engine.cpp ****             ++h2;
+  87              		.loc 1 261 13 view .LVU17
+ 262:src/audio_engine.cpp ****             ++n;
+  88              		.loc 1 262 13 view .LVU18
+  89              	.LBE16:
+ 251:src/audio_engine.cpp ****         {
+  90              		.loc 1 251 22 is_stmt 0 view .LVU19
+  91 0022 1CF8012B 		ldrb	r2, [ip], #1	@ zero_extendqisi2
+  92              	.LVL7:
+  93              	.LBB17:
+ 255:src/audio_engine.cpp ****                 ch = (char)(ch - 'A' + 'a');
+  94              		.loc 1 255 13 is_stmt 1 view .LVU20
+ 255:src/audio_engine.cpp ****                 ch = (char)(ch - 'A' + 'a');
+  95              		.loc 1 255 13 is_stmt 0 view .LVU21
+  96              	.LBE17:
+ 251:src/audio_engine.cpp ****         {
+  97              		.loc 1 251 9 is_stmt 1 view .LVU22
+ 251:src/audio_engine.cpp ****         {
+  98              		.loc 1 251 19 view .LVU23
+  99              	.LBB18:
+ 255:src/audio_engine.cpp ****                 ch = (char)(ch - 'A' + 'a');
+ 100              		.loc 1 255 13 is_stmt 0 view .LVU24
+ 101 0026 A3F14105 		sub	r5, r3, #65
+ 256:src/audio_engine.cpp ****             if(cn >= 'A' && cn <= 'Z')
+ 102              		.loc 1 256 20 view .LVU25
+ 103 002a 03F12007 		add	r7, r3, #32
+ 257:src/audio_engine.cpp ****                 cn = (char)(cn - 'A' + 'a');
+ 104              		.loc 1 257 13 view .LVU26
+ 105 002e A2F14104 		sub	r4, r2, #65
+ 258:src/audio_engine.cpp ****             if(ch != cn)
+ 106              		.loc 1 258 20 view .LVU27
+ 107 0032 02F12006 		add	r6, r2, #32
+ 108              	.LBE18:
+ 251:src/audio_engine.cpp ****         {
+ 109              		.loc 1 251 19 view .LVU28
+ 110 0036 002A     		cmp	r2, #0
+ 111 0038 E8D1     		bne	.L18
+ 112              	.LVL8:
+ 113              	.L10:
+ 263:src/audio_engine.cpp ****         }
+ 264:src/audio_engine.cpp ****         if(*n == '\0')
+ 265:src/audio_engine.cpp ****             return true;
+ 114              		.loc 1 265 20 view .LVU29
+ 115 003a 0120     		movs	r0, #1
+ 116              	.LVL9:
+ 117              		.loc 1 265 20 view .LVU30
+ 118              	.LBE14:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 8
+
+
+ 119              	.LBE20:
+ 266:src/audio_engine.cpp ****     }
+ 267:src/audio_engine.cpp ****     return false;
+ 268:src/audio_engine.cpp **** }
+ 120              		.loc 1 268 1 view .LVU31
+ 121 003c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 122              	.LVL10:
+ 123              	.L17:
+ 124              	.LBB21:
+ 125              	.LBB19:
+ 264:src/audio_engine.cpp ****             return true;
+ 126              		.loc 1 264 9 is_stmt 1 view .LVU32
+ 127 003e 9CF80030 		ldrb	r3, [ip]	@ zero_extendqisi2
+ 128 0042 002B     		cmp	r3, #0
+ 129 0044 F9D0     		beq	.L10
+ 130              	.L5:
+ 264:src/audio_engine.cpp ****             return true;
+ 131              		.loc 1 264 9 is_stmt 0 view .LVU33
+ 132              	.LBE19:
+ 247:src/audio_engine.cpp ****     {
+ 133              		.loc 1 247 5 is_stmt 1 view .LVU34
+ 134              	.LVL11:
+ 247:src/audio_engine.cpp ****     {
+ 135              		.loc 1 247 35 view .LVU35
+ 136 0046 10F8013F 		ldrb	r3, [r0, #1]!	@ zero_extendqisi2
+ 137              	.LVL12:
+ 247:src/audio_engine.cpp ****     {
+ 138              		.loc 1 247 35 is_stmt 0 view .LVU36
+ 139 004a 002B     		cmp	r3, #0
+ 140 004c DBD1     		bne	.L7
+ 141              	.LBE21:
+ 267:src/audio_engine.cpp **** }
+ 142              		.loc 1 267 12 view .LVU37
+ 143 004e 1846     		mov	r0, r3
+ 144              	.LVL13:
+ 145              		.loc 1 268 1 view .LVU38
+ 146 0050 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 147              	.LVL14:
+ 148              	.L8:
+ 149              		.cfi_def_cfa_offset 0
+ 150              		.cfi_restore 4
+ 151              		.cfi_restore 5
+ 152              		.cfi_restore 6
+ 153              		.cfi_restore 7
+ 154              		.cfi_restore 14
+ 267:src/audio_engine.cpp **** }
+ 155              		.loc 1 267 12 view .LVU39
+ 156 0052 1846     		mov	r0, r3
+ 157              	.LVL15:
+ 158              		.loc 1 268 1 view .LVU40
+ 159 0054 7047     		bx	lr
+ 160              		.cfi_endproc
+ 161              	.LFE2602:
+ 163 0056 00BF     		.section	.text._ZN3app11AudioEngineC2Ev,"ax",%progbits
+ 164              		.align	1
+ 165              		.p2align 2,,3
+ 166              		.global	_ZN3app11AudioEngineC2Ev
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 9
+
+
+ 167              		.syntax unified
+ 168              		.thumb
+ 169              		.thumb_func
+ 170              		.fpu fpv5-d16
+ 172              	_ZN3app11AudioEngineC2Ev:
+ 173              	.LVL16:
+ 174              	.LFB2568:
+   5:src/audio_engine.cpp **** : mailbox_(0),
+ 175              		.loc 1 5 1 is_stmt 1 view -0
+ 176              		.cfi_startproc
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179              	.LBB22:
+  63:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 180              		.loc 1 63 80 is_stmt 0 view .LVU42
+ 181 0000 204B     		ldr	r3, .L21
+ 182 0002 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 183 0006 9FED206A 		vldr.32	s12, .L21+4
+ 184 000a 9C46     		mov	ip, r3
+ 185 000c DFED1F6A 		vldr.32	s13, .L21+8
+ 186 0010 DFED1F7A 		vldr.32	s15, .L21+12
+ 187              	.LBE22:
+   5:src/audio_engine.cpp **** : mailbox_(0),
+ 188              		.loc 1 5 1 view .LVU43
+ 189 0014 F0B5     		push	{r4, r5, r6, r7, lr}
+ 190              		.cfi_def_cfa_offset 20
+ 191              		.cfi_offset 4, -20
+ 192              		.cfi_offset 5, -16
+ 193              		.cfi_offset 6, -12
+ 194              		.cfi_offset 7, -8
+ 195              		.cfi_offset 14, -4
+ 196              	.LBB23:
+  63:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 197              		.loc 1 63 80 view .LVU44
+ 198 0016 0025     		movs	r5, #0
+ 199              	.LBE23:
+   5:src/audio_engine.cpp **** : mailbox_(0),
+ 200              		.loc 1 5 1 view .LVU45
+ 201 0018 8646     		mov	lr, r0
+ 202              	.LBB24:
+  63:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 203              		.loc 1 63 80 view .LVU46
+ 204 001a 00F11C04 		add	r4, r0, #28
+ 205 001e 03F13C06 		add	r6, r3, #60
+ 206 0022 8561     		str	r5, [r0, #24]
+ 207 0024 C0E90055 		strd	r5, r5, [r0]
+ 208 0028 C0E90255 		strd	r5, r5, [r0, #8]
+ 209 002c C0E90455 		strd	r5, r5, [r0, #16]
+ 210 0030 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+ 211              	.LVL17:
+  63:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 212              		.loc 1 63 80 view .LVU47
+ 213 0034 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 214 0036 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+ 215 003a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 216 003c BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+ 217 0040 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 10
+
+
+ 218 0042 9CE80700 		ldm	ip, {r0, r1, r2}
+ 219 0046 84E80700 		stm	r4, {r0, r1, r2}
+ 220 004a 03CE     		ldmia	r6!, {r0, r1}
+ 221 004c CEE91655 		strd	r5, r5, [lr, #88]
+ 222 0050 3388     		ldrh	r3, [r6]	@ unaligned
+ 223 0052 CEF86200 		str	r0, [lr, #98]	@ unaligned
+ 224              	.LBE24:
+  70:src/audio_engine.cpp **** 
+ 225              		.loc 1 70 1 view .LVU48
+ 226 0056 7046     		mov	r0, lr
+ 227              	.LBB25:
+  63:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 228              		.loc 1 63 80 view .LVU49
+ 229 0058 AEF86050 		strh	r5, [lr, #96]	@ movhi
+ 230 005c 8EED1E6A 		vstr.32	s12, [lr, #120]
+ 231 0060 CEED1F6A 		vstr.32	s13, [lr, #124]
+ 232 0064 8EF87450 		strb	r5, [lr, #116]
+ 233 0068 8EF88050 		strb	r5, [lr, #128]
+ 234 006c 8EED217A 		vstr.32	s14, [lr, #132]
+ 235 0070 CEED227A 		vstr.32	s15, [lr, #136]
+ 236 0074 CEF86610 		str	r1, [lr, #102]	@ unaligned
+ 237 0078 AEF86A30 		strh	r3, [lr, #106]	@ unaligned
+ 238 007c CEE91B55 		strd	r5, r5, [lr, #108]
+ 239              	.LBE25:
+  70:src/audio_engine.cpp **** 
+ 240              		.loc 1 70 1 view .LVU50
+ 241 0080 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 242              	.L22:
+ 243 0082 00BF     		.align	2
+ 244              	.L21:
+ 245 0084 00000000 		.word	.LANCHOR0
+ 246 0088 00000000 		.word	0
+ 247 008c 8888883B 		.word	998803592
+ 248 0090 8888083B 		.word	990414984
+ 249              		.cfi_endproc
+ 250              	.LFE2568:
+ 252              		.global	_ZN3app11AudioEngineC1Ev
+ 253              		.thumb_set _ZN3app11AudioEngineC1Ev,_ZN3app11AudioEngineC2Ev
+ 254              		.section	.text._ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE,"ax",%progbits
+ 255              		.align	1
+ 256              		.p2align 2,,3
+ 257              		.global	_ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE
+ 258              		.syntax unified
+ 259              		.thumb
+ 260              		.thumb_func
+ 261              		.fpu fpv5-d16
+ 263              	_ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE:
+ 264              	.LVL18:
+ 265              	.LFB2570:
+  75:src/audio_engine.cpp ****     mailbox_       = &mailbox;
+ 266              		.loc 1 75 1 is_stmt 1 view -0
+ 267              		.cfi_startproc
+ 268              		@ args = 0, pretend = 0, frame = 0
+ 269              		@ frame_needed = 0, uses_anonymous_args = 0
+ 270              		@ link register save eliminated.
+  76:src/audio_engine.cpp ****     tuner_capture_ = &tuner_capture;
+ 271              		.loc 1 76 5 view .LVU52
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 11
+
+
+ 119:src/audio_engine.cpp **** }
+ 272              		.loc 1 119 31 is_stmt 0 view .LVU53
+ 273 0000 9FED0C7A 		vldr.32	s14, .L24
+ 117:src/audio_engine.cpp ****     thermal_gain_step_
+ 274              		.loc 1 117 26 view .LVU54
+ 275 0004 F7EE007A 		vmov.f32	s15, #1.0e+0
+ 107:src/audio_engine.cpp ****     current_.bypass = 0;
+ 276              		.loc 1 107 21 view .LVU55
+ 277 0008 0023     		movs	r3, #0
+ 115:src/audio_engine.cpp ****     thermal_audio_state_ = THERMAL_AUDIO_NORMAL;
+ 278              		.loc 1 115 9 view .LVU56
+ 279 000a 4FF0000C 		mov	ip, #0
+ 119:src/audio_engine.cpp **** }
+ 280              		.loc 1 119 31 view .LVU57
+ 281 000e 20EE070A 		vmul.f32	s0, s0, s14
+ 282              	.LVL19:
+ 107:src/audio_engine.cpp ****     current_.bypass = 0;
+ 283              		.loc 1 107 21 view .LVU58
+ 284 0012 A0F85830 		strh	r3, [r0, #88]	@ movhi
+ 110:src/audio_engine.cpp ****     active_bypass_  = current_.bypass != 0;
+ 285              		.loc 1 110 21 view .LVU59
+ 286 0016 0367     		str	r3, [r0, #112]
+ 119:src/audio_engine.cpp **** }
+ 287              		.loc 1 119 16 view .LVU60
+ 288 0018 87EE807A 		vdiv.f32	s14, s15, s0
+ 115:src/audio_engine.cpp ****     thermal_audio_state_ = THERMAL_AUDIO_NORMAL;
+ 289              		.loc 1 115 9 view .LVU61
+ 290 001c C0F878C0 		str	ip, [r0, #120]	@ float
+ 116:src/audio_engine.cpp ****     thermal_gain_        = 1.0f;
+ 291              		.loc 1 116 26 view .LVU62
+ 292 0020 80F88030 		strb	r3, [r0, #128]
+ 117:src/audio_engine.cpp ****     thermal_gain_step_
+ 293              		.loc 1 117 26 view .LVU63
+ 294 0024 C0ED217A 		vstr.32	s15, [r0, #132]
+  77:src/audio_engine.cpp **** 
+ 295              		.loc 1 77 20 view .LVU64
+ 296 0028 C0E90012 		strd	r1, r2, [r0]
+  96:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 297              		.loc 1 96 5 is_stmt 1 view .LVU65
+ 107:src/audio_engine.cpp ****     current_.bypass = 0;
+ 298              		.loc 1 107 5 view .LVU66
+ 108:src/audio_engine.cpp **** #endif
+ 299              		.loc 1 108 5 view .LVU67
+ 110:src/audio_engine.cpp ****     active_bypass_  = current_.bypass != 0;
+ 300              		.loc 1 110 5 view .LVU68
+ 111:src/audio_engine.cpp ****     pending_effect_ = active_effect_;
+ 301              		.loc 1 111 5 view .LVU69
+ 112:src/audio_engine.cpp ****     pending_bypass_ = active_bypass_;
+ 302              		.loc 1 112 5 view .LVU70
+ 113:src/audio_engine.cpp ****     wet_gain_
+ 303              		.loc 1 113 5 view .LVU71
+ 114:src/audio_engine.cpp ****         = (active_effect_ == config::FX_TUNER || active_bypass_) ? 0.0f : 1.0f;
+ 304              		.loc 1 114 5 view .LVU72
+ 116:src/audio_engine.cpp ****     thermal_gain_        = 1.0f;
+ 305              		.loc 1 116 5 view .LVU73
+ 117:src/audio_engine.cpp ****     thermal_gain_step_
+ 306              		.loc 1 117 5 view .LVU74
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 12
+
+
+ 118:src/audio_engine.cpp ****         = 1.0f / (sample_rate * (config::kThermalAudioFadeMs * 0.001f));
+ 307              		.loc 1 118 5 view .LVU75
+ 119:src/audio_engine.cpp **** }
+ 308              		.loc 1 119 9 is_stmt 0 view .LVU76
+ 309 002c 80ED227A 		vstr.32	s14, [r0, #136]
+ 120:src/audio_engine.cpp **** 
+ 310              		.loc 1 120 1 view .LVU77
+ 311 0030 7047     		bx	lr
+ 312              	.L25:
+ 313 0032 00BF     		.align	2
+ 314              	.L24:
+ 315 0034 0BD7233C 		.word	1008981771
+ 316              		.cfi_endproc
+ 317              	.LFE2570:
+ 319              		.section	.text._ZN3app11AudioEngine7ProcessEPKPKfPPfj,"ax",%progbits
+ 320              		.align	1
+ 321              		.p2align 2,,3
+ 322              		.global	_ZN3app11AudioEngine7ProcessEPKPKfPPfj
+ 323              		.syntax unified
+ 324              		.thumb
+ 325              		.thumb_func
+ 326              		.fpu fpv5-d16
+ 328              	_ZN3app11AudioEngine7ProcessEPKPKfPPfj:
+ 329              	.LVL20:
+ 330              	.LFB2571:
+ 128:src/audio_engine.cpp **** #if AUDIO_CPU_LOAD_DEBUG
+ 331              		.loc 1 128 1 is_stmt 1 view -0
+ 332              		.cfi_startproc
+ 333              		@ args = 0, pretend = 0, frame = 0
+ 334              		@ frame_needed = 0, uses_anonymous_args = 0
+ 335              		@ link register save eliminated.
+ 171:src/audio_engine.cpp ****     {
+ 336              		.loc 1 171 5 view .LVU79
+ 337              	.LBB26:
+ 171:src/audio_engine.cpp ****     {
+ 338              		.loc 1 171 25 view .LVU80
+ 339 0000 63B1     		cbz	r3, .L26
+ 340 0002 0968     		ldr	r1, [r1]
+ 341              	.LVL21:
+ 171:src/audio_engine.cpp ****     {
+ 342              		.loc 1 171 25 is_stmt 0 view .LVU81
+ 343 0004 D2E90002 		ldrd	r0, r2, [r2]
+ 344              	.LVL22:
+ 171:src/audio_engine.cpp ****     {
+ 345              		.loc 1 171 25 view .LVU82
+ 346 0008 01EB830C 		add	ip, r1, r3, lsl #2
+ 347              	.LVL23:
+ 348              	.L28:
+ 349              	.LBB27:
+ 182:src/audio_engine.cpp **** #if DIAG_ENGINE_TRANSITIONS
+ 350              		.loc 1 182 9 is_stmt 1 discriminator 2 view .LVU83
+ 182:src/audio_engine.cpp **** #if DIAG_ENGINE_TRANSITIONS
+ 351              		.loc 1 182 21 is_stmt 0 discriminator 2 view .LVU84
+ 352 000c 51F8043B 		ldr	r3, [r1], #4	@ float
+ 353              	.LVL24:
+ 208:src/audio_engine.cpp ****         out[1][i] = x;
+ 354              		.loc 1 208 9 is_stmt 1 discriminator 2 view .LVU85
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 13
+
+
+ 355              	.LBE27:
+ 171:src/audio_engine.cpp ****     {
+ 356              		.loc 1 171 25 is_stmt 0 discriminator 2 view .LVU86
+ 357 0010 6145     		cmp	r1, ip
+ 358              	.LBB28:
+ 208:src/audio_engine.cpp ****         out[1][i] = x;
+ 359              		.loc 1 208 19 discriminator 2 view .LVU87
+ 360 0012 40F8043B 		str	r3, [r0], #4	@ float
+ 209:src/audio_engine.cpp **** #endif
+ 361              		.loc 1 209 9 is_stmt 1 discriminator 2 view .LVU88
+ 209:src/audio_engine.cpp **** #endif
+ 362              		.loc 1 209 19 is_stmt 0 discriminator 2 view .LVU89
+ 363 0016 42F8043B 		str	r3, [r2], #4	@ float
+ 364              	.LBE28:
+ 171:src/audio_engine.cpp ****     {
+ 365              		.loc 1 171 5 is_stmt 1 discriminator 2 view .LVU90
+ 171:src/audio_engine.cpp ****     {
+ 366              		.loc 1 171 25 discriminator 2 view .LVU91
+ 367 001a F7D1     		bne	.L28
+ 368              	.LVL25:
+ 369              	.L26:
+ 171:src/audio_engine.cpp ****     {
+ 370              		.loc 1 171 25 is_stmt 0 discriminator 2 view .LVU92
+ 371              	.LBE26:
+ 240:src/audio_engine.cpp **** 
+ 372              		.loc 1 240 1 view .LVU93
+ 373 001c 7047     		bx	lr
+ 374              		.cfi_endproc
+ 375              	.LFE2571:
+ 377 001e 00BF     		.section	.text._ZN3app11AudioEngine16StringContainsCiEPKcS2_,"ax",%progbits
+ 378              		.align	1
+ 379              		.p2align 2,,3
+ 380              		.global	_ZN3app11AudioEngine16StringContainsCiEPKcS2_
+ 381              		.syntax unified
+ 382              		.thumb
+ 383              		.thumb_func
+ 384              		.fpu fpv5-d16
+ 386              	_ZN3app11AudioEngine16StringContainsCiEPKcS2_:
+ 387              	.LVL26:
+ 388              	.LFB2572:
+ 244:src/audio_engine.cpp ****     if(!haystack || !needle)
+ 389              		.loc 1 244 1 is_stmt 1 view -0
+ 390              		.cfi_startproc
+ 391              		@ args = 0, pretend = 0, frame = 0
+ 392              		@ frame_needed = 0, uses_anonymous_args = 0
+ 393              		@ link register save eliminated.
+ 245:src/audio_engine.cpp ****         return false;
+ 394              		.loc 1 245 5 view .LVU95
+ 395 0000 10B1     		cbz	r0, .L34
+ 396 0002 09B1     		cbz	r1, .L34
+ 397 0004 FFF7FEBF 		b	_ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0
+ 398              	.LVL27:
+ 399              	.L34:
+ 400              		.loc 1 268 1 is_stmt 0 view .LVU96
+ 401 0008 0020     		movs	r0, #0
+ 402              	.LVL28:
+ 403              		.loc 1 268 1 view .LVU97
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 14
+
+
+ 404 000a 7047     		bx	lr
+ 405              		.cfi_endproc
+ 406              	.LFE2572:
+ 408              		.section	.text._ZN3app11AudioEngine19FindParamByKeywordsEPN10bkshepherd16BaseEffectModuleEPKcS5_S5
+ 409              		.align	1
+ 410              		.p2align 2,,3
+ 411              		.global	_ZN3app11AudioEngine19FindParamByKeywordsEPN10bkshepherd16BaseEffectModuleEPKcS5_S5_
+ 412              		.syntax unified
+ 413              		.thumb
+ 414              		.thumb_func
+ 415              		.fpu fpv5-d16
+ 417              	_ZN3app11AudioEngine19FindParamByKeywordsEPN10bkshepherd16BaseEffectModuleEPKcS5_S5_:
+ 418              	.LVL29:
+ 419              	.LFB2573:
+ 269:src/audio_engine.cpp **** 
+ 270:src/audio_engine.cpp **** // Find a module parameter by its display name when the imported module does not expose a better ty
+ 271:src/audio_engine.cpp **** int AudioEngine::FindParamByKeywords(bkshepherd::BaseEffectModule* fx,
+ 272:src/audio_engine.cpp ****                                      const char*                   kw1,
+ 273:src/audio_engine.cpp ****                                      const char*                   kw2,
+ 274:src/audio_engine.cpp ****                                      const char*                   kw3)
+ 275:src/audio_engine.cpp **** {
+ 420              		.loc 1 275 1 is_stmt 1 view -0
+ 421              		.cfi_startproc
+ 422              		@ args = 0, pretend = 0, frame = 0
+ 423              		@ frame_needed = 0, uses_anonymous_args = 0
+ 276:src/audio_engine.cpp ****     if(!fx)
+ 424              		.loc 1 276 5 view .LVU99
+ 275:src/audio_engine.cpp ****     if(!fx)
+ 425              		.loc 1 275 1 is_stmt 0 view .LVU100
+ 426 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 427              		.cfi_def_cfa_offset 32
+ 428              		.cfi_offset 4, -32
+ 429              		.cfi_offset 5, -28
+ 430              		.cfi_offset 6, -24
+ 431              		.cfi_offset 7, -20
+ 432              		.cfi_offset 8, -16
+ 433              		.cfi_offset 9, -12
+ 434              		.cfi_offset 10, -8
+ 435              		.cfi_offset 14, -4
+ 436              		.loc 1 276 5 view .LVU101
+ 437 0004 0028     		cmp	r0, #0
+ 438 0006 3FD0     		beq	.L36
+ 439 0008 8846     		mov	r8, r1
+ 440 000a 0746     		mov	r7, r0
+ 441 000c 9146     		mov	r9, r2
+ 442 000e 9A46     		mov	r10, r3
+ 443              	.LBB41:
+ 277:src/audio_engine.cpp ****         return -1;
+ 278:src/audio_engine.cpp ****     for(int i = 0; i < (int)fx->GetParameterCount(); ++i)
+ 444              		.loc 1 278 13 view .LVU102
+ 445 0010 0025     		movs	r5, #0
+ 446 0012 0DE0     		b	.L43
+ 447              	.LVL30:
+ 448              	.L45:
+ 449              	.LBB42:
+ 450              	.LBB43:
+ 451              	.LBB44:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 15
+
+
+ 452              		.loc 1 278 13 view .LVU103
+ 453 0014 4946     		mov	r1, r9
+ 454 0016 2046     		mov	r0, r4
+ 455 0018 FFF7FEFF 		bl	_ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0
+ 456              	.LVL31:
+ 457              		.loc 1 278 13 view .LVU104
+ 458              	.LBE44:
+ 459              	.LBE43:
+ 279:src/audio_engine.cpp ****     {
+ 280:src/audio_engine.cpp ****         const char* name = fx->GetParameterName(i);
+ 281:src/audio_engine.cpp ****         if(StringContainsCi(name, kw1) || (kw2 && StringContainsCi(name, kw2))
+ 460              		.loc 1 281 48 view .LVU105
+ 461 001c 58BB     		cbnz	r0, .L35
+ 462              	.LVL32:
+ 282:src/audio_engine.cpp ****            || (kw3 && StringContainsCi(name, kw3)))
+ 463              		.loc 1 282 12 view .LVU106
+ 464 001e BAF1000F 		cmp	r10, #0
+ 465 0022 04D0     		beq	.L41
+ 466              	.LVL33:
+ 467              	.LBB46:
+ 468              	.LBB47:
+ 469              		.loc 1 282 12 view .LVU107
+ 470 0024 5146     		mov	r1, r10
+ 471              	.LVL34:
+ 472              		.loc 1 282 12 view .LVU108
+ 473 0026 2046     		mov	r0, r4
+ 474 0028 FFF7FEFF 		bl	_ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0
+ 475              	.LVL35:
+ 476              		.loc 1 282 12 view .LVU109
+ 477              	.LBE47:
+ 478              	.LBE46:
+ 479              		.loc 1 282 20 view .LVU110
+ 480 002c 18BB     		cbnz	r0, .L35
+ 481              	.L41:
+ 482              		.loc 1 282 20 view .LVU111
+ 483              	.LBE42:
+ 278:src/audio_engine.cpp ****     {
+ 484              		.loc 1 278 5 is_stmt 1 discriminator 5 view .LVU112
+ 485 002e 0135     		adds	r5, r5, #1
+ 486              	.LVL36:
+ 487              	.L43:
+ 278:src/audio_engine.cpp ****     {
+ 488              		.loc 1 278 22 discriminator 1 view .LVU113
+ 278:src/audio_engine.cpp ****     {
+ 489              		.loc 1 278 50 is_stmt 0 discriminator 1 view .LVU114
+ 490 0030 3846     		mov	r0, r7
+ 491 0032 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule17GetParameterCountEv
+ 492              	.LVL37:
+ 278:src/audio_engine.cpp ****     {
+ 493              		.loc 1 278 22 discriminator 1 view .LVU115
+ 494 0036 A842     		cmp	r0, r5
+ 495 0038 26DD     		ble	.L36
+ 496              	.LBB53:
+ 280:src/audio_engine.cpp ****         if(StringContainsCi(name, kw1) || (kw2 && StringContainsCi(name, kw2))
+ 497              		.loc 1 280 9 is_stmt 1 view .LVU116
+ 280:src/audio_engine.cpp ****         if(StringContainsCi(name, kw1) || (kw2 && StringContainsCi(name, kw2))
+ 498              		.loc 1 280 48 is_stmt 0 view .LVU117
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 16
+
+
+ 499 003a 2946     		mov	r1, r5
+ 500 003c 3846     		mov	r0, r7
+ 501 003e FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule16GetParameterNameEi
+ 502              	.LVL38:
+ 281:src/audio_engine.cpp ****            || (kw3 && StringContainsCi(name, kw3)))
+ 503              		.loc 1 281 9 is_stmt 1 view .LVU118
+ 504              	.LBB49:
+ 505              	.LBI49:
+ 243:src/audio_engine.cpp **** {
+ 506              		.loc 1 243 6 view .LVU119
+ 507              	.LBB50:
+ 245:src/audio_engine.cpp ****         return false;
+ 508              		.loc 1 245 5 view .LVU120
+ 245:src/audio_engine.cpp ****         return false;
+ 509              		.loc 1 245 8 is_stmt 0 view .LVU121
+ 510 0042 B0FA80F6 		clz	r6, r0
+ 511 0046 0446     		mov	r4, r0
+ 512 0048 7609     		lsrs	r6, r6, #5
+ 245:src/audio_engine.cpp ****         return false;
+ 513              		.loc 1 245 5 view .LVU122
+ 514 004a B8F1000F 		cmp	r8, #0
+ 515 004e 15D0     		beq	.L37
+ 516 0050 A6B9     		cbnz	r6, .L37
+ 517 0052 4146     		mov	r1, r8
+ 518 0054 FFF7FEFF 		bl	_ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0
+ 519              	.LVL39:
+ 245:src/audio_engine.cpp ****         return false;
+ 520              		.loc 1 245 5 view .LVU123
+ 521              	.LBE50:
+ 522              	.LBE49:
+ 523              		.loc 1 282 12 view .LVU124
+ 524 0058 68B9     		cbnz	r0, .L35
+ 525              	.LVL40:
+ 281:src/audio_engine.cpp ****            || (kw3 && StringContainsCi(name, kw3)))
+ 526              		.loc 1 281 40 view .LVU125
+ 527 005a B9F1000F 		cmp	r9, #0
+ 528 005e D9D1     		bne	.L45
+ 529              	.LVL41:
+ 530              	.L40:
+ 531              	.LBB51:
+ 532              	.LBI46:
+ 243:src/audio_engine.cpp **** {
+ 533              		.loc 1 243 6 is_stmt 1 view .LVU126
+ 534              	.LBB48:
+ 245:src/audio_engine.cpp ****         return false;
+ 535              		.loc 1 245 5 view .LVU127
+ 536 0060 BAF1000F 		cmp	r10, #0
+ 537 0064 E3D0     		beq	.L41
+ 538 0066 002E     		cmp	r6, #0
+ 539 0068 E1D1     		bne	.L41
+ 245:src/audio_engine.cpp ****         return false;
+ 540              		.loc 1 245 5 is_stmt 0 view .LVU128
+ 541 006a 5146     		mov	r1, r10
+ 542 006c 2046     		mov	r0, r4
+ 543 006e FFF7FEFF 		bl	_ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0
+ 544              	.LVL42:
+ 245:src/audio_engine.cpp ****         return false;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 17
+
+
+ 545              		.loc 1 245 5 view .LVU129
+ 546              	.LBE48:
+ 547              	.LBE51:
+ 548              		.loc 1 282 20 view .LVU130
+ 549 0072 0028     		cmp	r0, #0
+ 550 0074 DBD0     		beq	.L41
+ 551              	.L35:
+ 552              		.loc 1 282 20 view .LVU131
+ 553              	.LBE53:
+ 554              	.LBE41:
+ 283:src/audio_engine.cpp ****             return i;
+ 284:src/audio_engine.cpp ****     }
+ 285:src/audio_engine.cpp ****     return -1;
+ 286:src/audio_engine.cpp **** }
+ 555              		.loc 1 286 1 view .LVU132
+ 556 0076 2846     		mov	r0, r5
+ 557 0078 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 558              	.LVL43:
+ 559              	.L37:
+ 560              	.LBB55:
+ 561              	.LBB54:
+ 281:src/audio_engine.cpp ****            || (kw3 && StringContainsCi(name, kw3)))
+ 562              		.loc 1 281 40 view .LVU133
+ 563 007c B9F1000F 		cmp	r9, #0
+ 564 0080 EED0     		beq	.L40
+ 565              	.LVL44:
+ 566              	.LBB52:
+ 567              	.LBI43:
+ 243:src/audio_engine.cpp **** {
+ 568              		.loc 1 243 6 is_stmt 1 view .LVU134
+ 569              	.LBB45:
+ 245:src/audio_engine.cpp ****         return false;
+ 570              		.loc 1 245 5 view .LVU135
+ 571 0082 002C     		cmp	r4, #0
+ 572 0084 D3D0     		beq	.L41
+ 573 0086 C5E7     		b	.L45
+ 574              	.LVL45:
+ 575              	.L36:
+ 245:src/audio_engine.cpp ****         return false;
+ 576              		.loc 1 245 5 is_stmt 0 view .LVU136
+ 577              	.LBE45:
+ 578              	.LBE52:
+ 579              	.LBE54:
+ 580              	.LBE55:
+ 277:src/audio_engine.cpp ****     for(int i = 0; i < (int)fx->GetParameterCount(); ++i)
+ 581              		.loc 1 277 17 view .LVU137
+ 582 0088 4FF0FF35 		mov	r5, #-1
+ 583              		.loc 1 286 1 view .LVU138
+ 584 008c 2846     		mov	r0, r5
+ 585 008e BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 586              		.cfi_endproc
+ 587              	.LFE2573:
+ 589 0092 00BF     		.section	.text._ZN3app11AudioEngine19FallbackParamForPotEPN10bkshepherd16BaseEffectModuleEi,"ax",%
+ 590              		.align	1
+ 591              		.p2align 2,,3
+ 592              		.global	_ZN3app11AudioEngine19FallbackParamForPotEPN10bkshepherd16BaseEffectModuleEi
+ 593              		.syntax unified
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 18
+
+
+ 594              		.thumb
+ 595              		.thumb_func
+ 596              		.fpu fpv5-d16
+ 598              	_ZN3app11AudioEngine19FallbackParamForPotEPN10bkshepherd16BaseEffectModuleEi:
+ 599              	.LVL46:
+ 600              	.LFB2574:
+ 287:src/audio_engine.cpp **** 
+ 288:src/audio_engine.cpp **** // Fall back to the module-defined knob mapping, then to positional parameters, preserving old modu
+ 289:src/audio_engine.cpp **** int AudioEngine::FallbackParamForPot(bkshepherd::BaseEffectModule* fx,
+ 290:src/audio_engine.cpp ****                                      int                           pot_idx)
+ 291:src/audio_engine.cpp **** {
+ 601              		.loc 1 291 1 is_stmt 1 view -0
+ 602              		.cfi_startproc
+ 603              		@ args = 0, pretend = 0, frame = 0
+ 604              		@ frame_needed = 0, uses_anonymous_args = 0
+ 292:src/audio_engine.cpp ****     if(!fx)
+ 605              		.loc 1 292 5 view .LVU140
+ 606 0000 88B1     		cbz	r0, .L65
+ 293:src/audio_engine.cpp ****         return -1;
+ 294:src/audio_engine.cpp ****     const int pid = fx->GetMappedParameterIDForKnob(pot_idx);
+ 607              		.loc 1 294 5 view .LVU141
+ 291:src/audio_engine.cpp ****     if(!fx)
+ 608              		.loc 1 291 1 is_stmt 0 view .LVU142
+ 609 0002 38B5     		push	{r3, r4, r5, lr}
+ 610              		.cfi_def_cfa_offset 16
+ 611              		.cfi_offset 3, -16
+ 612              		.cfi_offset 4, -12
+ 613              		.cfi_offset 5, -8
+ 614              		.cfi_offset 14, -4
+ 615 0004 0446     		mov	r4, r0
+ 616 0006 0D46     		mov	r5, r1
+ 617              		.loc 1 294 52 view .LVU143
+ 618 0008 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi
+ 619              	.LVL47:
+ 295:src/audio_engine.cpp ****     if(pid >= 0)
+ 620              		.loc 1 295 5 is_stmt 1 view .LVU144
+ 621 000c 0028     		cmp	r0, #0
+ 622              		.loc 1 295 5 is_stmt 0 view .LVU145
+ 623 000e 00DB     		blt	.L66
+ 296:src/audio_engine.cpp ****         return pid;
+ 297:src/audio_engine.cpp ****     return pot_idx < (int)fx->GetParameterCount() ? pot_idx : -1;
+ 298:src/audio_engine.cpp **** }
+ 624              		.loc 1 298 1 view .LVU146
+ 625 0010 38BD     		pop	{r3, r4, r5, pc}
+ 626              	.LVL48:
+ 627              	.L66:
+ 297:src/audio_engine.cpp **** }
+ 628              		.loc 1 297 5 is_stmt 1 view .LVU147
+ 297:src/audio_engine.cpp **** }
+ 629              		.loc 1 297 48 is_stmt 0 view .LVU148
+ 630 0012 2046     		mov	r0, r4
+ 631              	.LVL49:
+ 297:src/audio_engine.cpp **** }
+ 632              		.loc 1 297 48 view .LVU149
+ 633 0014 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule17GetParameterCountEv
+ 634              	.LVL50:
+ 297:src/audio_engine.cpp **** }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 19
+
+
+ 635              		.loc 1 297 51 view .LVU150
+ 636 0018 A842     		cmp	r0, r5
+ 637 001a 01DD     		ble	.L61
+ 638 001c 2846     		mov	r0, r5
+ 639              		.loc 1 298 1 view .LVU151
+ 640 001e 38BD     		pop	{r3, r4, r5, pc}
+ 641              	.LVL51:
+ 642              	.L61:
+ 293:src/audio_engine.cpp ****     const int pid = fx->GetMappedParameterIDForKnob(pot_idx);
+ 643              		.loc 1 293 17 view .LVU152
+ 644 0020 4FF0FF30 		mov	r0, #-1
+ 645              		.loc 1 298 1 view .LVU153
+ 646 0024 38BD     		pop	{r3, r4, r5, pc}
+ 647              	.LVL52:
+ 648              	.L65:
+ 649              		.cfi_def_cfa_offset 0
+ 650              		.cfi_restore 3
+ 651              		.cfi_restore 4
+ 652              		.cfi_restore 5
+ 653              		.cfi_restore 14
+ 293:src/audio_engine.cpp ****     const int pid = fx->GetMappedParameterIDForKnob(pot_idx);
+ 654              		.loc 1 293 17 view .LVU154
+ 655 0026 4FF0FF30 		mov	r0, #-1
+ 656              	.LVL53:
+ 657              		.loc 1 298 1 view .LVU155
+ 658 002a 7047     		bx	lr
+ 659              		.cfi_endproc
+ 660              	.LFE2574:
+ 662              		.section	.text._ZN3app11AudioEngine10U16ToFloatEt,"ax",%progbits
+ 663              		.align	1
+ 664              		.p2align 2,,3
+ 665              		.global	_ZN3app11AudioEngine10U16ToFloatEt
+ 666              		.syntax unified
+ 667              		.thumb
+ 668              		.thumb_func
+ 669              		.fpu fpv5-d16
+ 671              	_ZN3app11AudioEngine10U16ToFloatEt:
+ 672              	.LVL54:
+ 673              	.LFB2575:
+ 299:src/audio_engine.cpp **** 
+ 300:src/audio_engine.cpp **** float AudioEngine::U16ToFloat(uint16_t value)
+ 301:src/audio_engine.cpp **** {
+ 674              		.loc 1 301 1 is_stmt 1 view -0
+ 675              		.cfi_startproc
+ 676              		@ args = 0, pretend = 0, frame = 0
+ 677              		@ frame_needed = 0, uses_anonymous_args = 0
+ 678              		@ link register save eliminated.
+ 302:src/audio_engine.cpp ****     return (float)value / 65535.0f;
+ 679              		.loc 1 302 5 view .LVU157
+ 680              		.loc 1 302 12 is_stmt 0 view .LVU158
+ 681 0000 07EE900A 		vmov	s15, r0	@ int
+ 682              		.loc 1 302 27 view .LVU159
+ 683 0004 9FED030A 		vldr.32	s0, .L68
+ 684              		.loc 1 302 12 view .LVU160
+ 685 0008 F8EE677A 		vcvt.f32.u32	s15, s15
+ 303:src/audio_engine.cpp **** }
+ 686              		.loc 1 303 1 view .LVU161
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 20
+
+
+ 687 000c 87EE800A 		vdiv.f32	s0, s15, s0
+ 688 0010 7047     		bx	lr
+ 689              	.L69:
+ 690 0012 00BF     		.align	2
+ 691              	.L68:
+ 692 0014 00FF7F47 		.word	1199570688
+ 693              		.cfi_endproc
+ 694              	.LFE2575:
+ 696              		.section	.text._ZN3app11AudioEngine11ClampOutputEf,"ax",%progbits
+ 697              		.align	1
+ 698              		.p2align 2,,3
+ 699              		.global	_ZN3app11AudioEngine11ClampOutputEf
+ 700              		.syntax unified
+ 701              		.thumb
+ 702              		.thumb_func
+ 703              		.fpu fpv5-d16
+ 705              	_ZN3app11AudioEngine11ClampOutputEf:
+ 706              	.LVL55:
+ 707              	.LFB2576:
+ 304:src/audio_engine.cpp **** 
+ 305:src/audio_engine.cpp **** // Preserve the existing simple output limiter so summed dry/wet transitions cannot exceed the expe
+ 306:src/audio_engine.cpp **** float AudioEngine::ClampOutput(float value)
+ 307:src/audio_engine.cpp **** {
+ 708              		.loc 1 307 1 is_stmt 1 view -0
+ 709              		.cfi_startproc
+ 710              		@ args = 0, pretend = 0, frame = 0
+ 711              		@ frame_needed = 0, uses_anonymous_args = 0
+ 712              		@ link register save eliminated.
+ 308:src/audio_engine.cpp ****     return value < -0.95f ? -0.95f : (value > 0.95f ? 0.95f : value);
+ 713              		.loc 1 308 5 view .LVU163
+ 714              		.loc 1 308 27 is_stmt 0 view .LVU164
+ 715 0000 DFED097A 		vldr.32	s15, .L74
+ 716 0004 B4EEE70A 		vcmpe.f32	s0, s15
+ 717 0008 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 718 000c 08D4     		bmi	.L72
+ 719              		.loc 1 308 53 discriminator 2 view .LVU165
+ 720 000e 9FED077A 		vldr.32	s14, .L74+4
+ 721 0012 B4EEC70A 		vcmpe.f32	s0, s14
+ 722 0016 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 723 001a 37FE000A 		vselgt.f32	s0, s14, s0
+ 724              	.LVL56:
+ 725              		.loc 1 308 53 discriminator 2 view .LVU166
+ 726 001e 7047     		bx	lr
+ 727              	.LVL57:
+ 728              	.L72:
+ 729              		.loc 1 308 27 view .LVU167
+ 730 0020 B0EE670A 		vmov.f32	s0, s15
+ 731              	.LVL58:
+ 309:src/audio_engine.cpp **** }
+ 732              		.loc 1 309 1 view .LVU168
+ 733 0024 7047     		bx	lr
+ 734              	.L75:
+ 735 0026 00BF     		.align	2
+ 736              	.L74:
+ 737 0028 333373BF 		.word	-1082969293
+ 738 002c 3333733F 		.word	1064514355
+ 739              		.cfi_endproc
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 21
+
+
+ 740              	.LFE2576:
+ 742              		.section	.text._ZN3app11AudioEngine14BuildParamMapsEv,"ax",%progbits
+ 743              		.align	1
+ 744              		.p2align 2,,3
+ 745              		.global	_ZN3app11AudioEngine14BuildParamMapsEv
+ 746              		.syntax unified
+ 747              		.thumb
+ 748              		.thumb_func
+ 749              		.fpu fpv5-d16
+ 751              	_ZN3app11AudioEngine14BuildParamMapsEv:
+ 752              	.LVL59:
+ 753              	.LFB2577:
+ 310:src/audio_engine.cpp **** 
+ 311:src/audio_engine.cpp **** // Map the three pots to the parameters that make sense for each effect.
+ 312:src/audio_engine.cpp **** // Granular delay uses explicit parameter IDs so the mapping stays obvious.
+ 313:src/audio_engine.cpp **** void AudioEngine::BuildParamMaps()
+ 314:src/audio_engine.cpp **** {
+ 754              		.loc 1 314 1 is_stmt 1 view -0
+ 755              		.cfi_startproc
+ 756              		@ args = 0, pretend = 0, frame = 0
+ 757              		@ frame_needed = 0, uses_anonymous_args = 0
+ 758              		@ link register save eliminated.
+ 315:src/audio_engine.cpp **** #if DIAG_FX_CHORUS
+ 316:src/audio_engine.cpp ****     maps_[config::FX_CHORUS].p0
+ 317:src/audio_engine.cpp ****         = FindParamByKeywords(&chorus_, "mix", "wet", 0);
+ 318:src/audio_engine.cpp ****     maps_[config::FX_CHORUS].p1
+ 319:src/audio_engine.cpp ****         = FindParamByKeywords(&chorus_, "rate", "speed", "freq");
+ 320:src/audio_engine.cpp ****     maps_[config::FX_CHORUS].p2 = FindParamByKeywords(&chorus_, "depth", 0, 0);
+ 321:src/audio_engine.cpp ****     if(maps_[config::FX_CHORUS].p0 < 0)
+ 322:src/audio_engine.cpp ****         maps_[config::FX_CHORUS].p0 = FallbackParamForPot(&chorus_, 0);
+ 323:src/audio_engine.cpp ****     if(maps_[config::FX_CHORUS].p1 < 0)
+ 324:src/audio_engine.cpp ****         maps_[config::FX_CHORUS].p1 = FallbackParamForPot(&chorus_, 1);
+ 325:src/audio_engine.cpp ****     if(maps_[config::FX_CHORUS].p2 < 0)
+ 326:src/audio_engine.cpp ****         maps_[config::FX_CHORUS].p2 = FallbackParamForPot(&chorus_, 2);
+ 327:src/audio_engine.cpp **** #endif
+ 328:src/audio_engine.cpp **** 
+ 329:src/audio_engine.cpp **** #if DIAG_FX_REVERB
+ 330:src/audio_engine.cpp ****     maps_[config::FX_REVERB].p0
+ 331:src/audio_engine.cpp ****         = FindParamByKeywords(&reverb_, "mix", "wet", 0);
+ 332:src/audio_engine.cpp ****     maps_[config::FX_REVERB].p1
+ 333:src/audio_engine.cpp ****         = FindParamByKeywords(&reverb_, "time", "decay", "feedback");
+ 334:src/audio_engine.cpp ****     maps_[config::FX_REVERB].p2
+ 335:src/audio_engine.cpp ****         = FindParamByKeywords(&reverb_, "lpfreq", "damp", "tone");
+ 336:src/audio_engine.cpp ****     if(maps_[config::FX_REVERB].p0 < 0)
+ 337:src/audio_engine.cpp ****         maps_[config::FX_REVERB].p0 = FallbackParamForPot(&reverb_, 0);
+ 338:src/audio_engine.cpp ****     if(maps_[config::FX_REVERB].p1 < 0)
+ 339:src/audio_engine.cpp ****         maps_[config::FX_REVERB].p1 = FallbackParamForPot(&reverb_, 1);
+ 340:src/audio_engine.cpp ****     if(maps_[config::FX_REVERB].p2 < 0)
+ 341:src/audio_engine.cpp ****         maps_[config::FX_REVERB].p2 = FallbackParamForPot(&reverb_, 2);
+ 342:src/audio_engine.cpp **** #endif
+ 343:src/audio_engine.cpp **** 
+ 344:src/audio_engine.cpp **** #if DIAG_FX_CRUSHER
+ 345:src/audio_engine.cpp ****     maps_[config::FX_CRUSHER].p0
+ 346:src/audio_engine.cpp ****         = FindParamByKeywords(&crusher_, "level", "gain", "volume");
+ 347:src/audio_engine.cpp ****     maps_[config::FX_CRUSHER].p1
+ 348:src/audio_engine.cpp ****         = FindParamByKeywords(&crusher_, "bits", "crush", "depth");
+ 349:src/audio_engine.cpp ****     maps_[config::FX_CRUSHER].p2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 22
+
+
+ 350:src/audio_engine.cpp ****         = FindParamByKeywords(&crusher_, "cutoff", "filter", "tone");
+ 351:src/audio_engine.cpp ****     if(maps_[config::FX_CRUSHER].p0 < 0)
+ 352:src/audio_engine.cpp ****         maps_[config::FX_CRUSHER].p0 = FallbackParamForPot(&crusher_, 0);
+ 353:src/audio_engine.cpp ****     if(maps_[config::FX_CRUSHER].p1 < 0)
+ 354:src/audio_engine.cpp ****         maps_[config::FX_CRUSHER].p1 = FallbackParamForPot(&crusher_, 1);
+ 355:src/audio_engine.cpp ****     if(maps_[config::FX_CRUSHER].p2 < 0)
+ 356:src/audio_engine.cpp ****         maps_[config::FX_CRUSHER].p2 = FallbackParamForPot(&crusher_, 2);
+ 357:src/audio_engine.cpp **** #endif
+ 358:src/audio_engine.cpp **** 
+ 359:src/audio_engine.cpp **** #if DIAG_FX_GRANULAR
+ 360:src/audio_engine.cpp ****     maps_[config::FX_GRANULAR_DELAY].p0 = bkshepherd::GranularDelayModule::SIZE;
+ 361:src/audio_engine.cpp ****     maps_[config::FX_GRANULAR_DELAY].p1 = bkshepherd::GranularDelayModule::MIX;
+ 362:src/audio_engine.cpp ****     maps_[config::FX_GRANULAR_DELAY].p2
+ 363:src/audio_engine.cpp ****         = bkshepherd::GranularDelayModule::PITCH;
+ 364:src/audio_engine.cpp **** #endif
+ 365:src/audio_engine.cpp **** }
+ 759              		.loc 1 365 1 is_stmt 0 view .LVU170
+ 760 0000 7047     		bx	lr
+ 761              		.cfi_endproc
+ 762              	.LFE2577:
+ 764 0002 00BF     		.section	.text._ZN3app11AudioEngine22ApplySnapshotIfChangedEv,"ax",%progbits
+ 765              		.align	1
+ 766              		.p2align 2,,3
+ 767              		.global	_ZN3app11AudioEngine22ApplySnapshotIfChangedEv
+ 768              		.syntax unified
+ 769              		.thumb
+ 770              		.thumb_func
+ 771              		.fpu fpv5-d16
+ 773              	_ZN3app11AudioEngine22ApplySnapshotIfChangedEv:
+ 774              	.LVL60:
+ 775              	.LFB2578:
+ 366:src/audio_engine.cpp **** 
+ 367:src/audio_engine.cpp **** // The main loop publishes requested state into the mailbox; the audio thread
+ 368:src/audio_engine.cpp **** // consumes it here and only re-applies parameters when the revision changes.
+ 369:src/audio_engine.cpp **** void AudioEngine::ApplySnapshotIfChanged()
+ 370:src/audio_engine.cpp **** {
+ 776              		.loc 1 370 1 is_stmt 1 view -0
+ 777              		.cfi_startproc
+ 778              		@ args = 0, pretend = 0, frame = 24
+ 779              		@ frame_needed = 0, uses_anonymous_args = 0
+ 371:src/audio_engine.cpp ****     if(!mailbox_)
+ 780              		.loc 1 371 5 view .LVU172
+ 370:src/audio_engine.cpp ****     if(!mailbox_)
+ 781              		.loc 1 370 1 is_stmt 0 view .LVU173
+ 782 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 783              		.cfi_def_cfa_offset 20
+ 784              		.cfi_offset 4, -20
+ 785              		.cfi_offset 5, -16
+ 786              		.cfi_offset 6, -12
+ 787              		.cfi_offset 7, -8
+ 788              		.cfi_offset 14, -4
+ 789              		.loc 1 371 9 view .LVU174
+ 790 0002 0468     		ldr	r4, [r0]
+ 370:src/audio_engine.cpp ****     if(!mailbox_)
+ 791              		.loc 1 370 1 view .LVU175
+ 792 0004 87B0     		sub	sp, sp, #28
+ 793              		.cfi_def_cfa_offset 48
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 23
+
+
+ 794              		.loc 1 371 5 view .LVU176
+ 795 0006 2CB1     		cbz	r4, .L77
+ 372:src/audio_engine.cpp ****         return;
+ 373:src/audio_engine.cpp **** 
+ 374:src/audio_engine.cpp ****     ControlSnapshot snapshot;
+ 796              		.loc 1 374 5 is_stmt 1 view .LVU177
+ 375:src/audio_engine.cpp ****     uint32_t        revision = mailbox_revision_;
+ 797              		.loc 1 375 5 view .LVU178
+ 798              	.LVL61:
+ 376:src/audio_engine.cpp ****     if(!mailbox_->Read(snapshot, revision) || revision == mailbox_revision_)
+ 799              		.loc 1 376 5 view .LVU179
+ 800              	.LBB58:
+ 801              	.LBI58:
+ 802              		.file 2 "src/control_mailbox.h"
+   1:src/control_mailbox.h **** #pragma once
+   2:src/control_mailbox.h **** 
+   3:src/control_mailbox.h **** #include "app_config.h"
+   4:src/control_mailbox.h **** 
+   5:src/control_mailbox.h **** #include <stdint.h>
+   6:src/control_mailbox.h **** #include <type_traits>
+   7:src/control_mailbox.h **** 
+   8:src/control_mailbox.h **** namespace app
+   9:src/control_mailbox.h **** {
+  10:src/control_mailbox.h **** 
+  11:src/control_mailbox.h **** enum class SystemMode : uint8_t
+  12:src/control_mailbox.h **** {
+  13:src/control_mailbox.h ****     Normal = 0,
+  14:src/control_mailbox.h ****     ThermalShutdown = 1
+  15:src/control_mailbox.h **** };
+  16:src/control_mailbox.h **** 
+  17:src/control_mailbox.h **** // Compact requested-control state crossing from the foreground loop into the
+  18:src/control_mailbox.h **** // audio interrupt. Keep this trivially copyable and small so a seqlock retry is
+  19:src/control_mailbox.h **** // cheap and no dynamic allocation or mutex is needed.
+  20:src/control_mailbox.h **** struct ControlSnapshot
+  21:src/control_mailbox.h **** {
+  22:src/control_mailbox.h ****     uint8_t effect;
+  23:src/control_mailbox.h ****     uint8_t bypass;
+  24:src/control_mailbox.h ****     uint8_t system_mode;
+  25:src/control_mailbox.h ****     uint8_t reserved;
+  26:src/control_mailbox.h ****     uint16_t parameters[config::kPhysicalPotCount];
+  27:src/control_mailbox.h **** };
+  28:src/control_mailbox.h **** 
+  29:src/control_mailbox.h **** static_assert(std::is_trivially_copyable<ControlSnapshot>::value, "ControlSnapshot must be copied b
+  30:src/control_mailbox.h **** static_assert(sizeof(ControlSnapshot) <= 16, "ControlSnapshot must stay small for interrupt transfe
+  31:src/control_mailbox.h **** static_assert(sizeof(ControlSnapshot) == 10, "ControlSnapshot layout changed unexpectedly");
+  32:src/control_mailbox.h **** 
+  33:src/control_mailbox.h **** // Single-writer/single-reader mailbox for the main loop -> audio callback handoff.
+  34:src/control_mailbox.h **** // The main loop is the only writer, and the audio interrupt is the only reader.
+  35:src/control_mailbox.h **** class ControlMailbox
+  36:src/control_mailbox.h **** {
+  37:src/control_mailbox.h ****   public:
+  38:src/control_mailbox.h ****     ControlMailbox();
+  39:src/control_mailbox.h **** 
+  40:src/control_mailbox.h ****     // Publish() is called from the main loop after controls have been filtered and
+  41:src/control_mailbox.h ****     // debounced. It marks the sequence odd while the payload is being copied.
+  42:src/control_mailbox.h ****     void Publish(const ControlSnapshot& snapshot);
+  43:src/control_mailbox.h **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 24
+
+
+  44:src/control_mailbox.h ****     // Read() is called once at the beginning of an audio block. It returns false
+  45:src/control_mailbox.h ****     // if publication is in progress, allowing the callback to keep its last valid
+  46:src/control_mailbox.h ****     // snapshot without blocking.
+  47:src/control_mailbox.h ****     bool Read(ControlSnapshot& out, uint32_t& out_revision) const;
+  48:src/control_mailbox.h **** 
+  49:src/control_mailbox.h ****   private:
+  50:src/control_mailbox.h ****     uint32_t sequence_;
+  51:src/control_mailbox.h ****     ControlSnapshot snapshot_;
+  52:src/control_mailbox.h **** };
+  53:src/control_mailbox.h **** 
+  54:src/control_mailbox.h **** inline ControlMailbox::ControlMailbox()
+  55:src/control_mailbox.h **** : sequence_(0),
+  56:src/control_mailbox.h ****   snapshot_{config::FX_TUNER, 0, (uint8_t)SystemMode::Normal, 0, {0, 0, 0}}
+  57:src/control_mailbox.h **** {
+  58:src/control_mailbox.h **** }
+  59:src/control_mailbox.h **** 
+  60:src/control_mailbox.h **** // GCC atomics provide the compiler and CPU barriers needed for the callback to
+  61:src/control_mailbox.h **** // reject in-progress or torn snapshots. The sequence is even when stable and odd
+  62:src/control_mailbox.h **** // while the writer is updating the payload.
+  63:src/control_mailbox.h **** inline void ControlMailbox::Publish(const ControlSnapshot& snapshot)
+  64:src/control_mailbox.h **** {
+  65:src/control_mailbox.h ****     const uint32_t start = __atomic_load_n(&sequence_, __ATOMIC_RELAXED);
+  66:src/control_mailbox.h ****     __atomic_store_n(&sequence_, start | 1u, __ATOMIC_RELEASE);
+  67:src/control_mailbox.h ****     snapshot_ = snapshot;
+  68:src/control_mailbox.h ****     __atomic_store_n(&sequence_, (start + 2u) & ~1u, __ATOMIC_RELEASE);
+  69:src/control_mailbox.h **** }
+  70:src/control_mailbox.h **** 
+  71:src/control_mailbox.h **** inline bool ControlMailbox::Read(ControlSnapshot& out, uint32_t& out_revision) const
+ 803              		.loc 2 71 13 view .LVU180
+ 804              	.LBB59:
+  72:src/control_mailbox.h **** {
+  73:src/control_mailbox.h ****     const uint32_t before = __atomic_load_n(&sequence_, __ATOMIC_ACQUIRE);
+ 805              		.loc 2 73 5 view .LVU181
+ 806              		.loc 2 73 73 is_stmt 0 view .LVU182
+ 807 0008 2568     		ldr	r5, [r4]
+ 808 000a BFF35B8F 		dmb	ish
+ 809              	.LVL62:
+  74:src/control_mailbox.h ****     if(before & 1u)
+ 810              		.loc 2 74 5 is_stmt 1 view .LVU183
+ 811 000e 15F00106 		ands	r6, r5, #1
+ 812 0012 01D0     		beq	.L87
+ 813              	.LVL63:
+ 814              	.L77:
+ 815              		.loc 2 74 5 is_stmt 0 view .LVU184
+ 816              	.LBE59:
+ 817              	.LBE58:
+ 377:src/audio_engine.cpp ****         return;
+ 378:src/audio_engine.cpp **** 
+ 379:src/audio_engine.cpp ****     mailbox_revision_ = revision;
+ 380:src/audio_engine.cpp ****     current_          = snapshot;
+ 381:src/audio_engine.cpp **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 382:src/audio_engine.cpp ****     current_.effect = (uint8_t)DIAG_FORCE_EFFECT;
+ 383:src/audio_engine.cpp ****     current_.bypass = 0;
+ 384:src/audio_engine.cpp **** #endif
+ 385:src/audio_engine.cpp **** #if DIAG_ENFORCE_THERMAL_AUDIO_SHUTDOWN
+ 386:src/audio_engine.cpp ****     if(current_.system_mode == (uint8_t)SystemMode::ThermalShutdown)
+ 387:src/audio_engine.cpp ****     {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 25
+
+
+ 388:src/audio_engine.cpp ****         BeginThermalShutdown();
+ 389:src/audio_engine.cpp ****         return;
+ 390:src/audio_engine.cpp ****     }
+ 391:src/audio_engine.cpp ****     if(thermal_audio_state_ != THERMAL_AUDIO_NORMAL)
+ 392:src/audio_engine.cpp ****         return;
+ 393:src/audio_engine.cpp **** #endif
+ 394:src/audio_engine.cpp ****     if(current_.effect >= config::FX_COUNT)
+ 395:src/audio_engine.cpp ****         current_.effect = config::FX_TUNER;
+ 396:src/audio_engine.cpp **** 
+ 397:src/audio_engine.cpp ****     const bool effect_changed = current_.effect != applied_.effect;
+ 398:src/audio_engine.cpp ****     const bool params_changed
+ 399:src/audio_engine.cpp ****         = current_.parameters[0] != applied_.parameters[0]
+ 400:src/audio_engine.cpp ****           || current_.parameters[1] != applied_.parameters[1]
+ 401:src/audio_engine.cpp ****           || current_.parameters[2] != applied_.parameters[2];
+ 402:src/audio_engine.cpp **** 
+ 403:src/audio_engine.cpp **** #if DIAG_ENGINE_PROCESS_FX
+ 404:src/audio_engine.cpp ****     if(params_changed || effect_changed)
+ 405:src/audio_engine.cpp ****         ApplyParameters(current_.effect, current_.parameters);
+ 406:src/audio_engine.cpp **** #else
+ 407:src/audio_engine.cpp ****     (void)params_changed;
+ 408:src/audio_engine.cpp ****     (void)effect_changed;
+ 409:src/audio_engine.cpp **** #endif
+ 410:src/audio_engine.cpp **** 
+ 411:src/audio_engine.cpp **** #if DIAG_ENGINE_TRANSITIONS
+ 412:src/audio_engine.cpp ****     if(current_.effect != pending_effect_
+ 413:src/audio_engine.cpp ****        || (current_.bypass != 0) != pending_bypass_)
+ 414:src/audio_engine.cpp ****         StartTransition(current_.effect, current_.bypass != 0);
+ 415:src/audio_engine.cpp **** #endif
+ 416:src/audio_engine.cpp **** 
+ 417:src/audio_engine.cpp ****     applied_ = current_;
+ 418:src/audio_engine.cpp **** }
+ 818              		.loc 1 418 1 view .LVU185
+ 819 0014 07B0     		add	sp, sp, #28
+ 820              		.cfi_remember_state
+ 821              		.cfi_def_cfa_offset 20
+ 822              		@ sp needed
+ 823 0016 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 824              	.LVL64:
+ 825              	.L87:
+ 826              		.cfi_restore_state
+ 827              	.LBB63:
+ 828              	.LBB60:
+  75:src/control_mailbox.h ****         return false;
+  76:src/control_mailbox.h **** 
+  77:src/control_mailbox.h ****     const ControlSnapshot copy = snapshot_;
+ 829              		.loc 2 77 27 view .LVU186
+ 830 0018 0DF10C0E 		add	lr, sp, #12
+ 831 001c 221D     		adds	r2, r4, #4
+ 832 001e 0346     		mov	r3, r0
+ 833              		.loc 2 77 5 is_stmt 1 view .LVU187
+ 834              		.loc 2 77 27 is_stmt 0 view .LVU188
+ 835 0020 F446     		mov	ip, lr
+ 836 0022 07CA     		ldm	r2, {r0, r1, r2}
+ 837              	.LVL65:
+ 838              		.loc 2 77 27 view .LVU189
+ 839 0024 ACE80300 		stmia	ip!, {r0, r1}
+ 840 0028 ACF80020 		strh	r2, [ip]	@ movhi
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 26
+
+
+  78:src/control_mailbox.h ****     const uint32_t after = __atomic_load_n(&sequence_, __ATOMIC_ACQUIRE);
+ 841              		.loc 2 78 5 is_stmt 1 view .LVU190
+ 842              		.loc 2 78 72 is_stmt 0 view .LVU191
+ 843 002c 2268     		ldr	r2, [r4]
+ 844 002e BFF35B8F 		dmb	ish
+ 845              	.LVL66:
+  79:src/control_mailbox.h ****     if(before != after || (after & 1u))
+ 846              		.loc 2 79 5 is_stmt 1 view .LVU192
+ 847 0032 9542     		cmp	r5, r2
+ 848 0034 EED1     		bne	.L77
+  80:src/control_mailbox.h ****         return false;
+  81:src/control_mailbox.h **** 
+  82:src/control_mailbox.h ****     out = copy;
+ 849              		.loc 2 82 5 view .LVU193
+ 850              		.loc 2 82 9 is_stmt 0 view .LVU194
+ 851 0036 EC46     		mov	ip, sp
+ 852              	.LBE60:
+ 853              	.LBE63:
+ 376:src/audio_engine.cpp ****         return;
+ 854              		.loc 1 376 44 view .LVU195
+ 855 0038 DC6E     		ldr	r4, [r3, #108]
+ 856              	.LVL67:
+ 857              	.LBB64:
+ 858              	.LBB61:
+ 859              		.loc 2 82 9 view .LVU196
+ 860 003a 9EE80700 		ldm	lr, {r0, r1, r2}
+ 861              	.LVL68:
+ 862              		.loc 2 82 9 view .LVU197
+ 863 003e 6746     		mov	r7, ip
+ 864              	.LBE61:
+ 865              	.LBE64:
+ 376:src/audio_engine.cpp ****         return;
+ 866              		.loc 1 376 44 view .LVU198
+ 867 0040 AC42     		cmp	r4, r5
+ 868              	.LBB65:
+ 869              	.LBB62:
+ 870              		.loc 2 82 9 view .LVU199
+ 871 0042 03C7     		stmia	r7!, {r0, r1}
+ 872 0044 3A80     		strh	r2, [r7]	@ movhi
+  83:src/control_mailbox.h ****     out_revision = after;
+ 873              		.loc 2 83 5 is_stmt 1 view .LVU200
+ 874              	.LVL69:
+  84:src/control_mailbox.h ****     return true;
+ 875              		.loc 2 84 5 view .LVU201
+ 876              		.loc 2 84 5 is_stmt 0 view .LVU202
+ 877              	.LBE62:
+ 878              	.LBE65:
+ 376:src/audio_engine.cpp ****         return;
+ 879              		.loc 1 376 44 view .LVU203
+ 880 0046 E5D0     		beq	.L77
+ 379:src/audio_engine.cpp ****     current_          = snapshot;
+ 881              		.loc 1 379 5 is_stmt 1 view .LVU204
+ 380:src/audio_engine.cpp **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 882              		.loc 1 380 23 is_stmt 0 view .LVU205
+ 883 0048 03F15804 		add	r4, r3, #88
+ 379:src/audio_engine.cpp ****     current_          = snapshot;
+ 884              		.loc 1 379 23 view .LVU206
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 27
+
+
+ 885 004c DD66     		str	r5, [r3, #108]
+ 380:src/audio_engine.cpp **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 886              		.loc 1 380 5 is_stmt 1 view .LVU207
+ 380:src/audio_engine.cpp **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 887              		.loc 1 380 23 is_stmt 0 view .LVU208
+ 888 004e 9CE80700 		ldm	ip, {r0, r1, r2}
+ 417:src/audio_engine.cpp **** }
+ 889              		.loc 1 417 14 view .LVU209
+ 890 0052 2546     		mov	r5, r4
+ 891              	.LVL70:
+ 380:src/audio_engine.cpp **** #if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+ 892              		.loc 1 380 23 view .LVU210
+ 893 0054 03C4     		stmia	r4!, {r0, r1}
+ 894 0056 2280     		strh	r2, [r4]	@ movhi
+ 382:src/audio_engine.cpp ****     current_.bypass = 0;
+ 895              		.loc 1 382 5 is_stmt 1 view .LVU211
+ 383:src/audio_engine.cpp **** #endif
+ 896              		.loc 1 383 5 view .LVU212
+ 382:src/audio_engine.cpp ****     current_.bypass = 0;
+ 897              		.loc 1 382 21 is_stmt 0 view .LVU213
+ 898 0058 A3F85860 		strh	r6, [r3, #88]	@ movhi
+ 394:src/audio_engine.cpp ****         current_.effect = config::FX_TUNER;
+ 899              		.loc 1 394 5 is_stmt 1 view .LVU214
+ 397:src/audio_engine.cpp ****     const bool params_changed
+ 900              		.loc 1 397 5 view .LVU215
+ 901              	.LVL71:
+ 398:src/audio_engine.cpp ****         = current_.parameters[0] != applied_.parameters[0]
+ 902              		.loc 1 398 5 view .LVU216
+ 407:src/audio_engine.cpp ****     (void)effect_changed;
+ 903              		.loc 1 407 5 view .LVU217
+ 408:src/audio_engine.cpp **** #endif
+ 904              		.loc 1 408 5 view .LVU218
+ 417:src/audio_engine.cpp **** }
+ 905              		.loc 1 417 5 view .LVU219
+ 417:src/audio_engine.cpp **** }
+ 906              		.loc 1 417 14 is_stmt 0 view .LVU220
+ 907 005c 2288     		ldrh	r2, [r4]	@ unaligned
+ 908 005e 03CD     		ldmia	r5!, {r0, r1}
+ 909 0060 A3F86A20 		strh	r2, [r3, #106]	@ unaligned
+ 910              	.LVL72:
+ 417:src/audio_engine.cpp **** }
+ 911              		.loc 1 417 14 view .LVU221
+ 912 0064 C3F86200 		str	r0, [r3, #98]	@ unaligned
+ 913              	.LVL73:
+ 417:src/audio_engine.cpp **** }
+ 914              		.loc 1 417 14 view .LVU222
+ 915 0068 C3F86610 		str	r1, [r3, #102]	@ unaligned
+ 916              		.loc 1 418 1 view .LVU223
+ 917 006c 07B0     		add	sp, sp, #28
+ 918              		.cfi_def_cfa_offset 20
+ 919              		@ sp needed
+ 920 006e F0BD     		pop	{r4, r5, r6, r7, pc}
+ 921              		.cfi_endproc
+ 922              	.LFE2578:
+ 924              		.section	.text._ZN3app11AudioEngine20BeginThermalShutdownEv,"ax",%progbits
+ 925              		.align	1
+ 926              		.p2align 2,,3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 28
+
+
+ 927              		.global	_ZN3app11AudioEngine20BeginThermalShutdownEv
+ 928              		.syntax unified
+ 929              		.thumb
+ 930              		.thumb_func
+ 931              		.fpu fpv5-d16
+ 933              	_ZN3app11AudioEngine20BeginThermalShutdownEv:
+ 934              	.LVL74:
+ 935              	.LFB2579:
+ 419:src/audio_engine.cpp **** 
+ 420:src/audio_engine.cpp **** void AudioEngine::BeginThermalShutdown()
+ 421:src/audio_engine.cpp **** {
+ 936              		.loc 1 421 1 is_stmt 1 view -0
+ 937              		.cfi_startproc
+ 938              		@ args = 0, pretend = 0, frame = 0
+ 939              		@ frame_needed = 0, uses_anonymous_args = 0
+ 940              		@ link register save eliminated.
+ 422:src/audio_engine.cpp ****     if(thermal_audio_state_ != THERMAL_AUDIO_NORMAL)
+ 941              		.loc 1 422 5 view .LVU225
+ 942 0000 90F88030 		ldrb	r3, [r0, #128]	@ zero_extendqisi2
+ 943 0004 33B9     		cbnz	r3, .L88
+ 423:src/audio_engine.cpp ****         return;
+ 424:src/audio_engine.cpp ****     thermal_audio_state_ = THERMAL_AUDIO_FADING;
+ 944              		.loc 1 424 5 view .LVU226
+ 425:src/audio_engine.cpp ****     thermal_gain_        = 1.0f;
+ 945              		.loc 1 425 26 is_stmt 0 view .LVU227
+ 946 0006 4FF07E53 		mov	r3, #1065353216
+ 424:src/audio_engine.cpp ****     thermal_gain_        = 1.0f;
+ 947              		.loc 1 424 26 view .LVU228
+ 948 000a 0122     		movs	r2, #1
+ 949              		.loc 1 425 26 view .LVU229
+ 950 000c C0F88430 		str	r3, [r0, #132]	@ float
+ 424:src/audio_engine.cpp ****     thermal_gain_        = 1.0f;
+ 951              		.loc 1 424 26 view .LVU230
+ 952 0010 80F88020 		strb	r2, [r0, #128]
+ 953              		.loc 1 425 5 is_stmt 1 view .LVU231
+ 954              	.L88:
+ 426:src/audio_engine.cpp **** }
+ 955              		.loc 1 426 1 is_stmt 0 view .LVU232
+ 956 0014 7047     		bx	lr
+ 957              		.cfi_endproc
+ 958              	.LFE2579:
+ 960 0016 00BF     		.section	.text._ZN3app11AudioEngine15StartTransitionEhb,"ax",%progbits
+ 961              		.align	1
+ 962              		.p2align 2,,3
+ 963              		.global	_ZN3app11AudioEngine15StartTransitionEhb
+ 964              		.syntax unified
+ 965              		.thumb
+ 966              		.thumb_func
+ 967              		.fpu fpv5-d16
+ 969              	_ZN3app11AudioEngine15StartTransitionEhb:
+ 970              	.LVL75:
+ 971              	.LFB2580:
+ 427:src/audio_engine.cpp **** 
+ 428:src/audio_engine.cpp **** // Fade out the old wet signal before changing modes, so bypass and effect
+ 429:src/audio_engine.cpp **** // switches do not click or cut off the previous effect abruptly.
+ 430:src/audio_engine.cpp **** void AudioEngine::StartTransition(uint8_t requested_effect,
+ 431:src/audio_engine.cpp ****                                   bool    requested_bypass)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 29
+
+
+ 432:src/audio_engine.cpp **** {
+ 972              		.loc 1 432 1 is_stmt 1 view -0
+ 973              		.cfi_startproc
+ 974              		@ args = 0, pretend = 0, frame = 0
+ 975              		@ frame_needed = 0, uses_anonymous_args = 0
+ 976              		@ link register save eliminated.
+ 433:src/audio_engine.cpp ****     pending_effect_ = requested_effect;
+ 977              		.loc 1 433 5 view .LVU234
+ 434:src/audio_engine.cpp ****     pending_bypass_ = requested_bypass;
+ 435:src/audio_engine.cpp **** 
+ 436:src/audio_engine.cpp ****     const bool audible = wet_gain_ > 0.0f && active_effect_ != config::FX_TUNER
+ 437:src/audio_engine.cpp ****                          && !active_bypass_;
+ 978              		.loc 1 437 26 is_stmt 0 view .LVU235
+ 979 0000 D0ED1E7A 		vldr.32	s15, [r0, #120]
+ 433:src/audio_engine.cpp ****     pending_effect_ = requested_effect;
+ 980              		.loc 1 433 21 view .LVU236
+ 981 0004 80F87210 		strb	r1, [r0, #114]
+ 434:src/audio_engine.cpp ****     pending_bypass_ = requested_bypass;
+ 982              		.loc 1 434 5 is_stmt 1 view .LVU237
+ 983              		.loc 1 437 26 is_stmt 0 view .LVU238
+ 984 0008 F5EEC07A 		vcmpe.f32	s15, #0
+ 434:src/audio_engine.cpp ****     pending_bypass_ = requested_bypass;
+ 985              		.loc 1 434 21 view .LVU239
+ 986 000c 80F87320 		strb	r2, [r0, #115]
+ 436:src/audio_engine.cpp ****                          && !active_bypass_;
+ 987              		.loc 1 436 5 is_stmt 1 view .LVU240
+ 988              		.loc 1 437 26 is_stmt 0 view .LVU241
+ 989 0010 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 990 0014 02DD     		ble	.L91
+ 436:src/audio_engine.cpp ****                          && !active_bypass_;
+ 991              		.loc 1 436 43 view .LVU242
+ 992 0016 90F87030 		ldrb	r3, [r0, #112]	@ zero_extendqisi2
+ 993 001a 5BB9     		cbnz	r3, .L102
+ 994              	.L91:
+ 995              	.LVL76:
+ 438:src/audio_engine.cpp ****     if(audible)
+ 996              		.loc 1 438 5 is_stmt 1 view .LVU243
+ 439:src/audio_engine.cpp ****         transition_ = TRANSITION_FADING_OUT;
+ 440:src/audio_engine.cpp ****     else
+ 441:src/audio_engine.cpp ****     {
+ 442:src/audio_engine.cpp ****         active_effect_ = pending_effect_;
+ 997              		.loc 1 442 9 view .LVU244
+ 443:src/audio_engine.cpp ****         active_bypass_ = pending_bypass_;
+ 444:src/audio_engine.cpp ****         wet_gain_      = 0.0f;
+ 998              		.loc 1 444 24 is_stmt 0 view .LVU245
+ 999 001c 0023     		movs	r3, #0
+ 442:src/audio_engine.cpp ****         active_bypass_ = pending_bypass_;
+ 1000              		.loc 1 442 24 view .LVU246
+ 1001 001e 80F87010 		strb	r1, [r0, #112]
+ 443:src/audio_engine.cpp ****         active_bypass_ = pending_bypass_;
+ 1002              		.loc 1 443 9 is_stmt 1 view .LVU247
+ 443:src/audio_engine.cpp ****         active_bypass_ = pending_bypass_;
+ 1003              		.loc 1 443 24 is_stmt 0 view .LVU248
+ 1004 0022 80F87120 		strb	r2, [r0, #113]
+ 1005              		.loc 1 444 9 is_stmt 1 view .LVU249
+ 1006              		.loc 1 444 24 is_stmt 0 view .LVU250
+ 1007 0026 8367     		str	r3, [r0, #120]	@ float
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 30
+
+
+ 445:src/audio_engine.cpp ****         transition_    = (active_effect_ != config::FX_TUNER && !active_bypass_)
+ 1008              		.loc 1 445 9 is_stmt 1 view .LVU251
+ 1009              		.loc 1 445 62 is_stmt 0 view .LVU252
+ 1010 0028 01B1     		cbz	r1, .L98
+ 1011              		.loc 1 445 62 view .LVU253
+ 1012 002a 5AB1     		cbz	r2, .L96
+ 1013              	.L98:
+ 446:src/audio_engine.cpp ****                           ? TRANSITION_FADING_IN
+ 1014              		.loc 1 446 27 view .LVU254
+ 1015 002c 0023     		movs	r3, #0
+ 445:src/audio_engine.cpp ****         transition_    = (active_effect_ != config::FX_TUNER && !active_bypass_)
+ 1016              		.loc 1 445 24 view .LVU255
+ 1017 002e 80F87430 		strb	r3, [r0, #116]
+ 447:src/audio_engine.cpp ****                           : TRANSITION_STEADY;
+ 448:src/audio_engine.cpp ****     }
+ 449:src/audio_engine.cpp **** }
+ 1018              		.loc 1 449 1 view .LVU256
+ 1019 0032 7047     		bx	lr
+ 1020              	.LVL77:
+ 1021              	.L102:
+ 437:src/audio_engine.cpp ****     if(audible)
+ 1022              		.loc 1 437 26 discriminator 3 view .LVU257
+ 1023 0034 90F87130 		ldrb	r3, [r0, #113]	@ zero_extendqisi2
+ 1024 0038 002B     		cmp	r3, #0
+ 1025 003a EFD1     		bne	.L91
+ 1026              	.LVL78:
+ 438:src/audio_engine.cpp ****         transition_ = TRANSITION_FADING_OUT;
+ 1027              		.loc 1 438 5 is_stmt 1 view .LVU258
+ 439:src/audio_engine.cpp ****     else
+ 1028              		.loc 1 439 9 view .LVU259
+ 439:src/audio_engine.cpp ****     else
+ 1029              		.loc 1 439 21 is_stmt 0 view .LVU260
+ 1030 003c 0123     		movs	r3, #1
+ 1031 003e 80F87430 		strb	r3, [r0, #116]
+ 1032 0042 7047     		bx	lr
+ 1033              	.LVL79:
+ 1034              	.L96:
+ 446:src/audio_engine.cpp ****                           : TRANSITION_STEADY;
+ 1035              		.loc 1 446 27 view .LVU261
+ 1036 0044 0223     		movs	r3, #2
+ 445:src/audio_engine.cpp ****                           ? TRANSITION_FADING_IN
+ 1037              		.loc 1 445 24 view .LVU262
+ 1038 0046 80F87430 		strb	r3, [r0, #116]
+ 1039              		.loc 1 449 1 view .LVU263
+ 1040 004a 7047     		bx	lr
+ 1041              		.cfi_endproc
+ 1042              	.LFE2580:
+ 1044              		.section	.text._ZN3app11AudioEngine14StepTransitionEv,"ax",%progbits
+ 1045              		.align	1
+ 1046              		.p2align 2,,3
+ 1047              		.global	_ZN3app11AudioEngine14StepTransitionEv
+ 1048              		.syntax unified
+ 1049              		.thumb
+ 1050              		.thumb_func
+ 1051              		.fpu fpv5-d16
+ 1053              	_ZN3app11AudioEngine14StepTransitionEv:
+ 1054              	.LVL80:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 31
+
+
+ 1055              	.LFB2581:
+ 450:src/audio_engine.cpp **** 
+ 451:src/audio_engine.cpp **** // Advance the wet/dry ramp once per sample. When the ramp reaches zero or
+ 452:src/audio_engine.cpp **** // one, the engine either switches modes or returns to steady state.
+ 453:src/audio_engine.cpp **** void AudioEngine::StepTransition()
+ 454:src/audio_engine.cpp **** {
+ 1056              		.loc 1 454 1 is_stmt 1 view -0
+ 1057              		.cfi_startproc
+ 1058              		@ args = 0, pretend = 0, frame = 0
+ 1059              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1060              		@ link register save eliminated.
+ 455:src/audio_engine.cpp ****     if(transition_ == TRANSITION_FADING_OUT)
+ 1061              		.loc 1 455 5 view .LVU265
+ 1062              		.loc 1 455 8 is_stmt 0 view .LVU266
+ 1063 0000 90F87430 		ldrb	r3, [r0, #116]	@ zero_extendqisi2
+ 1064              		.loc 1 455 5 view .LVU267
+ 1065 0004 012B     		cmp	r3, #1
+ 1066 0006 13D0     		beq	.L115
+ 456:src/audio_engine.cpp ****     {
+ 457:src/audio_engine.cpp ****         wet_gain_ -= wet_gain_step_;
+ 458:src/audio_engine.cpp ****         if(wet_gain_ <= 0.0f)
+ 459:src/audio_engine.cpp ****         {
+ 460:src/audio_engine.cpp ****             wet_gain_      = 0.0f;
+ 461:src/audio_engine.cpp ****             active_effect_ = pending_effect_;
+ 462:src/audio_engine.cpp ****             active_bypass_ = pending_bypass_;
+ 463:src/audio_engine.cpp ****             transition_
+ 464:src/audio_engine.cpp ****                 = (active_effect_ != config::FX_TUNER && !active_bypass_)
+ 465:src/audio_engine.cpp ****                       ? TRANSITION_FADING_IN
+ 466:src/audio_engine.cpp ****                       : TRANSITION_STEADY;
+ 467:src/audio_engine.cpp ****         }
+ 468:src/audio_engine.cpp ****     }
+ 469:src/audio_engine.cpp ****     else if(transition_ == TRANSITION_FADING_IN)
+ 1067              		.loc 1 469 10 is_stmt 1 view .LVU268
+ 1068 0008 022B     		cmp	r3, #2
+ 1069 000a 00D0     		beq	.L116
+ 470:src/audio_engine.cpp ****     {
+ 471:src/audio_engine.cpp ****         wet_gain_ += wet_gain_step_;
+ 472:src/audio_engine.cpp ****         if(wet_gain_ >= 1.0f)
+ 473:src/audio_engine.cpp ****         {
+ 474:src/audio_engine.cpp ****             wet_gain_   = 1.0f;
+ 475:src/audio_engine.cpp ****             transition_ = TRANSITION_STEADY;
+ 476:src/audio_engine.cpp ****         }
+ 477:src/audio_engine.cpp ****     }
+ 478:src/audio_engine.cpp **** }
+ 1070              		.loc 1 478 1 is_stmt 0 view .LVU269
+ 1071 000c 7047     		bx	lr
+ 1072              	.L116:
+ 471:src/audio_engine.cpp ****         if(wet_gain_ >= 1.0f)
+ 1073              		.loc 1 471 9 is_stmt 1 view .LVU270
+ 471:src/audio_engine.cpp ****         if(wet_gain_ >= 1.0f)
+ 1074              		.loc 1 471 19 is_stmt 0 view .LVU271
+ 1075 000e D0ED1E7A 		vldr.32	s15, [r0, #120]
+ 472:src/audio_engine.cpp ****         {
+ 1076              		.loc 1 472 9 view .LVU272
+ 1077 0012 B7EE007A 		vmov.f32	s14, #1.0e+0
+ 471:src/audio_engine.cpp ****         if(wet_gain_ >= 1.0f)
+ 1078              		.loc 1 471 19 view .LVU273
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 32
+
+
+ 1079 0016 D0ED1F6A 		vldr.32	s13, [r0, #124]
+ 1080 001a 77EEA67A 		vadd.f32	s15, s15, s13
+ 472:src/audio_engine.cpp ****         {
+ 1081              		.loc 1 472 9 is_stmt 1 view .LVU274
+ 1082 001e F4EEC77A 		vcmpe.f32	s15, s14
+ 1083 0022 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1084 0026 0FDB     		blt	.L113
+ 474:src/audio_engine.cpp ****             transition_ = TRANSITION_STEADY;
+ 1085              		.loc 1 474 13 view .LVU275
+ 475:src/audio_engine.cpp ****         }
+ 1086              		.loc 1 475 25 is_stmt 0 view .LVU276
+ 1087 0028 0023     		movs	r3, #0
+ 474:src/audio_engine.cpp ****             transition_ = TRANSITION_STEADY;
+ 1088              		.loc 1 474 25 view .LVU277
+ 1089 002a 80ED1E7A 		vstr.32	s14, [r0, #120]
+ 1090 002e 1AE0     		b	.L114
+ 1091              	.L115:
+ 457:src/audio_engine.cpp ****         if(wet_gain_ <= 0.0f)
+ 1092              		.loc 1 457 9 is_stmt 1 view .LVU278
+ 457:src/audio_engine.cpp ****         if(wet_gain_ <= 0.0f)
+ 1093              		.loc 1 457 19 is_stmt 0 view .LVU279
+ 1094 0030 D0ED1E7A 		vldr.32	s15, [r0, #120]
+ 458:src/audio_engine.cpp ****         {
+ 1095              		.loc 1 458 9 view .LVU280
+ 1096 0034 0023     		movs	r3, #0
+ 457:src/audio_engine.cpp ****         if(wet_gain_ <= 0.0f)
+ 1097              		.loc 1 457 19 view .LVU281
+ 1098 0036 90ED1F7A 		vldr.32	s14, [r0, #124]
+ 1099 003a 77EEC77A 		vsub.f32	s15, s15, s14
+ 458:src/audio_engine.cpp ****         {
+ 1100              		.loc 1 458 9 is_stmt 1 view .LVU282
+ 1101 003e F5EEC07A 		vcmpe.f32	s15, #0
+ 1102 0042 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1103 0046 02D9     		bls	.L105
+ 1104              	.L113:
+ 471:src/audio_engine.cpp ****         if(wet_gain_ >= 1.0f)
+ 1105              		.loc 1 471 19 is_stmt 0 view .LVU283
+ 1106 0048 C0ED1E7A 		vstr.32	s15, [r0, #120]
+ 1107 004c 7047     		bx	lr
+ 1108              	.L105:
+ 460:src/audio_engine.cpp ****             active_effect_ = pending_effect_;
+ 1109              		.loc 1 460 13 is_stmt 1 view .LVU284
+ 461:src/audio_engine.cpp ****             active_bypass_ = pending_bypass_;
+ 1110              		.loc 1 461 30 is_stmt 0 view .LVU285
+ 1111 004e 90F87220 		ldrb	r2, [r0, #114]	@ zero_extendqisi2
+ 462:src/audio_engine.cpp ****             transition_
+ 1112              		.loc 1 462 30 view .LVU286
+ 1113 0052 90F87310 		ldrb	r1, [r0, #115]	@ zero_extendqisi2
+ 460:src/audio_engine.cpp ****             active_effect_ = pending_effect_;
+ 1114              		.loc 1 460 28 view .LVU287
+ 1115 0056 8367     		str	r3, [r0, #120]	@ float
+ 461:src/audio_engine.cpp ****             active_bypass_ = pending_bypass_;
+ 1116              		.loc 1 461 13 is_stmt 1 view .LVU288
+ 461:src/audio_engine.cpp ****             active_bypass_ = pending_bypass_;
+ 1117              		.loc 1 461 28 is_stmt 0 view .LVU289
+ 1118 0058 80F87020 		strb	r2, [r0, #112]
+ 462:src/audio_engine.cpp ****             transition_
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 33
+
+
+ 1119              		.loc 1 462 13 is_stmt 1 view .LVU290
+ 462:src/audio_engine.cpp ****             transition_
+ 1120              		.loc 1 462 28 is_stmt 0 view .LVU291
+ 1121 005c 80F87110 		strb	r1, [r0, #113]
+ 463:src/audio_engine.cpp ****                 = (active_effect_ != config::FX_TUNER && !active_bypass_)
+ 1122              		.loc 1 463 13 is_stmt 1 view .LVU292
+ 464:src/audio_engine.cpp ****                       ? TRANSITION_FADING_IN
+ 1123              		.loc 1 464 55 is_stmt 0 view .LVU293
+ 1124 0060 02B1     		cbz	r2, .L112
+ 1125 0062 19B1     		cbz	r1, .L111
+ 1126              	.L112:
+ 465:src/audio_engine.cpp ****                       : TRANSITION_STEADY;
+ 1127              		.loc 1 465 23 view .LVU294
+ 1128 0064 0023     		movs	r3, #0
+ 1129              	.L114:
+ 475:src/audio_engine.cpp ****         }
+ 1130              		.loc 1 475 13 is_stmt 1 view .LVU295
+ 475:src/audio_engine.cpp ****         }
+ 1131              		.loc 1 475 25 is_stmt 0 view .LVU296
+ 1132 0066 80F87430 		strb	r3, [r0, #116]
+ 1133              		.loc 1 478 1 view .LVU297
+ 1134 006a 7047     		bx	lr
+ 1135              	.L111:
+ 465:src/audio_engine.cpp ****                       : TRANSITION_STEADY;
+ 1136              		.loc 1 465 23 view .LVU298
+ 1137 006c 0223     		movs	r3, #2
+ 1138 006e FAE7     		b	.L114
+ 1139              		.cfi_endproc
+ 1140              	.LFE2581:
+ 1142              		.section	.text._ZN3app11AudioEngine19ProcessEffectSampleEPN10bkshepherd16BaseEffectModuleEfRfS4_,"
+ 1143              		.align	1
+ 1144              		.p2align 2,,3
+ 1145              		.global	_ZN3app11AudioEngine19ProcessEffectSampleEPN10bkshepherd16BaseEffectModuleEfRfS4_
+ 1146              		.syntax unified
+ 1147              		.thumb
+ 1148              		.thumb_func
+ 1149              		.fpu fpv5-d16
+ 1151              	_ZN3app11AudioEngine19ProcessEffectSampleEPN10bkshepherd16BaseEffectModuleEfRfS4_:
+ 1152              	.LVL81:
+ 1153              	.LFB2582:
+ 479:src/audio_engine.cpp **** 
+ 480:src/audio_engine.cpp **** // Process one sample through the active module and retrieve both output channels.
+ 481:src/audio_engine.cpp **** void AudioEngine::ProcessEffectSample(bkshepherd::BaseEffectModule* fx,
+ 482:src/audio_engine.cpp ****                                       float                         in,
+ 483:src/audio_engine.cpp ****                                       float&                        out_l,
+ 484:src/audio_engine.cpp ****                                       float&                        out_r)
+ 485:src/audio_engine.cpp **** {
+ 1154              		.loc 1 485 1 is_stmt 1 view -0
+ 1155              		.cfi_startproc
+ 1156              		@ args = 0, pretend = 0, frame = 8
+ 1157              		@ frame_needed = 0, uses_anonymous_args = 0
+ 486:src/audio_engine.cpp ****     fx->ProcessMono(in);
+ 1158              		.loc 1 486 5 view .LVU300
+ 485:src/audio_engine.cpp ****     fx->ProcessMono(in);
+ 1159              		.loc 1 485 1 is_stmt 0 view .LVU301
+ 1160 0000 30B5     		push	{r4, r5, lr}
+ 1161              		.cfi_def_cfa_offset 12
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 34
+
+
+ 1162              		.cfi_offset 4, -12
+ 1163              		.cfi_offset 5, -8
+ 1164              		.cfi_offset 14, -4
+ 1165 0002 1C46     		mov	r4, r3
+ 1166 0004 83B0     		sub	sp, sp, #12
+ 1167              		.cfi_def_cfa_offset 24
+ 1168              		.loc 1 486 23 view .LVU302
+ 1169 0006 0B68     		ldr	r3, [r1]
+ 1170              	.LVL82:
+ 485:src/audio_engine.cpp ****     fx->ProcessMono(in);
+ 1171              		.loc 1 485 1 view .LVU303
+ 1172 0008 0846     		mov	r0, r1
+ 1173              	.LVL83:
+ 1174              		.loc 1 486 20 view .LVU304
+ 1175 000a 0191     		str	r1, [sp, #4]
+ 485:src/audio_engine.cpp ****     fx->ProcessMono(in);
+ 1176              		.loc 1 485 1 view .LVU305
+ 1177 000c 1546     		mov	r5, r2
+ 1178              		.loc 1 486 20 view .LVU306
+ 1179 000e DB68     		ldr	r3, [r3, #12]
+ 1180 0010 9847     		blx	r3
+ 1181              	.LVL84:
+ 487:src/audio_engine.cpp ****     out_l = fx->GetAudioLeft();
+ 1182              		.loc 1 487 5 is_stmt 1 view .LVU307
+ 1183              		.loc 1 487 29 is_stmt 0 view .LVU308
+ 1184 0012 0198     		ldr	r0, [sp, #4]
+ 1185 0014 FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv
+ 1186              	.LVL85:
+ 488:src/audio_engine.cpp ****     out_r = fx->GetAudioRight();
+ 1187              		.loc 1 488 30 view .LVU309
+ 1188 0018 0198     		ldr	r0, [sp, #4]
+ 487:src/audio_engine.cpp ****     out_l = fx->GetAudioLeft();
+ 1189              		.loc 1 487 11 view .LVU310
+ 1190 001a 85ED000A 		vstr.32	s0, [r5]
+ 1191              		.loc 1 488 5 is_stmt 1 view .LVU311
+ 1192              		.loc 1 488 30 is_stmt 0 view .LVU312
+ 1193 001e FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule13GetAudioRightEv
+ 1194              	.LVL86:
+ 1195              		.loc 1 488 11 view .LVU313
+ 1196 0022 84ED000A 		vstr.32	s0, [r4]
+ 489:src/audio_engine.cpp **** }
+ 1197              		.loc 1 489 1 view .LVU314
+ 1198 0026 03B0     		add	sp, sp, #12
+ 1199              		.cfi_def_cfa_offset 12
+ 1200              		@ sp needed
+ 1201 0028 30BD     		pop	{r4, r5, pc}
+ 1202              		.loc 1 489 1 view .LVU315
+ 1203              		.cfi_endproc
+ 1204              	.LFE2582:
+ 1206 002a 00BF     		.section	.text._ZN3app11AudioEngine15ApplyParametersEhPKt,"ax",%progbits
+ 1207              		.align	1
+ 1208              		.p2align 2,,3
+ 1209              		.global	_ZN3app11AudioEngine15ApplyParametersEhPKt
+ 1210              		.syntax unified
+ 1211              		.thumb
+ 1212              		.thumb_func
+ 1213              		.fpu fpv5-d16
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 35
+
+
+ 1215              	_ZN3app11AudioEngine15ApplyParametersEhPKt:
+ 1216              	.LVL87:
+ 1217              	.LFB2583:
+ 490:src/audio_engine.cpp **** 
+ 491:src/audio_engine.cpp **** // Convert mailbox fixed-point pots back to normalized floats only inside the callback-owned engine
+ 492:src/audio_engine.cpp **** void AudioEngine::ApplyParameters(uint8_t effect, const uint16_t* parameters)
+ 493:src/audio_engine.cpp **** {
+ 1218              		.loc 1 493 1 is_stmt 1 view -0
+ 1219              		.cfi_startproc
+ 1220              		@ args = 0, pretend = 0, frame = 0
+ 1221              		@ frame_needed = 0, uses_anonymous_args = 0
+ 494:src/audio_engine.cpp ****     if(effect == config::FX_TUNER || effect >= config::FX_COUNT)
+ 1222              		.loc 1 494 5 view .LVU317
+ 1223 0000 4B1E     		subs	r3, r1, #1
+ 1224 0002 032B     		cmp	r3, #3
+ 1225 0004 54D8     		bhi	.L129
+ 495:src/audio_engine.cpp ****         return;
+ 496:src/audio_engine.cpp **** 
+ 497:src/audio_engine.cpp ****     bkshepherd::BaseEffectModule* fx = effects_[effect];
+ 1226              		.loc 1 497 5 view .LVU318
+ 1227              		.loc 1 497 35 is_stmt 0 view .LVU319
+ 1228 0006 8B1C     		adds	r3, r1, #2
+ 493:src/audio_engine.cpp ****     if(effect == config::FX_TUNER || effect >= config::FX_COUNT)
+ 1229              		.loc 1 493 1 view .LVU320
+ 1230 0008 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 1231              		.cfi_def_cfa_offset 24
+ 1232              		.cfi_offset 4, -24
+ 1233              		.cfi_offset 5, -20
+ 1234              		.cfi_offset 6, -16
+ 1235              		.cfi_offset 7, -12
+ 1236              		.cfi_offset 8, -8
+ 1237              		.cfi_offset 14, -4
+ 1238              		.loc 1 497 35 view .LVU321
+ 1239 000c 50F82380 		ldr	r8, [r0, r3, lsl #2]
+ 1240              	.LVL88:
+ 498:src/audio_engine.cpp ****     if(!fx)
+ 1241              		.loc 1 498 5 is_stmt 1 view .LVU322
+ 1242 0010 0C46     		mov	r4, r1
+ 1243 0012 0546     		mov	r5, r0
+ 1244 0014 B8F1000F 		cmp	r8, #0
+ 1245 0018 14D0     		beq	.L119
+ 499:src/audio_engine.cpp ****         return;
+ 500:src/audio_engine.cpp **** 
+ 501:src/audio_engine.cpp ****     const PotParamMap& map = maps_[effect];
+ 1246              		.loc 1 501 5 view .LVU323
+ 1247              	.LVL89:
+ 502:src/audio_engine.cpp ****     if(map.p0 >= 0)
+ 1248              		.loc 1 502 5 view .LVU324
+ 1249              		.loc 1 502 12 is_stmt 0 view .LVU325
+ 1250 001a 01EB4103 		add	r3, r1, r1, lsl #1
+ 1251 001e 1646     		mov	r6, r2
+ 1252 0020 4F00     		lsls	r7, r1, #1
+ 1253 0022 00EB8303 		add	r3, r0, r3, lsl #2
+ 1254 0026 D969     		ldr	r1, [r3, #28]
+ 1255              	.LVL90:
+ 1256              		.loc 1 502 5 view .LVU326
+ 1257 0028 0029     		cmp	r1, #0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 36
+
+
+ 1258 002a 2EDA     		bge	.L132
+ 503:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p0, U16ToFloat(parameters[0]));
+ 504:src/audio_engine.cpp ****     if(map.p1 >= 0)
+ 1259              		.loc 1 504 5 is_stmt 1 view .LVU327
+ 1260              		.loc 1 504 12 is_stmt 0 view .LVU328
+ 1261 002c 3B19     		adds	r3, r7, r4
+ 1262 002e 05EB8303 		add	r3, r5, r3, lsl #2
+ 1263 0032 196A     		ldr	r1, [r3, #32]
+ 1264              		.loc 1 504 5 view .LVU329
+ 1265 0034 0029     		cmp	r1, #0
+ 1266 0036 15DA     		bge	.L133
+ 1267              	.LVL91:
+ 1268              	.L124:
+ 505:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p1, U16ToFloat(parameters[1]));
+ 506:src/audio_engine.cpp ****     if(map.p2 >= 0)
+ 1269              		.loc 1 506 5 is_stmt 1 view .LVU330
+ 1270              		.loc 1 506 12 is_stmt 0 view .LVU331
+ 1271 0038 3C44     		add	r4, r4, r7
+ 1272              	.LVL92:
+ 1273              		.loc 1 506 12 view .LVU332
+ 1274 003a 05EB8405 		add	r5, r5, r4, lsl #2
+ 1275              	.LVL93:
+ 1276              		.loc 1 506 12 view .LVU333
+ 1277 003e 696A     		ldr	r1, [r5, #36]
+ 1278              		.loc 1 506 5 view .LVU334
+ 1279 0040 0029     		cmp	r1, #0
+ 1280 0042 01DA     		bge	.L134
+ 1281              	.LVL94:
+ 1282              	.L119:
+ 507:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 508:src/audio_engine.cpp **** }
+ 1283              		.loc 1 508 1 view .LVU335
+ 1284 0044 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 1285              	.LVL95:
+ 1286              	.L134:
+ 507:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1287              		.loc 1 507 9 is_stmt 1 view .LVU336
+ 1288              	.LBB66:
+ 1289              	.LBI66:
+ 300:src/audio_engine.cpp **** {
+ 1290              		.loc 1 300 7 view .LVU337
+ 1291              	.LBB67:
+ 302:src/audio_engine.cpp **** }
+ 1292              		.loc 1 302 5 view .LVU338
+ 302:src/audio_engine.cpp **** }
+ 1293              		.loc 1 302 12 is_stmt 0 view .LVU339
+ 1294 0048 B388     		ldrh	r3, [r6, #4]
+ 1295              	.LBE67:
+ 1296              	.LBE66:
+ 507:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1297              		.loc 1 507 36 view .LVU340
+ 1298 004a 4046     		mov	r0, r8
+ 1299              	.LBB69:
+ 1300              	.LBB68:
+ 302:src/audio_engine.cpp **** }
+ 1301              		.loc 1 302 27 view .LVU341
+ 1302 004c 9FED190A 		vldr.32	s0, .L135
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 37
+
+
+ 302:src/audio_engine.cpp **** }
+ 1303              		.loc 1 302 12 view .LVU342
+ 1304 0050 07EE903A 		vmov	s15, r3	@ int
+ 1305 0054 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1306              	.LBE68:
+ 1307              	.LBE69:
+ 1308              		.loc 1 508 1 view .LVU343
+ 1309 0058 BDE8F041 		pop	{r4, r5, r6, r7, r8, lr}
+ 1310              		.cfi_remember_state
+ 1311              		.cfi_restore 14
+ 1312              		.cfi_restore 8
+ 1313              		.cfi_restore 7
+ 1314              		.cfi_restore 6
+ 1315              		.cfi_restore 5
+ 1316              		.cfi_restore 4
+ 1317              		.cfi_def_cfa_offset 0
+ 1318              	.LVL96:
+ 507:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1319              		.loc 1 507 36 view .LVU344
+ 1320 005c 87EE800A 		vdiv.f32	s0, s15, s0
+ 1321 0060 FFF7FEBF 		b	_ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif
+ 1322              	.LVL97:
+ 1323              	.L133:
+ 1324              		.cfi_restore_state
+ 505:src/audio_engine.cpp ****     if(map.p2 >= 0)
+ 1325              		.loc 1 505 9 is_stmt 1 view .LVU345
+ 1326              	.LBB70:
+ 1327              	.LBI70:
+ 300:src/audio_engine.cpp **** {
+ 1328              		.loc 1 300 7 view .LVU346
+ 1329              	.LBB71:
+ 302:src/audio_engine.cpp **** }
+ 1330              		.loc 1 302 5 view .LVU347
+ 302:src/audio_engine.cpp **** }
+ 1331              		.loc 1 302 12 is_stmt 0 view .LVU348
+ 1332 0064 7388     		ldrh	r3, [r6, #2]
+ 1333              	.LBE71:
+ 1334              	.LBE70:
+ 506:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1335              		.loc 1 506 12 view .LVU349
+ 1336 0066 3C44     		add	r4, r4, r7
+ 1337              	.LVL98:
+ 1338              	.LBB75:
+ 1339              	.LBB72:
+ 302:src/audio_engine.cpp **** }
+ 1340              		.loc 1 302 27 view .LVU350
+ 1341 0068 9FED120A 		vldr.32	s0, .L135
+ 1342              	.LBE72:
+ 1343              	.LBE75:
+ 505:src/audio_engine.cpp ****     if(map.p2 >= 0)
+ 1344              		.loc 1 505 36 view .LVU351
+ 1345 006c 4046     		mov	r0, r8
+ 1346              	.LBB76:
+ 1347              	.LBB73:
+ 302:src/audio_engine.cpp **** }
+ 1348              		.loc 1 302 12 view .LVU352
+ 1349 006e 07EE903A 		vmov	s15, r3	@ int
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 38
+
+
+ 1350              	.LBE73:
+ 1351              	.LBE76:
+ 506:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1352              		.loc 1 506 12 view .LVU353
+ 1353 0072 05EB8405 		add	r5, r5, r4, lsl #2
+ 1354              	.LVL99:
+ 1355              	.LBB77:
+ 1356              	.LBB74:
+ 302:src/audio_engine.cpp **** }
+ 1357              		.loc 1 302 12 view .LVU354
+ 1358 0076 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1359              	.LBE74:
+ 1360              	.LBE77:
+ 505:src/audio_engine.cpp ****     if(map.p2 >= 0)
+ 1361              		.loc 1 505 36 view .LVU355
+ 1362 007a 87EE800A 		vdiv.f32	s0, s15, s0
+ 1363 007e FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif
+ 1364              	.LVL100:
+ 506:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1365              		.loc 1 506 5 is_stmt 1 view .LVU356
+ 506:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1366              		.loc 1 506 12 is_stmt 0 view .LVU357
+ 1367 0082 696A     		ldr	r1, [r5, #36]
+ 506:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p2, U16ToFloat(parameters[2]));
+ 1368              		.loc 1 506 5 view .LVU358
+ 1369 0084 0029     		cmp	r1, #0
+ 1370 0086 DDDB     		blt	.L119
+ 1371 0088 DEE7     		b	.L134
+ 1372              	.LVL101:
+ 1373              	.L132:
+ 503:src/audio_engine.cpp ****     if(map.p1 >= 0)
+ 1374              		.loc 1 503 9 is_stmt 1 view .LVU359
+ 1375              	.LBB78:
+ 1376              	.LBI78:
+ 300:src/audio_engine.cpp **** {
+ 1377              		.loc 1 300 7 view .LVU360
+ 1378              	.LBB79:
+ 302:src/audio_engine.cpp **** }
+ 1379              		.loc 1 302 5 view .LVU361
+ 302:src/audio_engine.cpp **** }
+ 1380              		.loc 1 302 12 is_stmt 0 view .LVU362
+ 1381 008a 1388     		ldrh	r3, [r2]
+ 1382              	.LBE79:
+ 1383              	.LBE78:
+ 503:src/audio_engine.cpp ****     if(map.p1 >= 0)
+ 1384              		.loc 1 503 36 view .LVU363
+ 1385 008c 4046     		mov	r0, r8
+ 1386              	.LVL102:
+ 1387              	.LBB81:
+ 1388              	.LBB80:
+ 302:src/audio_engine.cpp **** }
+ 1389              		.loc 1 302 27 view .LVU364
+ 1390 008e 9FED090A 		vldr.32	s0, .L135
+ 302:src/audio_engine.cpp **** }
+ 1391              		.loc 1 302 12 view .LVU365
+ 1392 0092 07EE903A 		vmov	s15, r3	@ int
+ 1393 0096 F8EE677A 		vcvt.f32.u32	s15, s15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 39
+
+
+ 1394              	.LBE80:
+ 1395              	.LBE81:
+ 503:src/audio_engine.cpp ****     if(map.p1 >= 0)
+ 1396              		.loc 1 503 36 view .LVU366
+ 1397 009a 87EE800A 		vdiv.f32	s0, s15, s0
+ 1398 009e FFF7FEFF 		bl	_ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif
+ 1399              	.LVL103:
+ 504:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p1, U16ToFloat(parameters[1]));
+ 1400              		.loc 1 504 5 is_stmt 1 view .LVU367
+ 504:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p1, U16ToFloat(parameters[1]));
+ 1401              		.loc 1 504 12 is_stmt 0 view .LVU368
+ 1402 00a2 3B19     		adds	r3, r7, r4
+ 1403 00a4 05EB8303 		add	r3, r5, r3, lsl #2
+ 1404 00a8 196A     		ldr	r1, [r3, #32]
+ 504:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p1, U16ToFloat(parameters[1]));
+ 1405              		.loc 1 504 5 view .LVU369
+ 1406 00aa 0029     		cmp	r1, #0
+ 1407 00ac C4DB     		blt	.L124
+ 1408 00ae D9E7     		b	.L133
+ 1409              	.LVL104:
+ 1410              	.L129:
+ 1411              		.cfi_def_cfa_offset 0
+ 1412              		.cfi_restore 4
+ 1413              		.cfi_restore 5
+ 1414              		.cfi_restore 6
+ 1415              		.cfi_restore 7
+ 1416              		.cfi_restore 8
+ 1417              		.cfi_restore 14
+ 504:src/audio_engine.cpp ****         fx->SetParameterAsMagnitude(map.p1, U16ToFloat(parameters[1]));
+ 1418              		.loc 1 504 5 view .LVU370
+ 1419 00b0 7047     		bx	lr
+ 1420              	.L136:
+ 1421 00b2 00BF     		.align	2
+ 1422              	.L135:
+ 1423 00b4 00FF7F47 		.word	1199570688
+ 1424              		.cfi_endproc
+ 1425              	.LFE2583:
+ 1427              		.section	.text._ZN3app11AudioEngine13CurrentEffectEv,"ax",%progbits
+ 1428              		.align	1
+ 1429              		.p2align 2,,3
+ 1430              		.global	_ZN3app11AudioEngine13CurrentEffectEv
+ 1431              		.syntax unified
+ 1432              		.thumb
+ 1433              		.thumb_func
+ 1434              		.fpu fpv5-d16
+ 1436              	_ZN3app11AudioEngine13CurrentEffectEv:
+ 1437              	.LVL105:
+ 1438              	.LFB2584:
+ 509:src/audio_engine.cpp **** 
+ 510:src/audio_engine.cpp **** bkshepherd::BaseEffectModule* AudioEngine::CurrentEffect()
+ 511:src/audio_engine.cpp **** {
+ 1439              		.loc 1 511 1 is_stmt 1 view -0
+ 1440              		.cfi_startproc
+ 1441              		@ args = 0, pretend = 0, frame = 0
+ 1442              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1443              		@ link register save eliminated.
+ 512:src/audio_engine.cpp ****     if(active_effect_ == config::FX_TUNER || active_effect_ >= config::FX_COUNT)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 40
+
+
+ 1444              		.loc 1 512 5 view .LVU372
+ 1445              		.loc 1 512 8 is_stmt 0 view .LVU373
+ 1446 0000 90F87030 		ldrb	r3, [r0, #112]	@ zero_extendqisi2
+ 1447              		.loc 1 512 5 view .LVU374
+ 1448 0004 5A1E     		subs	r2, r3, #1
+ 1449 0006 032A     		cmp	r2, #3
+ 1450 0008 03D8     		bhi	.L139
+ 513:src/audio_engine.cpp ****         return 0;
+ 514:src/audio_engine.cpp ****     return effects_[active_effect_];
+ 1451              		.loc 1 514 5 is_stmt 1 view .LVU375
+ 1452              		.loc 1 514 35 is_stmt 0 view .LVU376
+ 1453 000a 0233     		adds	r3, r3, #2
+ 1454 000c 50F82300 		ldr	r0, [r0, r3, lsl #2]
+ 1455              	.LVL106:
+ 1456              		.loc 1 514 35 view .LVU377
+ 1457 0010 7047     		bx	lr
+ 1458              	.LVL107:
+ 1459              	.L139:
+ 513:src/audio_engine.cpp ****         return 0;
+ 1460              		.loc 1 513 16 view .LVU378
+ 1461 0012 0020     		movs	r0, #0
+ 1462              	.LVL108:
+ 515:src/audio_engine.cpp **** }
+ 1463              		.loc 1 515 1 view .LVU379
+ 1464 0014 7047     		bx	lr
+ 1465              		.cfi_endproc
+ 1466              	.LFE2584:
+ 1468 0016 00BF     		.section	.rodata
+ 1469              		.align	2
+ 1470              		.set	.LANCHOR0,. + 0
+ 1471              	.LC0:
+ 1472 0000 FFFFFFFF 		.word	-1
+ 1473 0004 FFFFFFFF 		.word	-1
+ 1474 0008 FFFFFFFF 		.word	-1
+ 1475 000c FFFFFFFF 		.word	-1
+ 1476 0010 FFFFFFFF 		.word	-1
+ 1477 0014 FFFFFFFF 		.word	-1
+ 1478 0018 FFFFFFFF 		.word	-1
+ 1479 001c FFFFFFFF 		.word	-1
+ 1480 0020 FFFFFFFF 		.word	-1
+ 1481 0024 FFFFFFFF 		.word	-1
+ 1482 0028 FFFFFFFF 		.word	-1
+ 1483 002c FFFFFFFF 		.word	-1
+ 1484 0030 FFFFFFFF 		.word	-1
+ 1485 0034 FFFFFFFF 		.word	-1
+ 1486 0038 FFFFFFFF 		.word	-1
+ 1487              	.LC1:
+ 1488 003c FF       		.byte	-1
+ 1489 003d FF       		.byte	-1
+ 1490 003e 00       		.byte	0
+ 1491 003f 00       		.byte	0
+ 1492 0040 FFFF     		.short	-1
+ 1493 0042 FFFF     		.short	-1
+ 1494 0044 FFFF     		.short	-1
+ 1495              		.text
+ 1496              	.Letext0:
+ 1497              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 41
+
+
+ 1498              		.file 4 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1499              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 1500              		.file 6 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 1501              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 1502              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 1503              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 1504              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 1505              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 1506              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 1507              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 1508              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 1509              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 1510              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 1511              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdarg"
+ 1512              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 1513              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 1514              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 1515              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1516              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1517              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1518              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 1519              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1520              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 1521              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 1522              		.file 28 "../../libDaisy/src/daisy_core.h"
+ 1523              		.file 29 "../../libDaisy/src/per/sai.h"
+ 1524              		.file 30 "../../libDaisy/src/hid/audio.h"
+ 1525              		.file 31 "../../libDaisy/src/util/wav_format.h"
+ 1526              		.file 32 "../../libDaisy/src/dev/max11300.h"
+ 1527              		.file 33 "../../libDaisy/src/daisy_seed.h"
+ 1528              		.file 34 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 1529              		.file 35 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 1530              		.file 36 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 1531              		.file 37 "src/app_config.h"
+ 1532              		.file 38 "src/tuner.h"
+ 1533              		.file 39 "src/audio_engine.h"
+ 1534              		.file 40 "gml/GuitarPedal/Effect-Modules/base_effect_module.h"
+ 1535              		.file 41 "../../libDaisy/src/dev/sr_595.h"
+ 1536              		.file 42 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s 			page 42
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 audio_engine.cpp
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:17     .text._ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:25     .text._ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0:00000000 _ZN3app11AudioEngine16StringContainsCiEPKcS2_.part.0
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:164    .text._ZN3app11AudioEngineC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:172    .text._ZN3app11AudioEngineC2Ev:00000000 _ZN3app11AudioEngineC2Ev
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:245    .text._ZN3app11AudioEngineC2Ev:00000084 $d
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:172    .text._ZN3app11AudioEngineC2Ev:00000000 _ZN3app11AudioEngineC1Ev
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:255    .text._ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:263    .text._ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE:00000000 _ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:315    .text._ZN3app11AudioEngine4InitEfRNS_14ControlMailboxERNS_12TunerCaptureE:00000034 $d
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:320    .text._ZN3app11AudioEngine7ProcessEPKPKfPPfj:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:328    .text._ZN3app11AudioEngine7ProcessEPKPKfPPfj:00000000 _ZN3app11AudioEngine7ProcessEPKPKfPPfj
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:378    .text._ZN3app11AudioEngine16StringContainsCiEPKcS2_:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:386    .text._ZN3app11AudioEngine16StringContainsCiEPKcS2_:00000000 _ZN3app11AudioEngine16StringContainsCiEPKcS2_
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:409    .text._ZN3app11AudioEngine19FindParamByKeywordsEPN10bkshepherd16BaseEffectModuleEPKcS5_S5_:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:417    .text._ZN3app11AudioEngine19FindParamByKeywordsEPN10bkshepherd16BaseEffectModuleEPKcS5_S5_:00000000 _ZN3app11AudioEngine19FindParamByKeywordsEPN10bkshepherd16BaseEffectModuleEPKcS5_S5_
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:590    .text._ZN3app11AudioEngine19FallbackParamForPotEPN10bkshepherd16BaseEffectModuleEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:598    .text._ZN3app11AudioEngine19FallbackParamForPotEPN10bkshepherd16BaseEffectModuleEi:00000000 _ZN3app11AudioEngine19FallbackParamForPotEPN10bkshepherd16BaseEffectModuleEi
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:663    .text._ZN3app11AudioEngine10U16ToFloatEt:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:671    .text._ZN3app11AudioEngine10U16ToFloatEt:00000000 _ZN3app11AudioEngine10U16ToFloatEt
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:692    .text._ZN3app11AudioEngine10U16ToFloatEt:00000014 $d
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:697    .text._ZN3app11AudioEngine11ClampOutputEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:705    .text._ZN3app11AudioEngine11ClampOutputEf:00000000 _ZN3app11AudioEngine11ClampOutputEf
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:737    .text._ZN3app11AudioEngine11ClampOutputEf:00000028 $d
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:743    .text._ZN3app11AudioEngine14BuildParamMapsEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:751    .text._ZN3app11AudioEngine14BuildParamMapsEv:00000000 _ZN3app11AudioEngine14BuildParamMapsEv
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:765    .text._ZN3app11AudioEngine22ApplySnapshotIfChangedEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:773    .text._ZN3app11AudioEngine22ApplySnapshotIfChangedEv:00000000 _ZN3app11AudioEngine22ApplySnapshotIfChangedEv
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:925    .text._ZN3app11AudioEngine20BeginThermalShutdownEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:933    .text._ZN3app11AudioEngine20BeginThermalShutdownEv:00000000 _ZN3app11AudioEngine20BeginThermalShutdownEv
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:961    .text._ZN3app11AudioEngine15StartTransitionEhb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:969    .text._ZN3app11AudioEngine15StartTransitionEhb:00000000 _ZN3app11AudioEngine15StartTransitionEhb
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1045   .text._ZN3app11AudioEngine14StepTransitionEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1053   .text._ZN3app11AudioEngine14StepTransitionEv:00000000 _ZN3app11AudioEngine14StepTransitionEv
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1143   .text._ZN3app11AudioEngine19ProcessEffectSampleEPN10bkshepherd16BaseEffectModuleEfRfS4_:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1151   .text._ZN3app11AudioEngine19ProcessEffectSampleEPN10bkshepherd16BaseEffectModuleEfRfS4_:00000000 _ZN3app11AudioEngine19ProcessEffectSampleEPN10bkshepherd16BaseEffectModuleEfRfS4_
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1207   .text._ZN3app11AudioEngine15ApplyParametersEhPKt:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1215   .text._ZN3app11AudioEngine15ApplyParametersEhPKt:00000000 _ZN3app11AudioEngine15ApplyParametersEhPKt
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1423   .text._ZN3app11AudioEngine15ApplyParametersEhPKt:000000b4 $d
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1428   .text._ZN3app11AudioEngine13CurrentEffectEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1436   .text._ZN3app11AudioEngine13CurrentEffectEv:00000000 _ZN3app11AudioEngine13CurrentEffectEv
+C:\Users\aydan\AppData\Local\Temp\ccZ8ELLU.s:1469   .rodata:00000000 $d
+
+UNDEFINED SYMBOLS
+_ZN10bkshepherd16BaseEffectModule17GetParameterCountEv
+_ZN10bkshepherd16BaseEffectModule16GetParameterNameEi
+_ZN10bkshepherd16BaseEffectModule27GetMappedParameterIDForKnobEi
+_ZN10bkshepherd16BaseEffectModule12GetAudioLeftEv
+_ZN10bkshepherd16BaseEffectModule13GetAudioRightEv
+_ZN10bkshepherd16BaseEffectModule23SetParameterAsMagnitudeEif

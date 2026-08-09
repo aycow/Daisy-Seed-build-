@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
   31              		.cfi_startproc
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 2
 
 
   34              	.LBB32:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
    8:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** 
    9:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #pragma once
   10:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #ifndef DSY_TONE_H
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 3
 
 
   11:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h **** #define DSY_TONE_H
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
   25:gml/GuitarPedal/Effect-Modules/crusher_module.cpp **** {
   98              		.loc 1 25 31 is_stmt 0 view .LVU14
   99 0000 054B     		ldr	r3, .L8
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 4
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 4
 
 
  100              	.LBE37:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  149              		.section	.text._ZN10bkshepherd13CrusherModule16ParameterChangedEi,"ax",%progbits
  150              		.align	1
  151              		.p2align 2,,3
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 5
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 5
 
 
  152              		.global	_ZN10bkshepherd13CrusherModule16ParameterChangedEi
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
   41:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_level = m_levelMin + (GetParameterAsMagnitude(0) * (m_levelMax - m_levelMin));
  190              		.loc 1 41 68 view .LVU37
  191 0018 D4ED127A 		vldr.32	s15, [r4, #72]
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 6
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 6
 
 
  192              		.loc 1 42 44 view .LVU38
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
   41:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         freq_ = freq;
   42:../../DaisySP/DaisySP-LGPL/Source/Filters/tone.h ****         CalculateCoefficients();
  223              		.loc 3 42 30 view .LVU51
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 7
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 7
 
 
  224 004e 04F12400 		add	r0, r4, #36
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  263              	.LBB52:
  264              		.loc 2 31 5 view .LVU66
  265 0072 F4EEE70A 		vcmpe.f32	s1, s15
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 8
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 8
 
 
  266 0076 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  313              		.section	.rodata._ZN10bkshepherd13CrusherModuleC2Ev.str1.4,"aMS",%progbits,1
  314              		.align	2
  315              	.LC0:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 9
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 9
 
 
  316 0000 43727573 		.ascii	"Crusher\000"
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  362              		.loc 2 22 3 is_stmt 1 view .LVU83
   22:gml/GuitarPedal/Effect-Modules/crusher_module.h ****   ~Bitcrusher() {}
  363              		.loc 2 22 3 is_stmt 0 view .LVU84
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 10
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 10
 
 
  364              	.LBE58:
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  402 003e 00BF     		.align	2
  403              	.L20:
  404 0040 0000A041 		.word	1101004800
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 11
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 11
 
 
  405 0044 08000000 		.word	.LANCHOR0+8
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  454              	.LBE59:
   32:gml/GuitarPedal/Effect-Modules/crusher_module.cpp ****   m_bitcrusher.Init();
  455              		.loc 1 32 14 view .LVU108
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 12
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 12
 
 
  456 0012 05F12400 		add	r0, r5, #36
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  495              		.loc 1 36 1 is_stmt 0 view .LVU123
  496 0034 BDEC028B 		vldm	sp!, {d8}
  497              		.cfi_restore 80
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 13
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 13
 
 
  498              		.cfi_restore 81
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
   27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
  544              		.loc 2 27 29 view .LVU133
   27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 14
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 14
 
 
  545              		.loc 2 27 48 is_stmt 0 view .LVU134
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  590              		.align	1
  591              		.p2align 2,,3
  592              		.global	_ZN10bkshepherd13CrusherModule13ProcessStereoEff
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 15
 
 
  593              		.syntax unified
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
   27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
  636              		.loc 2 27 42 view .LVU158
  637 001c 68EEA78A 		vmul.f32	s17, s17, s15
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 16
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 16
 
 
  638              	.LVL43:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  682              	.LBB79:
   27:gml/GuitarPedal/Effect-Modules/crusher_module.h **** 
  683              		.loc 2 27 57 is_stmt 0 view .LVU170
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 17
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 17
 
 
  684 0030 88EE277A 		vdiv.f32	s14, s16, s15
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  730 0005 000000   		.space	3
  731 0008 00000000 		.word	0
  732 000c 00000000 		.space	4
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 18
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 18
 
 
  733 0010 28       		.byte	40
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  789              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
  790              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
  791              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\clocale"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 19
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 19
 
 
  792              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
@@ -1110,37 +1110,37 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 1
  818              		.file 45 "../../libDaisy/src/dev/sr_595.h"
  819              		.file 46 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\new"
  820              		.file 47 "<built-in>"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s 			page 20
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s 			page 20
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 crusher_module.cpp
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:17     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:26     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 _ZN10bkshepherd13CrusherModuleD2Ev
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:74     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000010 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:26     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 _ZN10bkshepherd13CrusherModuleD1Ev
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:81     .text._ZN10bkshepherd13CrusherModuleD0Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:89     .text._ZN10bkshepherd13CrusherModuleD0Ev:00000000 _ZN10bkshepherd13CrusherModuleD0Ev
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:145    .text._ZN10bkshepherd13CrusherModuleD0Ev:00000018 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:150    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:158    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:00000000 _ZN10bkshepherd13CrusherModule16ParameterChangedEi
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:307    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:000000a4 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:314    .rodata._ZN10bkshepherd13CrusherModuleC2Ev.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:318    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:326    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 _ZN10bkshepherd13CrusherModuleC2Ev
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:404    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000040 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:326    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 _ZN10bkshepherd13CrusherModuleC1Ev
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:417    .text._ZN10bkshepherd13CrusherModule4InitEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:425    .text._ZN10bkshepherd13CrusherModule4InitEf:00000000 _ZN10bkshepherd13CrusherModule4InitEf
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:508    .text._ZN10bkshepherd13CrusherModule11ProcessMonoEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:516    .text._ZN10bkshepherd13CrusherModule11ProcessMonoEf:00000000 _ZN10bkshepherd13CrusherModule11ProcessMonoEf
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:590    .text._ZN10bkshepherd13CrusherModule13ProcessStereoEff:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:598    .text._ZN10bkshepherd13CrusherModule13ProcessStereoEff:00000000 _ZN10bkshepherd13CrusherModule13ProcessStereoEff
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:760    .rodata._ZTVN10bkshepherd13CrusherModuleE:00000000 _ZTVN10bkshepherd13CrusherModuleE
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:713    .rodata.str1.4:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:723    .rodata._ZL10s_metaData:00000000 $d
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:727    .rodata._ZL10s_metaData:00000000 _ZL10s_metaData
-C:\Users\aydan\AppData\Local\Temp\ccq9NBEi.s:756    .rodata._ZTVN10bkshepherd13CrusherModuleE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:17     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:26     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 _ZN10bkshepherd13CrusherModuleD2Ev
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:74     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000010 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:26     .text._ZN10bkshepherd13CrusherModuleD2Ev:00000000 _ZN10bkshepherd13CrusherModuleD1Ev
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:81     .text._ZN10bkshepherd13CrusherModuleD0Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:89     .text._ZN10bkshepherd13CrusherModuleD0Ev:00000000 _ZN10bkshepherd13CrusherModuleD0Ev
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:145    .text._ZN10bkshepherd13CrusherModuleD0Ev:00000018 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:150    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:158    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:00000000 _ZN10bkshepherd13CrusherModule16ParameterChangedEi
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:307    .text._ZN10bkshepherd13CrusherModule16ParameterChangedEi:000000a4 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:314    .rodata._ZN10bkshepherd13CrusherModuleC2Ev.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:318    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:326    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 _ZN10bkshepherd13CrusherModuleC2Ev
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:404    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000040 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:326    .text._ZN10bkshepherd13CrusherModuleC2Ev:00000000 _ZN10bkshepherd13CrusherModuleC1Ev
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:417    .text._ZN10bkshepherd13CrusherModule4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:425    .text._ZN10bkshepherd13CrusherModule4InitEf:00000000 _ZN10bkshepherd13CrusherModule4InitEf
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:508    .text._ZN10bkshepherd13CrusherModule11ProcessMonoEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:516    .text._ZN10bkshepherd13CrusherModule11ProcessMonoEf:00000000 _ZN10bkshepherd13CrusherModule11ProcessMonoEf
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:590    .text._ZN10bkshepherd13CrusherModule13ProcessStereoEff:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:598    .text._ZN10bkshepherd13CrusherModule13ProcessStereoEff:00000000 _ZN10bkshepherd13CrusherModule13ProcessStereoEff
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:760    .rodata._ZTVN10bkshepherd13CrusherModuleE:00000000 _ZTVN10bkshepherd13CrusherModuleE
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:713    .rodata.str1.4:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:723    .rodata._ZL10s_metaData:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:727    .rodata._ZL10s_metaData:00000000 _ZL10s_metaData
+C:\Users\aydan\AppData\Local\Temp\cc4tHZYa.s:756    .rodata._ZTVN10bkshepherd13CrusherModuleE:00000000 $d
 
 UNDEFINED SYMBOLS
 _ZN10bkshepherd16BaseEffectModuleD2Ev

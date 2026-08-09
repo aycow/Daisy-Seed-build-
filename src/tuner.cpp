@@ -5,15 +5,18 @@
 #include <cstdio>
 #include <cstring>
 
+#if DIAG_HAS_TUNER_OBJECTS
 namespace app
 {
 
-// These large buffers live outside the default internal SRAM so the audio
-// engine has more headroom for stack, DMA state, and control objects.
-float DMA_BUFFER_MEM_SECTION tuner_capture_ring[config::kTunerCaptureRingSize];
-float DMA_BUFFER_MEM_SECTION tuner_work_buffer[config::kTunerWorkSize];
-float DMA_BUFFER_MEM_SECTION tuner_difference_buffer[config::kTunerWorkSize];
-float DMA_BUFFER_MEM_SECTION tuner_cmnd_buffer[config::kTunerWorkSize];
+// CPU-owned storage: never add DMA_BUFFER_MEM_SECTION here. These four arrays
+// total 45,056 bytes; placing them before libDaisy's real DMA buffers moved
+// audio/ADC DMA beyond its 32 KB non-cacheable MPU window and caused confirmed
+// hardware audio corruption.
+float tuner_capture_ring[config::kTunerCaptureRingSize];
+float tuner_work_buffer[config::kTunerWorkSize];
+float tuner_difference_buffer[config::kTunerWorkSize];
+float tuner_cmnd_buffer[config::kTunerWorkSize];
 
 static float ClampFloat(float value, float lo, float hi)
 {
@@ -42,6 +45,14 @@ TunerCapture::TunerCapture()
 : write_index_(0),
   completed_write_index_(0)
 {
+#if DIAG_STAGE != DIAG_STAGE_PRODUCTION
+    // Keep the complete tuner storage present from the object-only stage.
+    // This emits no buffer access; it only prevents linker collection.
+    asm volatile("" : : "r"(tuner_capture_ring),
+                         "r"(tuner_work_buffer),
+                         "r"(tuner_difference_buffer),
+                         "r"(tuner_cmnd_buffer));
+#endif
 }
 
 void TunerCapture::Init()
@@ -355,3 +366,4 @@ float TunerAnalyzer::Median5(const float* values)
 }
 
 } // namespace app
+#endif

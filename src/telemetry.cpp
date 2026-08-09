@@ -84,6 +84,77 @@ void Telemetry::SendTunerDisabled()
     SendTuner(result);
 }
 
+void Telemetry::SendThermalFault(float temperature_c)
+{
+    const float scaled = temperature_c * 100.0f;
+    const int centi_c = (int)(scaled + (scaled >= 0.0f ? 0.5f : -0.5f));
+    char buf[48];
+    std::snprintf(buf, sizeof(buf), "F,THERMAL,%d\n", centi_c);
+    Send(buf);
+}
+
+void Telemetry::SendTemperatureSensorFault(int error_code)
+{
+    char buf[48];
+    std::snprintf(buf, sizeof(buf), "F,TEMP_SENSOR,%d\n", error_code);
+    Send(buf);
+}
+
+void Telemetry::SendThermalDebug(float temperature_c, uint16_t raw_adc, ThermalState state)
+{
+#if THERMAL_DEBUG_TELEMETRY
+    const float scaled = temperature_c * 100.0f;
+    const int centi_c = (int)(scaled + (scaled >= 0.0f ? 0.5f : -0.5f));
+    char buf[64];
+    std::snprintf(buf,
+                  sizeof(buf),
+                  "D,TEMP,%d,%u,%u\n",
+                  centi_c,
+                  (unsigned)raw_adc,
+                  (unsigned)state);
+    Send(buf);
+#else
+    (void)temperature_c;
+    (void)raw_adc;
+    (void)state;
+#endif
+}
+
+void Telemetry::SendThermalCalibration(const ThermalCalibrationInfo& calibration)
+{
+#if THERMAL_DEBUG_TELEMETRY
+    char buf[80];
+    std::snprintf(buf,
+                  sizeof(buf),
+                  "D,TEMP_CAL,%04lX,%u,%u,%ld\n",
+                  (unsigned long)(calibration.revision_id & 0xffffu),
+                  (unsigned)calibration.cal1_raw,
+                  (unsigned)calibration.cal2_raw,
+                  (long)calibration.cal2_temperature_c);
+    Send(buf);
+#else
+    (void)calibration;
+#endif
+}
+
+void Telemetry::SendAudioCpuLoad(float average,
+                                 float peak,
+                                 uint32_t overruns,
+                                 uint8_t effect,
+                                 float effect_peak)
+{
+    char buf[96];
+    std::snprintf(buf,
+                  sizeof(buf),
+                  "D,CPU,%d,%d,%lu,%u,%d\n",
+                  (int)(average * 10000.0f + 0.5f),
+                  (int)(peak * 10000.0f + 0.5f),
+                  (unsigned long)overruns,
+                  (unsigned)effect,
+                  (int)(effect_peak * 10000.0f + 0.5f));
+    Send(buf);
+}
+
 void Telemetry::SendRotaryCalibration(uint16_t raw_u16, int position)
 {
 #if ROTARY_CALIBRATION_MODE

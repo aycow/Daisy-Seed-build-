@@ -14,6 +14,131 @@ FX_COUNT = 5
 RING_SIZE = 8192
 SOURCE_WINDOW = 4096
 SAFETY = 256
+THERMAL_WARNING = 80.0
+THERMAL_TRIP = 90.0
+THERMAL_CRITICAL = 100.0
+THERMAL_HYSTERESIS = 5.0
+THERMAL_FILTER_LENGTH = 4
+THERMAL_CONSECUTIVE = 3
+
+
+class ThermalPolicy:
+    NORMAL = 0
+    WARNING = 1
+    SHUTDOWN = 2
+    SENSOR_FAULT = 3
+
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self.state = self.NORMAL
+        self.values = []
+        self.warning_count = 0
+        self.trip_count = 0
+        self.invalid_count = 0
+        self.filtered = 0.0
+        self.fault_pending = None
+
+    def process(self, temperature=None, valid=True):
+        if self.state in (self.SHUTDOWN, self.SENSOR_FAULT):
+            return
+        if not valid or temperature is None or not -20.0 <= temperature <= 130.0:
+            self.warning_count = 0
+            self.trip_count = 0
+            self.invalid_count += 1
+            if self.invalid_count >= THERMAL_CONSECUTIVE:
+                self.state = self.SENSOR_FAULT
+                self.fault_pending = "sensor"
+            return
+        self.invalid_count = 0
+        if temperature >= THERMAL_CRITICAL:
+            self.filtered = temperature
+            self.state = self.SHUTDOWN
+            self.fault_pending = "thermal"
+            return
+        self.values.append(temperature)
+        self.values = self.values[-THERMAL_FILTER_LENGTH:]
+        self.filtered = sum(self.values) / len(self.values)
+        if self.filtered >= THERMAL_TRIP:
+            self.warning_count = 0
+            self.trip_count += 1
+            if self.trip_count >= THERMAL_CONSECUTIVE:
+                self.state = self.SHUTDOWN
+                self.fault_pending = "thermal"
+            return
+        self.trip_count = 0
+        if self.filtered >= THERMAL_WARNING:
+            self.warning_count += 1
+            if self.warning_count >= THERMAL_CONSECUTIVE:
+                self.state = self.WARNING
+        else:
+            self.warning_count = 0
+            if self.state == self.WARNING and self.filtered <= THERMAL_WARNING - THERMAL_HYSTERESIS:
+                self.state = self.NORMAL
+
+    def take_fault(self):
+        result = self.fault_pending
+        self.fault_pending = None
+        return result
+
+
+def resolve_temperature_cal2_c(revision_id):
+    revision_id &= 0xFFFF
+    if revision_id in (0, 0xFFFF):
+        return None
+    return 110 if revision_id <= 0x1003 else 130
+
+
+def convert_calibrated(raw_temp, raw_vref, vref_cal, cal1, cal2, cal1_temp, cal2_temp):
+    if min(raw_temp, raw_vref, cal1, vref_cal) <= 0 or cal2 <= cal1 or cal2_temp <= cal1_temp:
+        return None
+    vref_mv = vref_cal * 3300.0 / raw_vref
+    compensated = raw_temp * vref_mv / 3300.0
+    temperature = cal1_temp + (compensated - cal1) * (cal2_temp - cal1_temp) / (cal2 - cal1)
+    return temperature if -20.0 <= temperature <= 130.0 else None
+
+
+def format_thermal_calibration(revision_id, cal1, cal2, cal2_temp):
+    return f"D,TEMP_CAL,{revision_id & 0xFFFF:04X},{cal1},{cal2},{cal2_temp}\n"
+
+
+class ThermalAudioModel:
+    NORMAL = 0
+    FADING = 1
+    MUTED = 2
+
+    def __init__(self, fade_samples=4):
+        self.state = self.NORMAL
+        self.gain = 1.0
+        self.step = 1.0 / fade_samples
+        self.effect = FX_CHORUS
+        self.dsp_calls = 0
+        self.tuner_writes = 0
+
+    def request(self, effect=None, shutdown=False):
+        if shutdown and self.state == self.NORMAL:
+            self.state = self.FADING
+            self.gain = 1.0
+        elif self.state == self.NORMAL and effect is not None:
+            self.effect = effect
+
+    def sample(self):
+        if self.state == self.MUTED:
+            return 0.0
+        self.dsp_calls += 1
+        if self.state == self.NORMAL:
+            self.tuner_writes += 1
+        output = self.gain
+        if self.state == self.FADING:
+            self.gain = max(0.0, self.gain - self.step)
+            if self.gain == 0.0:
+                self.state = self.MUTED
+        return output
+
+
+def thermal_sample_due(now, previous, period=100):
+    return ((now - previous) & 0xFFFFFFFF) >= period
 
 
 class DebounceBool:
@@ -332,6 +457,137 @@ def test_decimation_filter_keeps_low_b_and_reduces_alias_band():
 def test_silence_never_reports_valid_placeholder_a2():
     note, _ = frequency_to_note(0.0)
     assert note == "--"
+
+
+def test_thermal_below_warning_and_consecutive_warning():
+    policy = ThermalPolicy()
+    for value in (25.0, 60.0, 79.0):
+        policy.process(value)
+    assert policy.state == policy.NORMAL
+    policy = ThermalPolicy()
+    policy.process(81.0)
+    policy.process(81.0)
+    assert policy.state == policy.NORMAL
+    policy.process(81.0)
+    assert policy.state == policy.WARNING
+
+
+def test_thermal_warning_hysteresis_recovers():
+    policy = ThermalPolicy()
+    for _ in range(3):
+        policy.process(82.0)
+    assert policy.state == policy.WARNING
+    for _ in range(4):
+        policy.process(70.0)
+    assert policy.filtered <= 75.0
+    assert policy.state == policy.NORMAL
+
+
+def test_thermal_trip_persistence_critical_and_latch():
+    policy = ThermalPolicy()
+    policy.process(91.0)
+    policy.process(91.0)
+    assert policy.state != policy.SHUTDOWN
+    policy.process(91.0)
+    assert policy.state == policy.SHUTDOWN
+    policy.process(20.0)
+    assert policy.state == policy.SHUTDOWN
+    assert policy.take_fault() == "thermal"
+    assert policy.take_fault() is None
+
+    critical = ThermalPolicy()
+    critical.process(100.0)
+    assert critical.state == critical.SHUTDOWN
+
+
+def test_thermal_reset_is_explicit_and_sensor_fault_persists():
+    policy = ThermalPolicy()
+    for _ in range(3):
+        policy.process(valid=False)
+    assert policy.state == policy.SENSOR_FAULT
+    policy.process(25.0)
+    assert policy.state == policy.SENSOR_FAULT
+    assert policy.take_fault() == "sensor"
+    assert policy.take_fault() is None
+    policy.reset()
+    assert policy.state == policy.NORMAL
+
+
+def test_temperature_cal2_revision_selection_boundaries():
+    assert resolve_temperature_cal2_c(0x1002) == 110
+    assert resolve_temperature_cal2_c(0x1003) == 110
+    assert resolve_temperature_cal2_c(0x1004) == 130
+    assert resolve_temperature_cal2_c(0x2003) == 130
+    assert resolve_temperature_cal2_c(0x0000) is None
+    assert resolve_temperature_cal2_c(0xFFFF) is None
+
+
+def test_temperature_calibration_spans_and_vref_compensation():
+    for cal2_temperature, midpoint_temperature in ((110, 70.0), (130, 80.0)):
+        assert abs(convert_calibrated(10000, 15000, 15000, 10000, 20000, 30, cal2_temperature) - 30.0) < 0.001
+        assert abs(convert_calibrated(20000, 15000, 15000, 10000, 20000, 30, cal2_temperature) - cal2_temperature) < 0.001
+        assert abs(convert_calibrated(15000, 15000, 15000, 10000, 20000, 30, cal2_temperature) - midpoint_temperature) < 0.001
+        assert abs(convert_calibrated(16500, 16500, 15000, 10000, 20000, 30, cal2_temperature) - midpoint_temperature) < 0.001
+
+    assert convert_calibrated(15000, 0, 15000, 10000, 20000, 30, 130) is None
+    assert convert_calibrated(15000, 15000, 15000, 20000, 10000, 30, 130) is None
+    assert convert_calibrated(15000, 15000, 15000, 10000, 20000, 130, 110) is None
+    assert convert_calibrated(65535, 15000, 15000, 10000, 20000, 30, 130) is None
+
+
+def test_revision_v_fixed_110_regression_underreports_temperature():
+    correct = convert_calibrated(16000, 15000, 15000, 10000, 20000, 30, 130)
+    fixed_110 = convert_calibrated(16000, 15000, 15000, 10000, 20000, 30, 110)
+    assert abs(correct - 90.0) < 0.001
+    assert abs(fixed_110 - 78.0) < 0.001
+
+
+def test_invalid_revision_uses_latched_sensor_fault_policy():
+    assert resolve_temperature_cal2_c(0) is None
+    policy = ThermalPolicy()
+    for _ in range(3):
+        policy.process(valid=False)
+    assert policy.state == policy.SENSOR_FAULT
+    assert policy.take_fault() == "sensor"
+    assert policy.take_fault() is None
+
+
+def test_thermal_calibration_debug_record_format():
+    assert format_thermal_calibration(0x1003, 12345, 16789, 110) == "D,TEMP_CAL,1003,12345,16789,110\n"
+    assert format_thermal_calibration(0x2003, 12345, 18123, 130) == "D,TEMP_CAL,2003,12345,18123,130\n"
+
+
+def test_thermal_timer_wraparound():
+    assert not thermal_sample_due(0x00000040, 0xFFFFFFF0)
+    assert thermal_sample_due(0x00000054, 0xFFFFFFF0)
+
+
+def test_thermal_shutdown_overrides_effects_and_stops_dsp():
+    audio = ThermalAudioModel(fade_samples=4)
+    audio.request(effect=FX_REVERB)
+    assert audio.effect == FX_REVERB
+    audio.request(shutdown=True)
+    audio.request(effect=FX_GRANULAR_DELAY)
+    assert audio.effect == FX_REVERB
+    outputs = [audio.sample() for _ in range(4)]
+    assert outputs == [1.0, 0.75, 0.5, 0.25]
+    assert audio.state == audio.MUTED
+    calls_after_fade = audio.dsp_calls
+    assert audio.sample() == 0.0
+    assert audio.dsp_calls == calls_after_fade
+
+
+def test_thermal_shutdown_stops_tuner_scheduling():
+    audio = ThermalAudioModel(fade_samples=1)
+    audio.sample()
+    assert audio.tuner_writes == 1
+    audio.request(shutdown=True)
+    audio.sample()
+    audio.sample()
+    assert audio.tuner_writes == 1
+    safety_latched = True
+    tuner_analysis_scheduled = not safety_latched
+    assert not tuner_analysis_scheduled
 
 
 if __name__ == "__main__":

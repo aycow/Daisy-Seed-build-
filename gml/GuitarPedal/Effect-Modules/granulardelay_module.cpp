@@ -1,7 +1,9 @@
 #include "granulardelay_module.h"
+#include "diagnostic_config.h"
 
 #include "daisy_core.h"
 
+#if DIAG_FX_GRANULAR
 using namespace bkshepherd;
 
 namespace
@@ -151,3 +153,4 @@ float GranularDelayModule::GetBrightnessForLED(int led_id)
     const float value = BaseEffectModule::GetBrightnessForLED(led_id);
     return led_id == 1 ? value * (hold_ ? 1.0f : 0.0f) : value;
 }
+#endif

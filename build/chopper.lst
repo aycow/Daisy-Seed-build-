@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   27:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {14, {{1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D8}, {1, D16}, {1, D16}, 
   28:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {14, {{1, D8}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D8}, {1, D16}, {
   29:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 2
 
 
   30:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** // 3/4 - doesn't work:    {8, {{1, D4}, {1, D8}, {1, D4}, {1, D8}, {1, D4}, {1, D8}, {1, D4}, {1, D
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   73:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     current_pattern_ = id;
   74:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
   75:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 3
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 3
 
 
   76:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   36:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   amp_ = 0.5f;
   68              		.loc 1 36 9 view .LVU12
   69 0020 6360     		str	r3, [r4, #4]	@ float
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 4
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 4
 
 
   43:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_ = 0;
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  106              		.loc 1 40 3 view .LVU31
   41:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eoc_ = true;
  107              		.loc 1 41 3 view .LVU32
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 5
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 5
 
 
  108              	.LVL2:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  147 006a 9FED0A0A 		vldr.32	s0, .L4+20
  148 006e 0421     		movs	r1, #4
  149 0070 0198     		ldr	r0, [sp, #4]
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 6
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 6
 
 
  150 0072 FFF7FEFF 		bl	_ZN7daisysp4Adsr7SetTimeEif
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   48:../../DaisySP/Source/Control/adsr.h ****     */
   49:../../DaisySP/Source/Control/adsr.h ****     void Init(float sample_rate, int blockSize = 1);
   50:../../DaisySP/Source/Control/adsr.h ****     /**
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 7
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 7
 
 
   51:../../DaisySP/Source/Control/adsr.h ****      \function Retrigger forces the envelope back to attack phase
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  180 0080 0000C842 		.word	1120403456
  181 0084 63141D44 		.word	1142756451
  182 0088 DB0F4940 		.word	1078530011
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 8
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 8
 
 
  183 008c CDCCCC3D 		.word	1036831949
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  233              	_ZN10bkshepherd7Chopper14IncPatternStepEh:
  234              	.LVL10:
  235              	.LFB3576:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 9
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 9
 
 
   64:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (++pattern_step_ >= length)
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   75:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
  281              		.loc 1 75 1 view .LVU78
  282 0006 7047     		bx	lr
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 10
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 10
 
 
  283              		.cfi_endproc
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
  327              		.loc 1 59 17 view .LVU91
  328 0012 024B     		ldr	r3, .L23
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 11
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 11
 
 
   58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
   91:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
  374              		.loc 1 91 3 view .LVU103
   90:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 12
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 12
 
 
  375              		.loc 1 90 22 is_stmt 0 view .LVU104
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  418              		.thumb_func
  419              		.fpu fpv5-d16
  421              	_ZN10bkshepherd7Chopper12CalcPhaseIncEf:
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 13
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 13
 
 
  422              	.LVL18:
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  106:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   int16_t quadrant_index = (int16_t)quadrant;
  107:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
  108:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (quadrant_index != old_quadrant_index_) {
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 14
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 14
 
 
  468              		.loc 1 108 3 view .LVU127
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  111:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     case D16:
  112:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       IncPatternStep(Patterns[current_pattern_].length);
  113:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       break;
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 15
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 15
 
 
  114:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     case D8:
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  539              	.LVL27:
  141:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
  142:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     else
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 16
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 16
 
 
  143:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = 0;
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  577 00ae 90ED000A 		vldr.32	s0, [r0]
  157:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
  578              		.loc 1 157 1 discriminator 1 view .LVU168
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 17
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 17
 
 
  579 00b2 26EE800A 		vmul.f32	s0, s13, s0
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  618              	.LVL35:
  134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
  619              		.loc 1 134 24 view .LVU185
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 18
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 18
 
 
  620 00ee 1BB2     		sxth	r3, r3
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  662              		.loc 1 65 3 view .LVU197
   65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
  663              		.loc 1 65 7 is_stmt 0 view .LVU198
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 19
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 19
 
 
  664 012a 0FFA8CFC 		sxth	ip, ip
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  703              		.loc 1 127 3 is_stmt 1 view .LVU214
  704 0158 022A     		cmp	r2, #2
  705 015a 7FF47EAF 		bne	.L47
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 20
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 20
 
 
  706              	.L68:
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  750              		.section	.data._ZN10bkshepherd7Chopper8PatternsE,"aw"
  751              		.align	2
  752              		.set	.LANCHOR0,. + 0
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 21
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 21
 
 
  755              	_ZN10bkshepherd7Chopper8PatternsE:
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  809 0035 02       		.byte	2
  810 0036 01       		.byte	1
  811 0037 02       		.byte	2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 22
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 22
 
 
  812 0038 00       		.byte	0
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  863 007a 00       		.byte	0
  864 007b 02       		.byte	2
  865 007c 01       		.byte	1
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 23
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 23
 
 
  866 007d 02       		.byte	2
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  916 00c6 10       		.byte	16
  917 00c7 01       		.byte	1
  918 00c8 02       		.byte	2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 24
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 24
 
 
  919 00c9 01       		.byte	1
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  973 00ff 02       		.byte	2
  974 0100 01       		.byte	1
  975 0101 02       		.byte	2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 25
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 25
 
 
  976 0102 01       		.byte	1
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  1029 013e 01       		.byte	1
  1030 013f 01       		.byte	1
  1031 0140 01       		.byte	1
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 26
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 26
 
 
  1032 0141 01       		.byte	1
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  1084 0183 00       		.byte	0
  1085 0184 00000000 		.space	8
  1085      00000000 
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 27
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 27
 
 
  1086 018c 0E       		.byte	14
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  1140 01c5 02       		.byte	2
  1141 01c6 01       		.byte	1
  1142 01c7 02       		.byte	2
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 28
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 28
 
 
  1143 01c8 01       		.byte	1
@@ -1666,35 +1666,35 @@ ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 1
  1185              		.file 37 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
  1186              		.file 38 "gml/GuitarPedal/Effect-Modules/Chopper/chopper.h"
  1187              		.file 39 "<built-in>"
-ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s 			page 29
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s 			page 29
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 chopper.cpp
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:17     .text._ZN10bkshepherd7Chopper4InitEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:26     .text._ZN10bkshepherd7Chopper4InitEf:00000000 _ZN10bkshepherd7Chopper4InitEf
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:180    .text._ZN10bkshepherd7Chopper4InitEf:00000080 $d
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:190    .text._ZN10bkshepherd7Chopper5ResetEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:198    .text._ZN10bkshepherd7Chopper5ResetEf:00000000 _ZN10bkshepherd7Chopper5ResetEf
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:220    .text._ZN10bkshepherd7Chopper5ResetEf:0000000c $d
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:225    .text._ZN10bkshepherd7Chopper14IncPatternStepEh:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:233    .text._ZN10bkshepherd7Chopper14IncPatternStepEh:00000000 _ZN10bkshepherd7Chopper14IncPatternStepEh
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:259    .text._ZN10bkshepherd7Chopper10SetPatternEi:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:267    .text._ZN10bkshepherd7Chopper10SetPatternEi:00000000 _ZN10bkshepherd7Chopper10SetPatternEi
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:287    .text._ZN10bkshepherd7Chopper11NextPatternEb:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:295    .text._ZN10bkshepherd7Chopper11NextPatternEb:00000000 _ZN10bkshepherd7Chopper11NextPatternEb
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:345    .text._ZN10bkshepherd7Chopper11NextPatternEb:0000001c $d
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:350    .text._ZN10bkshepherd7Chopper11PrevPatternEb:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:358    .text._ZN10bkshepherd7Chopper11PrevPatternEb:00000000 _ZN10bkshepherd7Chopper11PrevPatternEb
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:408    .text._ZN10bkshepherd7Chopper11PrevPatternEb:0000001c $d
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:413    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:421    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000000 _ZN10bkshepherd7Chopper12CalcPhaseIncEf
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:442    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000014 $d
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:447    .text._ZN10bkshepherd7Chopper7ProcessEv:00000000 $t
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:455    .text._ZN10bkshepherd7Chopper7ProcessEv:00000000 _ZN10bkshepherd7Chopper7ProcessEv
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:741    .text._ZN10bkshepherd7Chopper7ProcessEv:00000194 $d
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:755    .data._ZN10bkshepherd7Chopper8PatternsE:00000000 _ZN10bkshepherd7Chopper8PatternsE
-C:\Users\aydan\AppData\Local\Temp\ccukHxPU.s:751    .data._ZN10bkshepherd7Chopper8PatternsE:00000000 $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:17     .text._ZN10bkshepherd7Chopper4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:26     .text._ZN10bkshepherd7Chopper4InitEf:00000000 _ZN10bkshepherd7Chopper4InitEf
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:180    .text._ZN10bkshepherd7Chopper4InitEf:00000080 $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:190    .text._ZN10bkshepherd7Chopper5ResetEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:198    .text._ZN10bkshepherd7Chopper5ResetEf:00000000 _ZN10bkshepherd7Chopper5ResetEf
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:220    .text._ZN10bkshepherd7Chopper5ResetEf:0000000c $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:225    .text._ZN10bkshepherd7Chopper14IncPatternStepEh:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:233    .text._ZN10bkshepherd7Chopper14IncPatternStepEh:00000000 _ZN10bkshepherd7Chopper14IncPatternStepEh
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:259    .text._ZN10bkshepherd7Chopper10SetPatternEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:267    .text._ZN10bkshepherd7Chopper10SetPatternEi:00000000 _ZN10bkshepherd7Chopper10SetPatternEi
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:287    .text._ZN10bkshepherd7Chopper11NextPatternEb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:295    .text._ZN10bkshepherd7Chopper11NextPatternEb:00000000 _ZN10bkshepherd7Chopper11NextPatternEb
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:345    .text._ZN10bkshepherd7Chopper11NextPatternEb:0000001c $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:350    .text._ZN10bkshepherd7Chopper11PrevPatternEb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:358    .text._ZN10bkshepherd7Chopper11PrevPatternEb:00000000 _ZN10bkshepherd7Chopper11PrevPatternEb
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:408    .text._ZN10bkshepherd7Chopper11PrevPatternEb:0000001c $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:413    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:421    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000000 _ZN10bkshepherd7Chopper12CalcPhaseIncEf
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:442    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000014 $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:447    .text._ZN10bkshepherd7Chopper7ProcessEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:455    .text._ZN10bkshepherd7Chopper7ProcessEv:00000000 _ZN10bkshepherd7Chopper7ProcessEv
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:741    .text._ZN10bkshepherd7Chopper7ProcessEv:00000194 $d
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:755    .data._ZN10bkshepherd7Chopper8PatternsE:00000000 _ZN10bkshepherd7Chopper8PatternsE
+C:\Users\aydan\AppData\Local\Temp\cc8UC1X0.s:751    .data._ZN10bkshepherd7Chopper8PatternsE:00000000 $d
 
 UNDEFINED SYMBOLS
 _ZN7daisysp4Adsr4InitEfi

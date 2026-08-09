@@ -145,6 +145,7 @@ Controls::Controls()
   press_count_(0),
   requested_effect_(config::FX_TUNER),
   requested_bypass_(false),
+  thermal_shutdown_requested_(false),
   pot_filtered_{0.0f, 0.0f, 0.0f},
   pot_fixed_{0, 0, 0},
   published_pot_fixed_{0xffffu, 0xffffu, 0xffffu}
@@ -282,6 +283,14 @@ void Controls::ForcePublish()
     Publish();
 }
 
+void Controls::RequestThermalShutdown()
+{
+    if(thermal_shutdown_requested_)
+        return;
+    thermal_shutdown_requested_ = true;
+    Publish();
+}
+
 // Convert normalized control values into fixed point for the interrupt-safe mailbox.
 uint16_t Controls::FloatToU16(float value)
 {
@@ -321,6 +330,8 @@ void Controls::Publish()
     ControlSnapshot snapshot;
     snapshot.effect = requested_effect_;
     snapshot.bypass = requested_bypass_ ? 1 : 0;
+    snapshot.system_mode = (uint8_t)(thermal_shutdown_requested_ ? SystemMode::ThermalShutdown : SystemMode::Normal);
+    snapshot.reserved = 0;
     for(int i = 0; i < config::kPhysicalPotCount; ++i)
     {
         snapshot.parameters[i] = pot_fixed_[i];

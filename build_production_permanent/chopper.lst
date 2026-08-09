@@ -1,0 +1,1701 @@
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 2
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"chopper.cpp"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.section	.text._ZN10bkshepherd7Chopper4InitEf,"ax",%progbits
+  17              		.align	1
+  18              		.p2align 2,,3
+  19              		.global	_ZN10bkshepherd7Chopper4InitEf
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv5-d16
+  26              	_ZN10bkshepherd7Chopper4InitEf:
+  27              	.LVL0:
+  28              	.LFB3574:
+  29              		.file 1 "gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp"
+   1:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** #include "daisysp.h"
+   2:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** #include "chopper.h"
+   3:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+   4:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** using namespace daisysp;
+   5:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** using namespace bkshepherd;
+   6:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+   7:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** constexpr float TWO_PI_RECIP = 1.0f / TWOPI_F;
+   8:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+   9:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** Pattern Chopper::Patterns[PATTERNS_MAX] = {
+  10:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {16, {{1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16},
+  11:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  12:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {16, {{1, D16}, {0, D16}, {1, D16}, {0, D16}, {1, D16}, {0, D16}, {1, D16}, {0, D16}, {1, D16},
+  13:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {8, {{1, D8}, {1, D8}, {1, D8}, {1, D8}, {1, D8}, {1, D8}, {1, D8}, {1, D8}}},
+  14:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  15:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {16, {{1, D16}, {0, D16}, {0, D16}, {0, D16}, {1, D16}, {0, D16}, {0, D16}, {0, D16}, {1, D16},
+  16:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {4, {{1, D4}, {1, D4}, {1, D4}, {1, D4}}},
+  17:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  18:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {16, {{1, D16}, {0, D16}, {1, D16}, {0, D16}, {1, D16}, {0, D16}, {1, D16}, {0, D16}, {1, D16},
+  19:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {16, {{1, D16}, {1, D16}, {0, D16}, {0, D16}, {1, D16}, {1, D16}, {0, D16}, {0, D16}, {1, D16},
+  20:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {16, {{1, D16}, {1, D16}, {1, D16}, {0, D16}, {1, D16}, {1, D16}, {1, D16}, {0, D16}, {1, D16},
+  21:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  22:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {12, {{1, D8}, {1, D16}, {1, D16}, {1, D8}, {1, D16}, {1, D16}, {1, D8}, {1, D16}, {1, D16}, {1
+  23:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {12, {{1, D4}, {1, D8}, {1, D8}, {1, D4}, {1, D8}, {1, D8}, {1, D4}, {1, D8}, {1, D8}, {1, D4},
+  24:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  25:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {12, {{1, D16}, {1, D8}, {1, D8}, {1, D16}, {1, D8}, {1, D8}, {1, D16}, {1, D8}, {1, D8}, {1, D
+  26:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {12, {{1, D8}, {1, D4}, {1, D4}, {1, D8}, {1, D4}, {1, D4}, {1, D8}, {1, D4}, {1, D4}, {1, D8},
+  27:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {14, {{1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D8}, {1, D16}, {1, D16}, 
+  28:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     {14, {{1, D8}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D16}, {1, D8}, {1, D16}, {
+  29:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 2
+
+
+  30:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** // 3/4 - doesn't work:    {8, {{1, D4}, {1, D8}, {1, D4}, {1, D8}, {1, D4}, {1, D8}, {1, D4}, {1, D
+  31:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  32:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** void Chopper::Init(float sample_rate)
+  33:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+  30              		.loc 1 33 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   sr_ = sample_rate;
+  34              		.loc 1 34 3 view .LVU1
+  35:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   sr_recip_ = 1.0f / sample_rate;
+  35              		.loc 1 35 20 is_stmt 0 view .LVU2
+  36 0000 B7EE006A 		vmov.f32	s12, #1.0e+0
+  36:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   freq_ = 100.0f;
+  37              		.loc 1 36 9 view .LVU3
+  38 0004 1E4B     		ldr	r3, .L4
+  39              	.LBB16:
+  40              	.LBB17:
+  37:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   amp_ = 0.5f;
+  38:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_ = 0.5f;
+  39:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_rad_ = pw_ * TWOPI_F;
+  40:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ = 0.0f;
+  41:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_inc_ = CalcPhaseInc(freq_);
+  42:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eoc_ = true;
+  43:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eor_ = true;
+  44:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_ = 0;
+  45:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+  46:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+  47:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  48:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   // Init ADSR
+  49:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.Init(sample_rate);
+  50:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_ATTACK, .1);
+  51:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_DECAY, .1);
+  52:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_RELEASE, .01);
+  53:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetSustainLevel(.5);
+  54:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+  55:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  56:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** void Chopper::Reset(float _phase)
+  57:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ = _phase;
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+  60:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+  61:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+  62:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  63:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** void Chopper::IncPatternStep(uint8_t length)
+  64:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (++pattern_step_ >= length)
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+  67:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+  68:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  69:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** void Chopper::SetPattern(int id)
+  70:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+  71:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (id >= 0 && id < PATTERNS_MAX)
+  72:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   {
+  73:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     current_pattern_ = id;
+  74:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+  75:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 3
+
+
+  76:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  77:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** void Chopper::NextPattern(bool reset)
+  78:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+  79:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_++;
+  80:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (current_pattern_ >= PATTERNS_MAX)
+  81:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     current_pattern_ = 0;
+  82:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
+  83:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
+  84:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+  85:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  86:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** void Chopper::PrevPattern(bool reset)
+  87:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+  88:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_--;
+  89:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (current_pattern_ < 0)
+  90:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     current_pattern_ = PATTERNS_MAX - 1;
+  91:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
+  92:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
+  93:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+  94:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  95:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** float Chopper::CalcPhaseInc(float f) { return (TWOPI_F * f) * sr_recip_; }
+  41              		.loc 1 95 63 view .LVU4
+  42 0006 9FED1F7A 		vldr.32	s14, .L4+4
+  43              	.LBE17:
+  44              	.LBE16:
+  40:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_inc_ = CalcPhaseInc(freq_);
+  45              		.loc 1 40 10 view .LVU5
+  46 000a 0021     		movs	r1, #0
+  39:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ = 0.0f;
+  47              		.loc 1 39 11 view .LVU6
+  48 000c 1E4A     		ldr	r2, .L4+8
+  35:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   freq_ = 100.0f;
+  49              		.loc 1 35 20 view .LVU7
+  50 000e C6EE006A 		vdiv.f32	s13, s12, s0
+  33:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   sr_ = sample_rate;
+  51              		.loc 1 33 1 view .LVU8
+  52 0012 30B5     		push	{r4, r5, lr}
+  53              		.cfi_def_cfa_offset 12
+  54              		.cfi_offset 4, -12
+  55              		.cfi_offset 5, -8
+  56              		.cfi_offset 14, -4
+  57 0014 0446     		mov	r4, r0
+  37:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_ = 0.5f;
+  58              		.loc 1 37 8 view .LVU9
+  59 0016 4FF07C55 		mov	r5, #1056964608
+  49:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_ATTACK, .1);
+  60              		.loc 1 49 12 view .LVU10
+  61 001a 3430     		adds	r0, r0, #52
+  62              	.LVL1:
+  33:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   sr_ = sample_rate;
+  63              		.loc 1 33 1 view .LVU11
+  64 001c 2DED028B 		vpush.64	{d8}
+  65              		.cfi_def_cfa_offset 20
+  66              		.cfi_offset 80, -20
+  67              		.cfi_offset 81, -16
+  36:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   amp_ = 0.5f;
+  68              		.loc 1 36 9 view .LVU12
+  69 0020 6360     		str	r3, [r4, #4]	@ float
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 4
+
+
+  43:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_ = 0;
+  70              		.loc 1 43 8 view .LVU13
+  71 0022 40F20113 		movw	r3, #257
+  33:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   sr_ = sample_rate;
+  72              		.loc 1 33 1 view .LVU14
+  73 0026 83B0     		sub	sp, sp, #12
+  74              		.cfi_def_cfa_offset 32
+  50:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_DECAY, .1);
+  75              		.loc 1 50 15 view .LVU15
+  76 0028 9FED188A 		vldr.32	s16, .L4+12
+  43:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_ = 0;
+  77              		.loc 1 43 8 view .LVU16
+  78 002c A362     		str	r3, [r4, #40]
+  45:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+  79              		.loc 1 45 17 view .LVU17
+  80 002e 184B     		ldr	r3, .L4+16
+  81              	.LBB20:
+  82              	.LBB18:
+  83              		.loc 1 95 63 view .LVU18
+  84 0030 26EE877A 		vmul.f32	s14, s13, s14
+  85              	.LBE18:
+  86              	.LBE20:
+  39:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ = 0.0f;
+  87              		.loc 1 39 11 view .LVU19
+  88 0034 E260     		str	r2, [r4, #12]	@ float
+  45:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+  89              		.loc 1 45 17 view .LVU20
+  90 0036 E362     		str	r3, [r4, #44]
+  35:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   freq_ = 100.0f;
+  91              		.loc 1 35 13 view .LVU21
+  92 0038 C4ED056A 		vstr.32	s13, [r4, #20]
+  41:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eoc_ = true;
+  93              		.loc 1 41 14 view .LVU22
+  94 003c 84ED077A 		vstr.32	s14, [r4, #28]
+  40:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_inc_ = CalcPhaseInc(freq_);
+  95              		.loc 1 40 10 view .LVU23
+  96 0040 A161     		str	r1, [r4, #24]	@ float
+  49:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_ATTACK, .1);
+  97              		.loc 1 49 12 view .LVU24
+  98 0042 0121     		movs	r1, #1
+  34:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   sr_recip_ = 1.0f / sample_rate;
+  99              		.loc 1 34 7 view .LVU25
+ 100 0044 84ED040A 		vstr.32	s0, [r4, #16]
+  35:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   freq_ = 100.0f;
+ 101              		.loc 1 35 3 is_stmt 1 view .LVU26
+  36:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   amp_ = 0.5f;
+ 102              		.loc 1 36 3 view .LVU27
+  37:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_ = 0.5f;
+ 103              		.loc 1 37 3 view .LVU28
+  38:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_rad_ = pw_ * TWOPI_F;
+ 104              		.loc 1 38 3 view .LVU29
+  39:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ = 0.0f;
+ 105              		.loc 1 39 3 view .LVU30
+  40:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_inc_ = CalcPhaseInc(freq_);
+ 106              		.loc 1 40 3 view .LVU31
+  41:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eoc_ = true;
+ 107              		.loc 1 41 3 view .LVU32
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 5
+
+
+ 108              	.LVL2:
+ 109              	.LBB21:
+ 110              	.LBI16:
+ 111              		.loc 1 95 7 view .LVU33
+ 112              	.LBB19:
+ 113              		.loc 1 95 40 view .LVU34
+ 114              		.loc 1 95 40 is_stmt 0 view .LVU35
+ 115              	.LBE19:
+ 116              	.LBE21:
+  42:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eor_ = true;
+ 117              		.loc 1 42 3 is_stmt 1 view .LVU36
+  43:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_ = 0;
+ 118              		.loc 1 43 3 view .LVU37
+  44:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 119              		.loc 1 44 3 view .LVU38
+  45:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 120              		.loc 1 45 3 view .LVU39
+  46:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 121              		.loc 1 46 3 view .LVU40
+  49:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_ATTACK, .1);
+ 122              		.loc 1 49 3 view .LVU41
+  37:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_ = 0.5f;
+ 123              		.loc 1 37 8 is_stmt 0 view .LVU42
+ 124 0048 2560     		str	r5, [r4]	@ float
+  38:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pw_rad_ = pw_ * TWOPI_F;
+ 125              		.loc 1 38 7 view .LVU43
+ 126 004a A560     		str	r5, [r4, #8]	@ float
+  49:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_ATTACK, .1);
+ 127              		.loc 1 49 12 view .LVU44
+ 128 004c 0190     		str	r0, [sp, #4]
+ 129 004e FFF7FEFF 		bl	_ZN7daisysp4Adsr4InitEfi
+ 130              	.LVL3:
+  50:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_DECAY, .1);
+ 131              		.loc 1 50 3 is_stmt 1 view .LVU45
+  50:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_DECAY, .1);
+ 132              		.loc 1 50 15 is_stmt 0 view .LVU46
+ 133 0052 B0EE480A 		vmov.f32	s0, s16
+ 134 0056 0198     		ldr	r0, [sp, #4]
+ 135 0058 0121     		movs	r1, #1
+ 136 005a FFF7FEFF 		bl	_ZN7daisysp4Adsr7SetTimeEif
+ 137              	.LVL4:
+  51:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_RELEASE, .01);
+ 138              		.loc 1 51 3 is_stmt 1 view .LVU47
+  51:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetTime(ADSR_SEG_RELEASE, .01);
+ 139              		.loc 1 51 15 is_stmt 0 view .LVU48
+ 140 005e B0EE480A 		vmov.f32	s0, s16
+ 141 0062 0198     		ldr	r0, [sp, #4]
+ 142 0064 0221     		movs	r1, #2
+ 143 0066 FFF7FEFF 		bl	_ZN7daisysp4Adsr7SetTimeEif
+ 144              	.LVL5:
+  52:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetSustainLevel(.5);
+ 145              		.loc 1 52 3 is_stmt 1 view .LVU49
+  52:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   env_.SetSustainLevel(.5);
+ 146              		.loc 1 52 15 is_stmt 0 view .LVU50
+ 147 006a 9FED0A0A 		vldr.32	s0, .L4+20
+ 148 006e 0421     		movs	r1, #4
+ 149 0070 0198     		ldr	r0, [sp, #4]
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 6
+
+
+ 150 0072 FFF7FEFF 		bl	_ZN7daisysp4Adsr7SetTimeEif
+ 151              	.LVL6:
+  53:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 152              		.loc 1 53 3 is_stmt 1 view .LVU51
+ 153              	.LBB22:
+ 154              	.LBI22:
+ 155              		.file 2 "../../DaisySP/Source/Control/adsr.h"
+   1:../../DaisySP/Source/Control/adsr.h **** /*
+   2:../../DaisySP/Source/Control/adsr.h **** Copyright (c) 2020 Electrosmith, Corp, Paul Batchelor
+   3:../../DaisySP/Source/Control/adsr.h **** 
+   4:../../DaisySP/Source/Control/adsr.h **** Use of this source code is governed by an MIT-style
+   5:../../DaisySP/Source/Control/adsr.h **** license that can be found in the LICENSE file or at
+   6:../../DaisySP/Source/Control/adsr.h **** https://opensource.org/licenses/MIT.
+   7:../../DaisySP/Source/Control/adsr.h **** */
+   8:../../DaisySP/Source/Control/adsr.h **** 
+   9:../../DaisySP/Source/Control/adsr.h **** #pragma once
+  10:../../DaisySP/Source/Control/adsr.h **** #ifndef DSY_ADSR_H
+  11:../../DaisySP/Source/Control/adsr.h **** #define DSY_ADSR_H
+  12:../../DaisySP/Source/Control/adsr.h **** 
+  13:../../DaisySP/Source/Control/adsr.h **** #include <stdint.h>
+  14:../../DaisySP/Source/Control/adsr.h **** #ifdef __cplusplus
+  15:../../DaisySP/Source/Control/adsr.h **** 
+  16:../../DaisySP/Source/Control/adsr.h **** namespace daisysp
+  17:../../DaisySP/Source/Control/adsr.h **** {
+  18:../../DaisySP/Source/Control/adsr.h **** /** Distinct stages that the phase of the envelope can be located in.
+  19:../../DaisySP/Source/Control/adsr.h **** - IDLE   = located at phase location 0, and not currently running
+  20:../../DaisySP/Source/Control/adsr.h **** - ATTACK  = First segment of envelope where phase moves from 0 to 1
+  21:../../DaisySP/Source/Control/adsr.h **** - DECAY   = Second segment of envelope where phase moves from 1 to SUSTAIN value
+  22:../../DaisySP/Source/Control/adsr.h **** - RELEASE =     Fourth segment of envelop where phase moves from SUSTAIN to 0
+  23:../../DaisySP/Source/Control/adsr.h **** */
+  24:../../DaisySP/Source/Control/adsr.h **** enum
+  25:../../DaisySP/Source/Control/adsr.h **** {
+  26:../../DaisySP/Source/Control/adsr.h ****     ADSR_SEG_IDLE    = 0,
+  27:../../DaisySP/Source/Control/adsr.h ****     ADSR_SEG_ATTACK  = 1,
+  28:../../DaisySP/Source/Control/adsr.h ****     ADSR_SEG_DECAY   = 2,
+  29:../../DaisySP/Source/Control/adsr.h ****     ADSR_SEG_RELEASE = 4
+  30:../../DaisySP/Source/Control/adsr.h **** };
+  31:../../DaisySP/Source/Control/adsr.h **** 
+  32:../../DaisySP/Source/Control/adsr.h **** 
+  33:../../DaisySP/Source/Control/adsr.h **** /** adsr envelope module
+  34:../../DaisySP/Source/Control/adsr.h **** 
+  35:../../DaisySP/Source/Control/adsr.h **** Original author(s) : Paul Batchelor
+  36:../../DaisySP/Source/Control/adsr.h **** 
+  37:../../DaisySP/Source/Control/adsr.h **** Ported from Soundpipe by Ben Sergentanis, May 2020
+  38:../../DaisySP/Source/Control/adsr.h ****  
+  39:../../DaisySP/Source/Control/adsr.h **** Remake by Steffan DIedrichsen, May 2021
+  40:../../DaisySP/Source/Control/adsr.h **** */
+  41:../../DaisySP/Source/Control/adsr.h **** class Adsr
+  42:../../DaisySP/Source/Control/adsr.h **** {
+  43:../../DaisySP/Source/Control/adsr.h ****   public:
+  44:../../DaisySP/Source/Control/adsr.h ****     Adsr() {}
+  45:../../DaisySP/Source/Control/adsr.h ****     ~Adsr() {}
+  46:../../DaisySP/Source/Control/adsr.h ****     /** Initializes the Adsr module.
+  47:../../DaisySP/Source/Control/adsr.h ****         \param sample_rate - The sample rate of the audio engine being run. 
+  48:../../DaisySP/Source/Control/adsr.h ****     */
+  49:../../DaisySP/Source/Control/adsr.h ****     void Init(float sample_rate, int blockSize = 1);
+  50:../../DaisySP/Source/Control/adsr.h ****     /**
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 7
+
+
+  51:../../DaisySP/Source/Control/adsr.h ****      \function Retrigger forces the envelope back to attack phase
+  52:../../DaisySP/Source/Control/adsr.h ****      \param hard  resets the history to zero, results in a click.
+  53:../../DaisySP/Source/Control/adsr.h ****      */
+  54:../../DaisySP/Source/Control/adsr.h ****     void Retrigger(bool hard);
+  55:../../DaisySP/Source/Control/adsr.h ****     /** Processes one sample through the filter and returns one sample.
+  56:../../DaisySP/Source/Control/adsr.h ****         \param gate - trigger the envelope, hold it to sustain 
+  57:../../DaisySP/Source/Control/adsr.h ****     */
+  58:../../DaisySP/Source/Control/adsr.h ****     float Process(bool gate);
+  59:../../DaisySP/Source/Control/adsr.h ****     /** Sets time
+  60:../../DaisySP/Source/Control/adsr.h ****         Set time per segment in seconds
+  61:../../DaisySP/Source/Control/adsr.h ****     */
+  62:../../DaisySP/Source/Control/adsr.h ****     void SetTime(int seg, float time);
+  63:../../DaisySP/Source/Control/adsr.h ****     void SetAttackTime(float timeInS, float shape = 0.0f);
+  64:../../DaisySP/Source/Control/adsr.h ****     void SetDecayTime(float timeInS);
+  65:../../DaisySP/Source/Control/adsr.h ****     void SetReleaseTime(float timeInS);
+  66:../../DaisySP/Source/Control/adsr.h **** 
+  67:../../DaisySP/Source/Control/adsr.h ****   private:
+  68:../../DaisySP/Source/Control/adsr.h ****     void SetTimeConstant(float timeInS, float& time, float& coeff);
+  69:../../DaisySP/Source/Control/adsr.h **** 
+  70:../../DaisySP/Source/Control/adsr.h ****   public:
+  71:../../DaisySP/Source/Control/adsr.h ****     /** Sustain level
+  72:../../DaisySP/Source/Control/adsr.h ****         \param sus_level - sets sustain level, 0...1.0
+  73:../../DaisySP/Source/Control/adsr.h ****     */
+  74:../../DaisySP/Source/Control/adsr.h ****     inline void SetSustainLevel(float sus_level)
+ 156              		.loc 2 74 17 view .LVU52
+ 157              	.LBB23:
+  75:../../DaisySP/Source/Control/adsr.h ****     {
+  76:../../DaisySP/Source/Control/adsr.h ****         sus_level = (sus_level <= 0.f) ? -0.01f // forces envelope into idle
+ 158              		.loc 2 76 9 view .LVU53
+  77:../../DaisySP/Source/Control/adsr.h ****                                        : (sus_level > 1.f) ? 1.f : sus_level;
+  78:../../DaisySP/Source/Control/adsr.h ****         sus_level_ = sus_level;
+ 159              		.loc 2 78 9 view .LVU54
+ 160              		.loc 2 78 20 is_stmt 0 view .LVU55
+ 161 0076 6563     		str	r5, [r4, #52]	@ float
+ 162              	.LVL7:
+ 163              		.loc 2 78 20 view .LVU56
+ 164              	.LBE23:
+ 165              	.LBE22:
+  54:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 166              		.loc 1 54 1 view .LVU57
+ 167 0078 03B0     		add	sp, sp, #12
+ 168              		.cfi_def_cfa_offset 20
+ 169              		@ sp needed
+ 170 007a BDEC028B 		vldm	sp!, {d8}
+ 171              		.cfi_restore 80
+ 172              		.cfi_restore 81
+ 173              		.cfi_def_cfa_offset 12
+ 174 007e 30BD     		pop	{r4, r5, pc}
+ 175              	.LVL8:
+ 176              	.L5:
+  54:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 177              		.loc 1 54 1 view .LVU58
+ 178              		.align	2
+ 179              	.L4:
+ 180 0080 0000C842 		.word	1120403456
+ 181 0084 63141D44 		.word	1142756451
+ 182 0088 DB0F4940 		.word	1078530011
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 8
+
+
+ 183 008c CDCCCC3D 		.word	1036831949
+ 184 0090 0000FFFF 		.word	-65536
+ 185 0094 0AD7233C 		.word	1008981770
+ 186              		.cfi_endproc
+ 187              	.LFE3574:
+ 189              		.section	.text._ZN10bkshepherd7Chopper5ResetEf,"ax",%progbits
+ 190              		.align	1
+ 191              		.p2align 2,,3
+ 192              		.global	_ZN10bkshepherd7Chopper5ResetEf
+ 193              		.syntax unified
+ 194              		.thumb
+ 195              		.thumb_func
+ 196              		.fpu fpv5-d16
+ 198              	_ZN10bkshepherd7Chopper5ResetEf:
+ 199              	.LVL9:
+ 200              	.LFB3575:
+  57:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ = _phase;
+ 201              		.loc 1 57 1 is_stmt 1 view -0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              		@ link register save eliminated.
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 206              		.loc 1 58 3 view .LVU60
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 207              		.loc 1 59 17 is_stmt 0 view .LVU61
+ 208 0000 024B     		ldr	r3, .L7
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 209              		.loc 1 58 10 view .LVU62
+ 210 0002 80ED060A 		vstr.32	s0, [r0, #24]
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 211              		.loc 1 59 3 is_stmt 1 view .LVU63
+  60:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 212              		.loc 1 60 3 view .LVU64
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 213              		.loc 1 59 17 is_stmt 0 view .LVU65
+ 214 0006 C362     		str	r3, [r0, #44]
+  61:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 215              		.loc 1 61 1 view .LVU66
+ 216 0008 7047     		bx	lr
+ 217              	.L8:
+ 218 000a 00BF     		.align	2
+ 219              	.L7:
+ 220 000c 0000FFFF 		.word	-65536
+ 221              		.cfi_endproc
+ 222              	.LFE3575:
+ 224              		.section	.text._ZN10bkshepherd7Chopper14IncPatternStepEh,"ax",%progbits
+ 225              		.align	1
+ 226              		.p2align 2,,3
+ 227              		.global	_ZN10bkshepherd7Chopper14IncPatternStepEh
+ 228              		.syntax unified
+ 229              		.thumb
+ 230              		.thumb_func
+ 231              		.fpu fpv5-d16
+ 233              	_ZN10bkshepherd7Chopper14IncPatternStepEh:
+ 234              	.LVL10:
+ 235              	.LFB3576:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 9
+
+
+  64:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (++pattern_step_ >= length)
+ 236              		.loc 1 64 1 is_stmt 1 view -0
+ 237              		.cfi_startproc
+ 238              		@ args = 0, pretend = 0, frame = 0
+ 239              		@ frame_needed = 0, uses_anonymous_args = 0
+ 240              		@ link register save eliminated.
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 241              		.loc 1 65 3 view .LVU68
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 242              		.loc 1 65 7 is_stmt 0 view .LVU69
+ 243 0000 838D     		ldrh	r3, [r0, #44]
+ 244 0002 0133     		adds	r3, r3, #1
+ 245 0004 1BB2     		sxth	r3, r3
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 246              		.loc 1 65 3 view .LVU70
+ 247 0006 8B42     		cmp	r3, r1
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 248              		.loc 1 66 5 is_stmt 1 view .LVU71
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 249              		.loc 1 66 19 is_stmt 0 view .LVU72
+ 250 0008 A8BF     		it	ge
+ 251 000a 0023     		movge	r3, #0
+ 252 000c 8385     		strh	r3, [r0, #44]	@ movhi
+  67:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 253              		.loc 1 67 1 view .LVU73
+ 254 000e 7047     		bx	lr
+ 255              		.cfi_endproc
+ 256              	.LFE3576:
+ 258              		.section	.text._ZN10bkshepherd7Chopper10SetPatternEi,"ax",%progbits
+ 259              		.align	1
+ 260              		.p2align 2,,3
+ 261              		.global	_ZN10bkshepherd7Chopper10SetPatternEi
+ 262              		.syntax unified
+ 263              		.thumb
+ 264              		.thumb_func
+ 265              		.fpu fpv5-d16
+ 267              	_ZN10bkshepherd7Chopper10SetPatternEi:
+ 268              	.LVL11:
+ 269              	.LFB3577:
+  70:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (id >= 0 && id < PATTERNS_MAX)
+ 270              		.loc 1 70 1 is_stmt 1 view -0
+ 271              		.cfi_startproc
+ 272              		@ args = 0, pretend = 0, frame = 0
+ 273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 274              		@ link register save eliminated.
+  71:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   {
+ 275              		.loc 1 71 3 view .LVU75
+ 276 0000 0D29     		cmp	r1, #13
+  73:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 277              		.loc 1 73 5 view .LVU76
+  73:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 278              		.loc 1 73 22 is_stmt 0 view .LVU77
+ 279 0002 98BF     		it	ls
+ 280 0004 4185     		strhls	r1, [r0, #42]	@ movhi
+  75:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 281              		.loc 1 75 1 view .LVU78
+ 282 0006 7047     		bx	lr
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 10
+
+
+ 283              		.cfi_endproc
+ 284              	.LFE3577:
+ 286              		.section	.text._ZN10bkshepherd7Chopper11NextPatternEb,"ax",%progbits
+ 287              		.align	1
+ 288              		.p2align 2,,3
+ 289              		.global	_ZN10bkshepherd7Chopper11NextPatternEb
+ 290              		.syntax unified
+ 291              		.thumb
+ 292              		.thumb_func
+ 293              		.fpu fpv5-d16
+ 295              	_ZN10bkshepherd7Chopper11NextPatternEb:
+ 296              	.LVL12:
+ 297              	.LFB3578:
+  78:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_++;
+ 298              		.loc 1 78 1 is_stmt 1 view -0
+ 299              		.cfi_startproc
+ 300              		@ args = 0, pretend = 0, frame = 0
+ 301              		@ frame_needed = 0, uses_anonymous_args = 0
+ 302              		@ link register save eliminated.
+  79:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (current_pattern_ >= PATTERNS_MAX)
+ 303              		.loc 1 79 3 view .LVU80
+  79:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (current_pattern_ >= PATTERNS_MAX)
+ 304              		.loc 1 79 19 is_stmt 0 view .LVU81
+ 305 0000 438D     		ldrh	r3, [r0, #42]
+ 306 0002 0133     		adds	r3, r3, #1
+ 307 0004 1BB2     		sxth	r3, r3
+  80:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     current_pattern_ = 0;
+ 308              		.loc 1 80 3 is_stmt 1 view .LVU82
+ 309 0006 0D2B     		cmp	r3, #13
+  81:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
+ 310              		.loc 1 81 5 view .LVU83
+  82:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
+ 311              		.loc 1 82 3 view .LVU84
+  81:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
+ 312              		.loc 1 81 22 is_stmt 0 view .LVU85
+ 313 0008 C8BF     		it	gt
+ 314 000a 0023     		movgt	r3, #0
+ 315 000c 4385     		strh	r3, [r0, #42]	@ movhi
+  82:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
+ 316              		.loc 1 82 3 view .LVU86
+ 317 000e 19B1     		cbz	r1, .L15
+  83:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 318              		.loc 1 83 5 is_stmt 1 view .LVU87
+ 319              	.LVL13:
+ 320              	.LBB24:
+ 321              	.LBI24:
+  56:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+ 322              		.loc 1 56 6 view .LVU88
+ 323              	.LBB25:
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 324              		.loc 1 58 3 view .LVU89
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 325              		.loc 1 58 10 is_stmt 0 view .LVU90
+ 326 0010 0022     		movs	r2, #0
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 327              		.loc 1 59 17 view .LVU91
+ 328 0012 024B     		ldr	r3, .L23
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 11
+
+
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 329              		.loc 1 58 10 view .LVU92
+ 330 0014 8261     		str	r2, [r0, #24]	@ float
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 331              		.loc 1 59 3 is_stmt 1 view .LVU93
+  60:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 332              		.loc 1 60 3 view .LVU94
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 333              		.loc 1 59 17 is_stmt 0 view .LVU95
+ 334 0016 C362     		str	r3, [r0, #44]
+ 335              	.LVL14:
+ 336              	.L15:
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 337              		.loc 1 59 17 view .LVU96
+ 338              	.LBE25:
+ 339              	.LBE24:
+  84:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 340              		.loc 1 84 1 view .LVU97
+ 341 0018 7047     		bx	lr
+ 342              	.L24:
+ 343 001a 00BF     		.align	2
+ 344              	.L23:
+ 345 001c 0000FFFF 		.word	-65536
+ 346              		.cfi_endproc
+ 347              	.LFE3578:
+ 349              		.section	.text._ZN10bkshepherd7Chopper11PrevPatternEb,"ax",%progbits
+ 350              		.align	1
+ 351              		.p2align 2,,3
+ 352              		.global	_ZN10bkshepherd7Chopper11PrevPatternEb
+ 353              		.syntax unified
+ 354              		.thumb
+ 355              		.thumb_func
+ 356              		.fpu fpv5-d16
+ 358              	_ZN10bkshepherd7Chopper11PrevPatternEb:
+ 359              	.LVL15:
+ 360              	.LFB3579:
+  87:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   current_pattern_--;
+ 361              		.loc 1 87 1 is_stmt 1 view -0
+ 362              		.cfi_startproc
+ 363              		@ args = 0, pretend = 0, frame = 0
+ 364              		@ frame_needed = 0, uses_anonymous_args = 0
+ 365              		@ link register save eliminated.
+  88:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (current_pattern_ < 0)
+ 366              		.loc 1 88 3 view .LVU99
+  88:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (current_pattern_ < 0)
+ 367              		.loc 1 88 19 is_stmt 0 view .LVU100
+ 368 0000 438D     		ldrh	r3, [r0, #42]
+ 369 0002 013B     		subs	r3, r3, #1
+ 370 0004 1BB2     		sxth	r3, r3
+  89:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     current_pattern_ = PATTERNS_MAX - 1;
+ 371              		.loc 1 89 3 is_stmt 1 view .LVU101
+ 372 0006 002B     		cmp	r3, #0
+  90:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
+ 373              		.loc 1 90 5 view .LVU102
+  91:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
+ 374              		.loc 1 91 3 view .LVU103
+  90:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (reset)
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 12
+
+
+ 375              		.loc 1 90 22 is_stmt 0 view .LVU104
+ 376 0008 B8BF     		it	lt
+ 377 000a 0D23     		movlt	r3, #13
+ 378 000c 4385     		strh	r3, [r0, #42]	@ movhi
+  91:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     Reset();
+ 379              		.loc 1 91 3 view .LVU105
+ 380 000e 19B1     		cbz	r1, .L25
+  92:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 381              		.loc 1 92 5 is_stmt 1 view .LVU106
+ 382              	.LVL16:
+ 383              	.LBB26:
+ 384              	.LBI26:
+  56:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+ 385              		.loc 1 56 6 view .LVU107
+ 386              	.LBB27:
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 387              		.loc 1 58 3 view .LVU108
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 388              		.loc 1 58 10 is_stmt 0 view .LVU109
+ 389 0010 0022     		movs	r2, #0
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 390              		.loc 1 59 17 view .LVU110
+ 391 0012 024B     		ldr	r3, .L33
+  58:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   pattern_step_ = 0;
+ 392              		.loc 1 58 10 view .LVU111
+ 393 0014 8261     		str	r2, [r0, #24]	@ float
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 394              		.loc 1 59 3 is_stmt 1 view .LVU112
+  60:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 395              		.loc 1 60 3 view .LVU113
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 396              		.loc 1 59 17 is_stmt 0 view .LVU114
+ 397 0016 C362     		str	r3, [r0, #44]
+ 398              	.LVL17:
+ 399              	.L25:
+  59:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   old_quadrant_index_ = -1;
+ 400              		.loc 1 59 17 view .LVU115
+ 401              	.LBE27:
+ 402              	.LBE26:
+  93:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 403              		.loc 1 93 1 view .LVU116
+ 404 0018 7047     		bx	lr
+ 405              	.L34:
+ 406 001a 00BF     		.align	2
+ 407              	.L33:
+ 408 001c 0000FFFF 		.word	-65536
+ 409              		.cfi_endproc
+ 410              	.LFE3579:
+ 412              		.section	.text._ZN10bkshepherd7Chopper12CalcPhaseIncEf,"ax",%progbits
+ 413              		.align	1
+ 414              		.p2align 2,,3
+ 415              		.global	_ZN10bkshepherd7Chopper12CalcPhaseIncEf
+ 416              		.syntax unified
+ 417              		.thumb
+ 418              		.thumb_func
+ 419              		.fpu fpv5-d16
+ 421              	_ZN10bkshepherd7Chopper12CalcPhaseIncEf:
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 13
+
+
+ 422              	.LVL18:
+ 423              	.LFB3580:
+ 424              		.loc 1 95 38 is_stmt 1 view -0
+ 425              		.cfi_startproc
+ 426              		@ args = 0, pretend = 0, frame = 0
+ 427              		@ frame_needed = 0, uses_anonymous_args = 0
+ 428              		@ link register save eliminated.
+ 429              		.loc 1 95 40 view .LVU118
+ 430              		.loc 1 95 56 is_stmt 0 view .LVU119
+ 431 0000 DFED047A 		vldr.32	s15, .L36
+ 432 0004 20EE270A 		vmul.f32	s0, s0, s15
+ 433              	.LVL19:
+ 434              		.loc 1 95 63 view .LVU120
+ 435 0008 D0ED057A 		vldr.32	s15, [r0, #20]
+ 436              		.loc 1 95 74 view .LVU121
+ 437 000c 20EE270A 		vmul.f32	s0, s0, s15
+ 438 0010 7047     		bx	lr
+ 439              	.L37:
+ 440 0012 00BF     		.align	2
+ 441              	.L36:
+ 442 0014 DB0FC940 		.word	1086918619
+ 443              		.cfi_endproc
+ 444              	.LFE3580:
+ 446              		.section	.text._ZN10bkshepherd7Chopper7ProcessEv,"ax",%progbits
+ 447              		.align	1
+ 448              		.p2align 2,,3
+ 449              		.global	_ZN10bkshepherd7Chopper7ProcessEv
+ 450              		.syntax unified
+ 451              		.thumb
+ 452              		.thumb_func
+ 453              		.fpu fpv5-d16
+ 455              	_ZN10bkshepherd7Chopper7ProcessEv:
+ 456              	.LVL20:
+ 457              	.LFB3581:
+  96:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+  97:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** /**
+  98:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****  * Works only with 4/4 patterns
+  99:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****  * No support for tied notes over measures
+ 100:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****  * No support for triplets
+ 101:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****  */
+ 102:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** float Chopper::Process()
+ 103:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+ 458              		.loc 1 103 1 is_stmt 1 view -0
+ 459              		.cfi_startproc
+ 460              		@ args = 0, pretend = 0, frame = 0
+ 461              		@ frame_needed = 0, uses_anonymous_args = 0
+ 104:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   float out;
+ 462              		.loc 1 104 3 view .LVU123
+ 105:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   float quadrant = floorf(phase_ / HALFPI_F);
+ 463              		.loc 1 105 3 view .LVU124
+ 464              		.loc 1 105 26 is_stmt 0 view .LVU125
+ 465 0000 DFED646A 		vldr.32	s13, .L70
+ 466              		.loc 1 105 27 view .LVU126
+ 467 0004 D0ED067A 		vldr.32	s15, [r0, #24]
+ 106:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   int16_t quadrant_index = (int16_t)quadrant;
+ 107:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 108:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (quadrant_index != old_quadrant_index_) {
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 14
+
+
+ 468              		.loc 1 108 3 view .LVU127
+ 469 0008 B0F92E20 		ldrsh	r2, [r0, #46]
+ 105:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   float quadrant = floorf(phase_ / HALFPI_F);
+ 470              		.loc 1 105 26 view .LVU128
+ 471 000c 87EEA67A 		vdiv.f32	s14, s15, s13
+ 103:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   float out;
+ 472              		.loc 1 103 1 view .LVU129
+ 473 0010 10B5     		push	{r4, lr}
+ 474              		.cfi_def_cfa_offset 8
+ 475              		.cfi_offset 4, -8
+ 476              		.cfi_offset 14, -4
+ 105:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   float quadrant = floorf(phase_ / HALFPI_F);
+ 477              		.loc 1 105 26 view .LVU130
+ 478 0012 BBFE477A 		vrintm.f32	s14, s14
+ 479              	.LVL21:
+ 106:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   int16_t quadrant_index = (int16_t)quadrant;
+ 480              		.loc 1 106 3 is_stmt 1 view .LVU131
+ 106:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   int16_t quadrant_index = (int16_t)quadrant;
+ 481              		.loc 1 106 11 is_stmt 0 view .LVU132
+ 482 0016 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 483              	.LVL22:
+ 106:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   int16_t quadrant_index = (int16_t)quadrant;
+ 484              		.loc 1 106 11 view .LVU133
+ 485 001a 17EE103A 		vmov	r3, s14	@ int
+ 486 001e 1BB2     		sxth	r3, r3
+ 487              	.LVL23:
+ 488              		.loc 1 108 3 is_stmt 1 view .LVU134
+ 489 0020 9A42     		cmp	r2, r3
+ 490 0022 00F09780 		beq	.L66
+ 109:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     note_ = Patterns[current_pattern_].notes[pattern_step_];
+ 491              		.loc 1 109 5 view .LVU135
+ 492              		.loc 1 109 22 is_stmt 0 view .LVU136
+ 493 0026 B0F92A20 		ldrsh	r2, [r0, #42]
+ 494              		.loc 1 109 46 view .LVU137
+ 495 002a B0F92CC0 		ldrsh	ip, [r0, #44]
+ 496              		.loc 1 109 11 view .LVU138
+ 497 002e 02EB4211 		add	r1, r2, r2, lsl #5
+ 498 0032 594C     		ldr	r4, .L70+4
+ 499 0034 01EB4C02 		add	r2, r1, ip, lsl #1
+ 500 0038 2244     		add	r2, r2, r4
+ 501 003a B2F80120 		ldrh	r2, [r2, #1]	@ unaligned
+ 502 003e 0286     		strh	r2, [r0, #48]	@ unaligned
+ 110:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     switch (note_.duration) {
+ 503              		.loc 1 110 5 is_stmt 1 view .LVU139
+ 504              		.loc 1 110 19 is_stmt 0 view .LVU140
+ 505 0040 90F83120 		ldrb	r2, [r0, #49]	@ zero_extendqisi2
+ 506              		.loc 1 110 5 view .LVU141
+ 507 0044 012A     		cmp	r2, #1
+ 508 0046 68D0     		beq	.L41
+ 509 0048 022A     		cmp	r2, #2
+ 510 004a 6BD0     		beq	.L42
+ 511 004c 002A     		cmp	r2, #0
+ 512 004e 00F09D80 		beq	.L67
+ 513              	.L44:
+ 111:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     case D16:
+ 112:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       IncPatternStep(Patterns[current_pattern_].length);
+ 113:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       break;
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 15
+
+
+ 114:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     case D8:
+ 115:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       if (quadrant_index == 1 || quadrant_index == 3)
+ 116:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****         IncPatternStep(Patterns[current_pattern_].length);
+ 117:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       break;
+ 118:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     case D4:
+ 119:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       if (quadrant_index == 3)
+ 120:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****         IncPatternStep(Patterns[current_pattern_].length);
+ 121:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       break;
+ 122:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     }
+ 123:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 124:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     old_quadrant_index_ = quadrant_index;
+ 514              		.loc 1 124 5 is_stmt 1 view .LVU142
+ 125:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 126:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 127:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (note_.duration == D16) {
+ 515              		.loc 1 127 3 is_stmt 0 view .LVU143
+ 516 0052 022A     		cmp	r2, #2
+ 124:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 517              		.loc 1 124 25 view .LVU144
+ 518 0054 C385     		strh	r3, [r0, #46]	@ movhi
+ 519              		.loc 1 127 3 is_stmt 1 view .LVU145
+ 520 0056 00F08280 		beq	.L68
+ 521              	.L47:
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (HALFPI_F * quadrant_index) < pw_rad_ / 4.0f)
+ 129:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 130:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     else
+ 131:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = 0;
+ 132:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   } else if (note_.duration == D8) {
+ 522              		.loc 1 132 10 view .LVU146
+ 523 005a 012A     		cmp	r2, #1
+ 524 005c 33D0     		beq	.L69
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     quadrant_index /= 2.0f;
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 135:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 136:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     else
+ 137:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = 0;
+ 138:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   } else {
+ 139:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     quadrant_index /= 4.0f;
+ 525              		.loc 1 139 5 view .LVU147
+ 526              	.LVL24:
+ 140:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ < pw_rad_)
+ 527              		.loc 1 140 5 view .LVU148
+ 528 005e 90ED037A 		vldr.32	s14, [r0, #12]
+ 529              	.LVL25:
+ 530              		.loc 1 140 5 is_stmt 0 view .LVU149
+ 531 0062 F4EEC77A 		vcmpe.f32	s15, s14
+ 532 0066 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 533 006a 4CD4     		bmi	.L51
+ 534              	.LVL26:
+ 535              	.L62:
+ 131:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   } else if (note_.duration == D8) {
+ 536              		.loc 1 131 11 view .LVU150
+ 537 006c DFED4B6A 		vldr.32	s13, .L70+8
+ 538              	.L48:
+ 539              	.LVL27:
+ 141:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 142:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     else
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 16
+
+
+ 143:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = 0;
+ 144:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 145:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 146:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   phase_ += phase_inc_;
+ 540              		.loc 1 146 3 is_stmt 1 view .LVU151
+ 541              		.loc 1 146 13 is_stmt 0 view .LVU152
+ 542 0070 90ED077A 		vldr.32	s14, [r0, #28]
+ 147:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 148:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   if (phase_ > TWOPI_F) {
+ 543              		.loc 1 148 3 view .LVU153
+ 544 0074 9FED4A6A 		vldr.32	s12, .L70+12
+ 146:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 545              		.loc 1 146 10 view .LVU154
+ 546 0078 77EE877A 		vadd.f32	s15, s15, s14
+ 547              	.LVL28:
+ 548              		.loc 1 148 3 view .LVU155
+ 549 007c F4EEC67A 		vcmpe.f32	s15, s12
+ 146:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 550              		.loc 1 146 10 view .LVU156
+ 551 0080 C0ED067A 		vstr.32	s15, [r0, #24]
+ 552              	.LVL29:
+ 553              		.loc 1 148 3 is_stmt 1 view .LVU157
+ 554 0084 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 555 0088 60DD     		ble	.L63
+ 149:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     phase_ -= TWOPI_F;
+ 556              		.loc 1 149 5 view .LVU158
+ 557              		.loc 1 149 12 is_stmt 0 view .LVU159
+ 558 008a 77EEC67A 		vsub.f32	s15, s15, s12
+ 150:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     eoc_ = true;
+ 559              		.loc 1 150 10 view .LVU160
+ 560 008e 0123     		movs	r3, #1
+ 561 0090 80F82930 		strb	r3, [r0, #41]
+ 149:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     phase_ -= TWOPI_F;
+ 562              		.loc 1 149 12 view .LVU161
+ 563 0094 C0ED067A 		vstr.32	s15, [r0, #24]
+ 564              		.loc 1 150 5 is_stmt 1 view .LVU162
+ 565              	.L54:
+ 151:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   } else {
+ 152:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     eoc_ = false;
+ 153:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 154:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   eor_ = (phase_ - phase_inc_ < PI_F && phase_ >= PI_F);
+ 566              		.loc 1 154 3 view .LVU163
+ 567              		.loc 1 154 18 is_stmt 0 view .LVU164
+ 568 0098 37EEC77A 		vsub.f32	s14, s15, s14
+ 569              		.loc 1 154 38 view .LVU165
+ 570 009c 9FED416A 		vldr.32	s12, .L70+16
+ 571 00a0 B4EEC67A 		vcmpe.f32	s14, s12
+ 572 00a4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 573 00a8 48D5     		bpl	.L64
+ 574              		.loc 1 154 38 discriminator 1 view .LVU166
+ 575 00aa F4EEC67A 		vcmpe.f32	s15, s12
+ 155:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 156:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   return out * amp_;
+ 576              		.loc 1 156 16 discriminator 1 view .LVU167
+ 577 00ae 90ED000A 		vldr.32	s0, [r0]
+ 157:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 578              		.loc 1 157 1 discriminator 1 view .LVU168
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 17
+
+
+ 579 00b2 26EE800A 		vmul.f32	s0, s13, s0
+ 154:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 580              		.loc 1 154 38 discriminator 1 view .LVU169
+ 581 00b6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 582 00ba ACBF     		ite	ge
+ 583 00bc 0123     		movge	r3, #1
+ 584 00be 0023     		movlt	r3, #0
+ 154:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 585              		.loc 1 154 8 discriminator 1 view .LVU170
+ 586 00c0 80F82830 		strb	r3, [r0, #40]
+ 156:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 587              		.loc 1 156 3 is_stmt 1 discriminator 1 view .LVU171
+ 588              		.loc 1 157 1 is_stmt 0 discriminator 1 view .LVU172
+ 589 00c4 10BD     		pop	{r4, pc}
+ 590              	.LVL30:
+ 591              	.L69:
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 592              		.loc 1 133 5 is_stmt 1 view .LVU173
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 593              		.loc 1 133 20 is_stmt 0 view .LVU174
+ 594 00c6 07EE103A 		vmov	s14, r3	@ int
+ 595              	.LVL31:
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 596              		.loc 1 133 20 view .LVU175
+ 597 00ca B6EE006A 		vmov.f32	s12, #5.0e-1
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 598              		.loc 1 134 52 view .LVU176
+ 599 00ce D0ED036A 		vldr.32	s13, [r0, #12]
+ 600              	.LVL32:
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 601              		.loc 1 133 20 view .LVU177
+ 602 00d2 B8EEC77A 		vcvt.f32.s32	s14, s14
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 603              		.loc 1 134 16 view .LVU178
+ 604 00d6 DFED335A 		vldr.32	s11, .L70+16
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 605              		.loc 1 134 52 view .LVU179
+ 606 00da 66EE866A 		vmul.f32	s13, s13, s12
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 607              		.loc 1 133 20 view .LVU180
+ 608 00de 27EE067A 		vmul.f32	s14, s14, s12
+ 609              	.LVL33:
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 610              		.loc 1 134 5 is_stmt 1 view .LVU181
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 611              		.loc 1 134 16 is_stmt 0 view .LVU182
+ 612 00e2 B0EE676A 		vmov.f32	s12, s15
+ 133:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (PI_F * quadrant_index) < pw_rad_ / 2.0f)
+ 613              		.loc 1 133 20 view .LVU183
+ 614 00e6 BDEEC77A 		vcvt.s32.f32	s14, s14
+ 615              	.LVL34:
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 616              		.loc 1 134 24 view .LVU184
+ 617 00ea 17EE103A 		vmov	r3, s14	@ int
+ 618              	.LVL35:
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 619              		.loc 1 134 24 view .LVU185
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 18
+
+
+ 620 00ee 1BB2     		sxth	r3, r3
+ 621 00f0 07EE103A 		vmov	s14, r3	@ int
+ 622 00f4 B8EEC77A 		vcvt.f32.s32	s14, s14
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 623              		.loc 1 134 16 view .LVU186
+ 624 00f8 A7EE656A 		vfms.f32	s12, s14, s11
+ 134:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 625              		.loc 1 134 5 view .LVU187
+ 626 00fc B4EEE66A 		vcmpe.f32	s12, s13
+ 627 0100 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 628 0104 B2D5     		bpl	.L62
+ 629              	.LVL36:
+ 630              	.L51:
+ 129:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     else
+ 631              		.loc 1 129 7 is_stmt 1 view .LVU188
+ 129:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     else
+ 632              		.loc 1 129 26 is_stmt 0 view .LVU189
+ 633 0106 90F83030 		ldrb	r3, [r0, #48]	@ zero_extendqisi2
+ 634 010a B7EE000A 		vmov.f32	s0, #1.0e+0
+ 635 010e DFED236A 		vldr.32	s13, .L70+8
+ 636 0112 002B     		cmp	r3, #0
+ 637 0114 46FE806A 		vseleq.f32	s13, s13, s0
+ 638 0118 AAE7     		b	.L48
+ 639              	.LVL37:
+ 640              	.L41:
+ 114:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       if (quadrant_index == 1 || quadrant_index == 3)
+ 641              		.loc 1 114 5 is_stmt 1 view .LVU190
+ 115:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****         IncPatternStep(Patterns[current_pattern_].length);
+ 642              		.loc 1 115 7 view .LVU191
+ 643 011a 23F0020E 		bic	lr, r3, #2
+ 644 011e BEF1010F 		cmp	lr, #1
+ 645 0122 96D1     		bne	.L44
+ 646              	.L42:
+ 111:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       IncPatternStep(Patterns[current_pattern_].length);
+ 647              		.loc 1 111 5 view .LVU192
+ 112:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       break;
+ 648              		.loc 1 112 7 view .LVU193
+ 649              	.LBB28:
+ 650              	.LBB29:
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 651              		.loc 1 65 7 is_stmt 0 view .LVU194
+ 652 0124 0CF1010C 		add	ip, ip, #1
+ 653              	.LBE29:
+ 654              	.LBE28:
+ 112:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       break;
+ 655              		.loc 1 112 21 view .LVU195
+ 656 0128 615C     		ldrb	r1, [r4, r1]	@ zero_extendqisi2
+ 657              	.LVL38:
+ 658              	.LBB31:
+ 659              	.LBI28:
+  63:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** {
+ 660              		.loc 1 63 6 is_stmt 1 view .LVU196
+ 661              	.LBB30:
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 662              		.loc 1 65 3 view .LVU197
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 663              		.loc 1 65 7 is_stmt 0 view .LVU198
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 19
+
+
+ 664 012a 0FFA8CFC 		sxth	ip, ip
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 665              		.loc 1 65 3 view .LVU199
+ 666 012e 8C45     		cmp	ip, r1
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 667              		.loc 1 65 23 view .LVU200
+ 668 0130 A0F82CC0 		strh	ip, [r0, #44]	@ movhi
+  65:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     pattern_step_ = 0;
+ 669              		.loc 1 65 3 view .LVU201
+ 670 0134 8DDB     		blt	.L44
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 671              		.loc 1 66 5 is_stmt 1 view .LVU202
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 672              		.loc 1 66 19 is_stmt 0 view .LVU203
+ 673 0136 0021     		movs	r1, #0
+ 674              	.LVL39:
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 675              		.loc 1 66 19 view .LVU204
+ 676 0138 8185     		strh	r1, [r0, #44]	@ movhi
+ 677 013a 8AE7     		b	.L44
+ 678              	.LVL40:
+ 679              	.L64:
+  66:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 680              		.loc 1 66 19 view .LVU205
+ 681              	.LBE30:
+ 682              	.LBE31:
+ 154:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 683              		.loc 1 154 38 view .LVU206
+ 684 013c 0023     		movs	r3, #0
+ 156:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 685              		.loc 1 156 16 view .LVU207
+ 686 013e 90ED000A 		vldr.32	s0, [r0]
+ 154:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** 
+ 687              		.loc 1 154 8 view .LVU208
+ 688 0142 80F82830 		strb	r3, [r0, #40]
+ 156:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp **** }
+ 689              		.loc 1 156 3 is_stmt 1 view .LVU209
+ 690              		.loc 1 157 1 is_stmt 0 view .LVU210
+ 691 0146 26EE800A 		vmul.f32	s0, s13, s0
+ 692 014a 10BD     		pop	{r4, pc}
+ 693              	.L63:
+ 152:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 694              		.loc 1 152 5 is_stmt 1 view .LVU211
+ 152:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****   }
+ 695              		.loc 1 152 10 is_stmt 0 view .LVU212
+ 696 014c 0023     		movs	r3, #0
+ 697 014e 80F82930 		strb	r3, [r0, #41]
+ 698 0152 A1E7     		b	.L54
+ 699              	.LVL41:
+ 700              	.L66:
+ 127:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (HALFPI_F * quadrant_index) < pw_rad_ / 4.0f)
+ 701              		.loc 1 127 13 view .LVU213
+ 702 0154 90F83120 		ldrb	r2, [r0, #49]	@ zero_extendqisi2
+ 127:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****     if (phase_ - (HALFPI_F * quadrant_index) < pw_rad_ / 4.0f)
+ 703              		.loc 1 127 3 is_stmt 1 view .LVU214
+ 704 0158 022A     		cmp	r2, #2
+ 705 015a 7FF47EAF 		bne	.L47
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 20
+
+
+ 706              	.L68:
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 707              		.loc 1 128 5 view .LVU215
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 708              		.loc 1 128 28 is_stmt 0 view .LVU216
+ 709 015e 07EE103A 		vmov	s14, r3	@ int
+ 710              	.LVL42:
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 711              		.loc 1 128 16 view .LVU217
+ 712 0162 F0EE676A 		vmov.f32	s13, s15
+ 713              	.LVL43:
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 714              		.loc 1 128 16 view .LVU218
+ 715 0166 DFED0B5A 		vldr.32	s11, .L70
+ 716              	.LVL44:
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 717              		.loc 1 128 56 view .LVU219
+ 718 016a B5EE006A 		vmov.f32	s12, #2.5e-1
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 719              		.loc 1 128 28 view .LVU220
+ 720 016e B8EEC75A 		vcvt.f32.s32	s10, s14
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 721              		.loc 1 128 56 view .LVU221
+ 722 0172 90ED037A 		vldr.32	s14, [r0, #12]
+ 723 0176 27EE067A 		vmul.f32	s14, s14, s12
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 724              		.loc 1 128 16 view .LVU222
+ 725 017a E5EE656A 		vfms.f32	s13, s10, s11
+ 128:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       out = note_.active ? 1.0f : 0.0f;
+ 726              		.loc 1 128 5 view .LVU223
+ 727 017e F4EEC76A 		vcmpe.f32	s13, s14
+ 728 0182 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 729 0186 7FF571AF 		bpl	.L62
+ 730 018a BCE7     		b	.L51
+ 731              	.LVL45:
+ 732              	.L67:
+ 118:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****       if (quadrant_index == 3)
+ 733              		.loc 1 118 5 is_stmt 1 view .LVU224
+ 119:gml/GuitarPedal/Effect-Modules/Chopper/chopper.cpp ****         IncPatternStep(Patterns[current_pattern_].length);
+ 734              		.loc 1 119 7 view .LVU225
+ 735 018c 032B     		cmp	r3, #3
+ 736 018e 7FF460AF 		bne	.L44
+ 737 0192 C7E7     		b	.L42
+ 738              	.L71:
+ 739              		.align	2
+ 740              	.L70:
+ 741 0194 DB0FC93F 		.word	1070141403
+ 742 0198 00000000 		.word	.LANCHOR0
+ 743 019c 00000000 		.word	0
+ 744 01a0 DB0FC940 		.word	1086918619
+ 745 01a4 DB0F4940 		.word	1078530011
+ 746              		.cfi_endproc
+ 747              	.LFE3581:
+ 749              		.global	_ZN10bkshepherd7Chopper8PatternsE
+ 750              		.section	.data._ZN10bkshepherd7Chopper8PatternsE,"aw"
+ 751              		.align	2
+ 752              		.set	.LANCHOR0,. + 0
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 21
+
+
+ 755              	_ZN10bkshepherd7Chopper8PatternsE:
+ 756 0000 10       		.byte	16
+ 757 0001 01       		.byte	1
+ 758 0002 02       		.byte	2
+ 759 0003 01       		.byte	1
+ 760 0004 02       		.byte	2
+ 761 0005 01       		.byte	1
+ 762 0006 02       		.byte	2
+ 763 0007 01       		.byte	1
+ 764 0008 02       		.byte	2
+ 765 0009 01       		.byte	1
+ 766 000a 02       		.byte	2
+ 767 000b 01       		.byte	1
+ 768 000c 02       		.byte	2
+ 769 000d 01       		.byte	1
+ 770 000e 02       		.byte	2
+ 771 000f 01       		.byte	1
+ 772 0010 02       		.byte	2
+ 773 0011 01       		.byte	1
+ 774 0012 02       		.byte	2
+ 775 0013 01       		.byte	1
+ 776 0014 02       		.byte	2
+ 777 0015 01       		.byte	1
+ 778 0016 02       		.byte	2
+ 779 0017 01       		.byte	1
+ 780 0018 02       		.byte	2
+ 781 0019 01       		.byte	1
+ 782 001a 02       		.byte	2
+ 783 001b 01       		.byte	1
+ 784 001c 02       		.byte	2
+ 785 001d 01       		.byte	1
+ 786 001e 02       		.byte	2
+ 787 001f 01       		.byte	1
+ 788 0020 02       		.byte	2
+ 789 0021 10       		.byte	16
+ 790 0022 01       		.byte	1
+ 791 0023 02       		.byte	2
+ 792 0024 00       		.byte	0
+ 793 0025 02       		.byte	2
+ 794 0026 01       		.byte	1
+ 795 0027 02       		.byte	2
+ 796 0028 00       		.byte	0
+ 797 0029 02       		.byte	2
+ 798 002a 01       		.byte	1
+ 799 002b 02       		.byte	2
+ 800 002c 00       		.byte	0
+ 801 002d 02       		.byte	2
+ 802 002e 01       		.byte	1
+ 803 002f 02       		.byte	2
+ 804 0030 00       		.byte	0
+ 805 0031 02       		.byte	2
+ 806 0032 01       		.byte	1
+ 807 0033 02       		.byte	2
+ 808 0034 00       		.byte	0
+ 809 0035 02       		.byte	2
+ 810 0036 01       		.byte	1
+ 811 0037 02       		.byte	2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 22
+
+
+ 812 0038 00       		.byte	0
+ 813 0039 02       		.byte	2
+ 814 003a 01       		.byte	1
+ 815 003b 02       		.byte	2
+ 816 003c 00       		.byte	0
+ 817 003d 02       		.byte	2
+ 818 003e 01       		.byte	1
+ 819 003f 02       		.byte	2
+ 820 0040 00       		.byte	0
+ 821 0041 02       		.byte	2
+ 822 0042 08       		.byte	8
+ 823 0043 01       		.byte	1
+ 824 0044 01       		.byte	1
+ 825 0045 01       		.byte	1
+ 826 0046 01       		.byte	1
+ 827 0047 01       		.byte	1
+ 828 0048 01       		.byte	1
+ 829 0049 01       		.byte	1
+ 830 004a 01       		.byte	1
+ 831 004b 01       		.byte	1
+ 832 004c 01       		.byte	1
+ 833 004d 01       		.byte	1
+ 834 004e 01       		.byte	1
+ 835 004f 01       		.byte	1
+ 836 0050 01       		.byte	1
+ 837 0051 01       		.byte	1
+ 838 0052 01       		.byte	1
+ 839 0053 00000000 		.space	16
+ 839      00000000 
+ 839      00000000 
+ 839      00000000 
+ 840 0063 10       		.byte	16
+ 841 0064 01       		.byte	1
+ 842 0065 02       		.byte	2
+ 843 0066 00       		.byte	0
+ 844 0067 02       		.byte	2
+ 845 0068 00       		.byte	0
+ 846 0069 02       		.byte	2
+ 847 006a 00       		.byte	0
+ 848 006b 02       		.byte	2
+ 849 006c 01       		.byte	1
+ 850 006d 02       		.byte	2
+ 851 006e 00       		.byte	0
+ 852 006f 02       		.byte	2
+ 853 0070 00       		.byte	0
+ 854 0071 02       		.byte	2
+ 855 0072 00       		.byte	0
+ 856 0073 02       		.byte	2
+ 857 0074 01       		.byte	1
+ 858 0075 02       		.byte	2
+ 859 0076 00       		.byte	0
+ 860 0077 02       		.byte	2
+ 861 0078 00       		.byte	0
+ 862 0079 02       		.byte	2
+ 863 007a 00       		.byte	0
+ 864 007b 02       		.byte	2
+ 865 007c 01       		.byte	1
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 23
+
+
+ 866 007d 02       		.byte	2
+ 867 007e 00       		.byte	0
+ 868 007f 02       		.byte	2
+ 869 0080 00       		.byte	0
+ 870 0081 02       		.byte	2
+ 871 0082 00       		.byte	0
+ 872 0083 02       		.byte	2
+ 873 0084 04       		.byte	4
+ 874 0085 01       		.byte	1
+ 875 0086 00       		.byte	0
+ 876 0087 01       		.byte	1
+ 877 0088 00       		.byte	0
+ 878 0089 01       		.byte	1
+ 879 008a 00       		.byte	0
+ 880 008b 01       		.byte	1
+ 881 008c 00       		.byte	0
+ 882 008d 00000000 		.space	24
+ 882      00000000 
+ 882      00000000 
+ 882      00000000 
+ 882      00000000 
+ 883 00a5 10       		.byte	16
+ 884 00a6 01       		.byte	1
+ 885 00a7 02       		.byte	2
+ 886 00a8 00       		.byte	0
+ 887 00a9 02       		.byte	2
+ 888 00aa 01       		.byte	1
+ 889 00ab 02       		.byte	2
+ 890 00ac 00       		.byte	0
+ 891 00ad 02       		.byte	2
+ 892 00ae 01       		.byte	1
+ 893 00af 02       		.byte	2
+ 894 00b0 00       		.byte	0
+ 895 00b1 02       		.byte	2
+ 896 00b2 01       		.byte	1
+ 897 00b3 02       		.byte	2
+ 898 00b4 00       		.byte	0
+ 899 00b5 02       		.byte	2
+ 900 00b6 01       		.byte	1
+ 901 00b7 02       		.byte	2
+ 902 00b8 00       		.byte	0
+ 903 00b9 02       		.byte	2
+ 904 00ba 01       		.byte	1
+ 905 00bb 02       		.byte	2
+ 906 00bc 00       		.byte	0
+ 907 00bd 02       		.byte	2
+ 908 00be 01       		.byte	1
+ 909 00bf 02       		.byte	2
+ 910 00c0 00       		.byte	0
+ 911 00c1 02       		.byte	2
+ 912 00c2 01       		.byte	1
+ 913 00c3 02       		.byte	2
+ 914 00c4 00       		.byte	0
+ 915 00c5 02       		.byte	2
+ 916 00c6 10       		.byte	16
+ 917 00c7 01       		.byte	1
+ 918 00c8 02       		.byte	2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 24
+
+
+ 919 00c9 01       		.byte	1
+ 920 00ca 02       		.byte	2
+ 921 00cb 00       		.byte	0
+ 922 00cc 02       		.byte	2
+ 923 00cd 00       		.byte	0
+ 924 00ce 02       		.byte	2
+ 925 00cf 01       		.byte	1
+ 926 00d0 02       		.byte	2
+ 927 00d1 01       		.byte	1
+ 928 00d2 02       		.byte	2
+ 929 00d3 00       		.byte	0
+ 930 00d4 02       		.byte	2
+ 931 00d5 00       		.byte	0
+ 932 00d6 02       		.byte	2
+ 933 00d7 01       		.byte	1
+ 934 00d8 02       		.byte	2
+ 935 00d9 01       		.byte	1
+ 936 00da 02       		.byte	2
+ 937 00db 00       		.byte	0
+ 938 00dc 02       		.byte	2
+ 939 00dd 00       		.byte	0
+ 940 00de 02       		.byte	2
+ 941 00df 01       		.byte	1
+ 942 00e0 02       		.byte	2
+ 943 00e1 01       		.byte	1
+ 944 00e2 02       		.byte	2
+ 945 00e3 00       		.byte	0
+ 946 00e4 02       		.byte	2
+ 947 00e5 00       		.byte	0
+ 948 00e6 02       		.byte	2
+ 949 00e7 10       		.byte	16
+ 950 00e8 01       		.byte	1
+ 951 00e9 02       		.byte	2
+ 952 00ea 01       		.byte	1
+ 953 00eb 02       		.byte	2
+ 954 00ec 01       		.byte	1
+ 955 00ed 02       		.byte	2
+ 956 00ee 00       		.byte	0
+ 957 00ef 02       		.byte	2
+ 958 00f0 01       		.byte	1
+ 959 00f1 02       		.byte	2
+ 960 00f2 01       		.byte	1
+ 961 00f3 02       		.byte	2
+ 962 00f4 01       		.byte	1
+ 963 00f5 02       		.byte	2
+ 964 00f6 00       		.byte	0
+ 965 00f7 02       		.byte	2
+ 966 00f8 01       		.byte	1
+ 967 00f9 02       		.byte	2
+ 968 00fa 01       		.byte	1
+ 969 00fb 02       		.byte	2
+ 970 00fc 01       		.byte	1
+ 971 00fd 02       		.byte	2
+ 972 00fe 00       		.byte	0
+ 973 00ff 02       		.byte	2
+ 974 0100 01       		.byte	1
+ 975 0101 02       		.byte	2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 25
+
+
+ 976 0102 01       		.byte	1
+ 977 0103 02       		.byte	2
+ 978 0104 01       		.byte	1
+ 979 0105 02       		.byte	2
+ 980 0106 00       		.byte	0
+ 981 0107 02       		.byte	2
+ 982 0108 0C       		.byte	12
+ 983 0109 01       		.byte	1
+ 984 010a 01       		.byte	1
+ 985 010b 01       		.byte	1
+ 986 010c 02       		.byte	2
+ 987 010d 01       		.byte	1
+ 988 010e 02       		.byte	2
+ 989 010f 01       		.byte	1
+ 990 0110 01       		.byte	1
+ 991 0111 01       		.byte	1
+ 992 0112 02       		.byte	2
+ 993 0113 01       		.byte	1
+ 994 0114 02       		.byte	2
+ 995 0115 01       		.byte	1
+ 996 0116 01       		.byte	1
+ 997 0117 01       		.byte	1
+ 998 0118 02       		.byte	2
+ 999 0119 01       		.byte	1
+ 1000 011a 02       		.byte	2
+ 1001 011b 01       		.byte	1
+ 1002 011c 01       		.byte	1
+ 1003 011d 01       		.byte	1
+ 1004 011e 02       		.byte	2
+ 1005 011f 01       		.byte	1
+ 1006 0120 02       		.byte	2
+ 1007 0121 00000000 		.space	8
+ 1007      00000000 
+ 1008 0129 0C       		.byte	12
+ 1009 012a 01       		.byte	1
+ 1010 012b 00       		.byte	0
+ 1011 012c 01       		.byte	1
+ 1012 012d 01       		.byte	1
+ 1013 012e 01       		.byte	1
+ 1014 012f 01       		.byte	1
+ 1015 0130 01       		.byte	1
+ 1016 0131 00       		.byte	0
+ 1017 0132 01       		.byte	1
+ 1018 0133 01       		.byte	1
+ 1019 0134 01       		.byte	1
+ 1020 0135 01       		.byte	1
+ 1021 0136 01       		.byte	1
+ 1022 0137 00       		.byte	0
+ 1023 0138 01       		.byte	1
+ 1024 0139 01       		.byte	1
+ 1025 013a 01       		.byte	1
+ 1026 013b 01       		.byte	1
+ 1027 013c 01       		.byte	1
+ 1028 013d 00       		.byte	0
+ 1029 013e 01       		.byte	1
+ 1030 013f 01       		.byte	1
+ 1031 0140 01       		.byte	1
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 26
+
+
+ 1032 0141 01       		.byte	1
+ 1033 0142 00000000 		.space	8
+ 1033      00000000 
+ 1034 014a 0C       		.byte	12
+ 1035 014b 01       		.byte	1
+ 1036 014c 02       		.byte	2
+ 1037 014d 01       		.byte	1
+ 1038 014e 01       		.byte	1
+ 1039 014f 01       		.byte	1
+ 1040 0150 01       		.byte	1
+ 1041 0151 01       		.byte	1
+ 1042 0152 02       		.byte	2
+ 1043 0153 01       		.byte	1
+ 1044 0154 01       		.byte	1
+ 1045 0155 01       		.byte	1
+ 1046 0156 01       		.byte	1
+ 1047 0157 01       		.byte	1
+ 1048 0158 02       		.byte	2
+ 1049 0159 01       		.byte	1
+ 1050 015a 01       		.byte	1
+ 1051 015b 01       		.byte	1
+ 1052 015c 01       		.byte	1
+ 1053 015d 01       		.byte	1
+ 1054 015e 02       		.byte	2
+ 1055 015f 01       		.byte	1
+ 1056 0160 01       		.byte	1
+ 1057 0161 01       		.byte	1
+ 1058 0162 01       		.byte	1
+ 1059 0163 00000000 		.space	8
+ 1059      00000000 
+ 1060 016b 0C       		.byte	12
+ 1061 016c 01       		.byte	1
+ 1062 016d 01       		.byte	1
+ 1063 016e 01       		.byte	1
+ 1064 016f 00       		.byte	0
+ 1065 0170 01       		.byte	1
+ 1066 0171 00       		.byte	0
+ 1067 0172 01       		.byte	1
+ 1068 0173 01       		.byte	1
+ 1069 0174 01       		.byte	1
+ 1070 0175 00       		.byte	0
+ 1071 0176 01       		.byte	1
+ 1072 0177 00       		.byte	0
+ 1073 0178 01       		.byte	1
+ 1074 0179 01       		.byte	1
+ 1075 017a 01       		.byte	1
+ 1076 017b 00       		.byte	0
+ 1077 017c 01       		.byte	1
+ 1078 017d 00       		.byte	0
+ 1079 017e 01       		.byte	1
+ 1080 017f 01       		.byte	1
+ 1081 0180 01       		.byte	1
+ 1082 0181 00       		.byte	0
+ 1083 0182 01       		.byte	1
+ 1084 0183 00       		.byte	0
+ 1085 0184 00000000 		.space	8
+ 1085      00000000 
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 27
+
+
+ 1086 018c 0E       		.byte	14
+ 1087 018d 01       		.byte	1
+ 1088 018e 02       		.byte	2
+ 1089 018f 01       		.byte	1
+ 1090 0190 02       		.byte	2
+ 1091 0191 01       		.byte	1
+ 1092 0192 02       		.byte	2
+ 1093 0193 01       		.byte	1
+ 1094 0194 02       		.byte	2
+ 1095 0195 01       		.byte	1
+ 1096 0196 02       		.byte	2
+ 1097 0197 01       		.byte	1
+ 1098 0198 02       		.byte	2
+ 1099 0199 01       		.byte	1
+ 1100 019a 01       		.byte	1
+ 1101 019b 01       		.byte	1
+ 1102 019c 02       		.byte	2
+ 1103 019d 01       		.byte	1
+ 1104 019e 02       		.byte	2
+ 1105 019f 01       		.byte	1
+ 1106 01a0 02       		.byte	2
+ 1107 01a1 01       		.byte	1
+ 1108 01a2 02       		.byte	2
+ 1109 01a3 01       		.byte	1
+ 1110 01a4 02       		.byte	2
+ 1111 01a5 01       		.byte	1
+ 1112 01a6 02       		.byte	2
+ 1113 01a7 01       		.byte	1
+ 1114 01a8 01       		.byte	1
+ 1115 01a9 00000000 		.space	4
+ 1116 01ad 0E       		.byte	14
+ 1117 01ae 01       		.byte	1
+ 1118 01af 01       		.byte	1
+ 1119 01b0 01       		.byte	1
+ 1120 01b1 02       		.byte	2
+ 1121 01b2 01       		.byte	1
+ 1122 01b3 02       		.byte	2
+ 1123 01b4 01       		.byte	1
+ 1124 01b5 02       		.byte	2
+ 1125 01b6 01       		.byte	1
+ 1126 01b7 02       		.byte	2
+ 1127 01b8 01       		.byte	1
+ 1128 01b9 02       		.byte	2
+ 1129 01ba 01       		.byte	1
+ 1130 01bb 02       		.byte	2
+ 1131 01bc 01       		.byte	1
+ 1132 01bd 01       		.byte	1
+ 1133 01be 01       		.byte	1
+ 1134 01bf 02       		.byte	2
+ 1135 01c0 01       		.byte	1
+ 1136 01c1 02       		.byte	2
+ 1137 01c2 01       		.byte	1
+ 1138 01c3 02       		.byte	2
+ 1139 01c4 01       		.byte	1
+ 1140 01c5 02       		.byte	2
+ 1141 01c6 01       		.byte	1
+ 1142 01c7 02       		.byte	2
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 28
+
+
+ 1143 01c8 01       		.byte	1
+ 1144 01c9 02       		.byte	2
+ 1145 01ca 01       		.byte	1
+ 1146 01cb 02       		.byte	2
+ 1147 01cc 01       		.byte	1
+ 1148 01cd 02       		.byte	2
+ 1149              		.text
+ 1150              	.Letext0:
+ 1151              		.file 3 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1152              		.file 4 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1153              		.file 5 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdint.h"
+ 1154              		.file 6 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stddef.h"
+ 1155              		.file 7 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cmath"
+ 1156              		.file 8 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\std_abs.h"
+ 1157              		.file 9 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdint"
+ 1158              		.file 10 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdlib"
+ 1159              		.file 11 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\type_traits"
+ 1160              		.file 12 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\debug\\debug.h"
+ 1161              		.file 13 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cwchar"
+ 1162              		.file 14 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\stl_pair.h
+ 1163              		.file 15 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\exception_
+ 1164              		.file 16 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\arm-none-eabi\\t
+ 1165              		.file 17 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\clocale"
+ 1166              		.file 18 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstdio"
+ 1167              		.file 19 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\basic_stri
+ 1168              		.file 20 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\charconv.h
+ 1169              		.file 21 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\algorithmf
+ 1170              		.file 22 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\cstring"
+ 1171              		.file 23 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\bits\\predefined
+ 1172              		.file 24 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\_types.h"
+ 1173              		.file 25 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\reent.h"
+ 1174              		.file 26 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\sys\\lock.h"
+ 1175              		.file 27 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\math.h"
+ 1176              		.file 28 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdlib.h"
+ 1177              		.file 29 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\math.h"
+ 1178              		.file 30 "../../DaisySP/Source/Control/adenv.h"
+ 1179              		.file 31 "../../DaisySP/Source/Utility/dsp.h"
+ 1180              		.file 32 "c:\\program files\\daisytoolchain\\lib\\gcc\\arm-none-eabi\\10.2.1\\include\\stdarg.h"
+ 1181              		.file 33 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\wchar.h"
+ 1182              		.file 34 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\locale.h"
+ 1183              		.file 35 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\stdio.h"
+ 1184              		.file 36 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\c++\\10.2.1\\stdlib.h"
+ 1185              		.file 37 "c:\\program files\\daisytoolchain\\arm-none-eabi\\include\\string.h"
+ 1186              		.file 38 "gml/GuitarPedal/Effect-Modules/Chopper/chopper.h"
+ 1187              		.file 39 "<built-in>"
+ARM GAS  C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s 			page 29
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 chopper.cpp
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:17     .text._ZN10bkshepherd7Chopper4InitEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:26     .text._ZN10bkshepherd7Chopper4InitEf:00000000 _ZN10bkshepherd7Chopper4InitEf
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:180    .text._ZN10bkshepherd7Chopper4InitEf:00000080 $d
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:190    .text._ZN10bkshepherd7Chopper5ResetEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:198    .text._ZN10bkshepherd7Chopper5ResetEf:00000000 _ZN10bkshepherd7Chopper5ResetEf
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:220    .text._ZN10bkshepherd7Chopper5ResetEf:0000000c $d
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:225    .text._ZN10bkshepherd7Chopper14IncPatternStepEh:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:233    .text._ZN10bkshepherd7Chopper14IncPatternStepEh:00000000 _ZN10bkshepherd7Chopper14IncPatternStepEh
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:259    .text._ZN10bkshepherd7Chopper10SetPatternEi:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:267    .text._ZN10bkshepherd7Chopper10SetPatternEi:00000000 _ZN10bkshepherd7Chopper10SetPatternEi
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:287    .text._ZN10bkshepherd7Chopper11NextPatternEb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:295    .text._ZN10bkshepherd7Chopper11NextPatternEb:00000000 _ZN10bkshepherd7Chopper11NextPatternEb
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:345    .text._ZN10bkshepherd7Chopper11NextPatternEb:0000001c $d
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:350    .text._ZN10bkshepherd7Chopper11PrevPatternEb:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:358    .text._ZN10bkshepherd7Chopper11PrevPatternEb:00000000 _ZN10bkshepherd7Chopper11PrevPatternEb
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:408    .text._ZN10bkshepherd7Chopper11PrevPatternEb:0000001c $d
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:413    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:421    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000000 _ZN10bkshepherd7Chopper12CalcPhaseIncEf
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:442    .text._ZN10bkshepherd7Chopper12CalcPhaseIncEf:00000014 $d
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:447    .text._ZN10bkshepherd7Chopper7ProcessEv:00000000 $t
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:455    .text._ZN10bkshepherd7Chopper7ProcessEv:00000000 _ZN10bkshepherd7Chopper7ProcessEv
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:741    .text._ZN10bkshepherd7Chopper7ProcessEv:00000194 $d
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:755    .data._ZN10bkshepherd7Chopper8PatternsE:00000000 _ZN10bkshepherd7Chopper8PatternsE
+C:\Users\aydan\AppData\Local\Temp\ccN5elQr.s:751    .data._ZN10bkshepherd7Chopper8PatternsE:00000000 $d
+
+UNDEFINED SYMBOLS
+_ZN7daisysp4Adsr4InitEfi
+_ZN7daisysp4Adsr7SetTimeEif

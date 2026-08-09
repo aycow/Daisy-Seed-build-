@@ -6,10 +6,18 @@
 #include "tuner.h"
 
 #include "base_effect_module.h"
+#if DIAG_FX_CHORUS
 #include "chorus_module.h"
+#endif
+#if DIAG_FX_REVERB
 #include "reverb_module.h"
+#endif
+#if DIAG_FX_CRUSHER
 #include "crusher_module.h"
+#endif
+#if DIAG_FX_GRANULAR
 #include "granulardelay_module.h"
+#endif
 
 #include <stdint.h>
 
@@ -72,6 +80,7 @@ class AudioEngine
     void ApplySnapshotIfChanged();
     void StartTransition(uint8_t requested_effect, bool requested_bypass);
     void StepTransition();
+    void BeginThermalShutdown();
     void ProcessEffectSample(bkshepherd::BaseEffectModule* fx, float in, float& out_l, float& out_r);
     void ApplyParameters(uint8_t effect, const uint16_t* parameters);
     bkshepherd::BaseEffectModule* CurrentEffect();
@@ -81,10 +90,18 @@ class AudioEngine
 
     // Concrete effect instances live here so only the audio callback mutates or
     // processes them. The main loop never calls module setters directly.
+#if DIAG_FX_CHORUS
     bkshepherd::ChorusModule chorus_;
+#endif
+#if DIAG_FX_REVERB
     bkshepherd::ReverbModule reverb_;
+#endif
+#if DIAG_FX_CRUSHER
     bkshepherd::CrusherModule crusher_;
+#endif
+#if DIAG_FX_GRANULAR
     bkshepherd::GranularDelayModule granular_delay_;
+#endif
     bkshepherd::BaseEffectModule* effects_[config::FX_COUNT];
     PotParamMap maps_[config::FX_COUNT];
 
@@ -110,6 +127,16 @@ class AudioEngine
     TransitionState transition_;
     float wet_gain_;
     float wet_gain_step_;
+
+    enum ThermalAudioState : uint8_t
+    {
+        THERMAL_AUDIO_NORMAL,
+        THERMAL_AUDIO_FADING,
+        THERMAL_AUDIO_MUTED
+    };
+    ThermalAudioState thermal_audio_state_;
+    float thermal_gain_;
+    float thermal_gain_step_;
 
 #if AUDIO_CPU_LOAD_DEBUG
     daisy::CpuLoadMeter cpu_load_;
