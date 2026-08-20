@@ -100,6 +100,28 @@ void Telemetry::SendTemperatureSensorFault(int error_code)
     Send(buf);
 }
 
+// Persistent safety state lets a listener recover after missing the one-shot
+// fault notification. Warning is not latched safety mode and reports NONE.
+void Telemetry::SendSafetyState(ThermalState state,
+                                float        temperature_c,
+                                int          error_code)
+{
+    char buf[64];
+    if(state == ThermalState::Shutdown)
+    {
+        const float scaled = temperature_c * 100.0f;
+        const int centi_c
+            = (int)(scaled + (scaled >= 0.0f ? 0.5f : -0.5f));
+        std::snprintf(buf, sizeof(buf), "F,STATE,THERMAL,%d\n", centi_c);
+    }
+    else if(state == ThermalState::SensorFault)
+        std::snprintf(
+            buf, sizeof(buf), "F,STATE,TEMP_SENSOR,%d\n", error_code);
+    else
+        std::snprintf(buf, sizeof(buf), "F,STATE,NONE,0\n");
+    Send(buf);
+}
+
 void Telemetry::SendThermalDebug(float temperature_c, uint16_t raw_adc, ThermalState state)
 {
 #if THERMAL_DEBUG_TELEMETRY

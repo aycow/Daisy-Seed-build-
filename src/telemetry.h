@@ -26,6 +26,9 @@ class Telemetry
     void SendTunerDisabled();
     void SendThermalFault(float temperature_c);
     void SendTemperatureSensorFault(int error_code);
+    void SendSafetyState(ThermalState state,
+                         float        temperature_c,
+                         int          error_code);
     void SendThermalDebug(float temperature_c, uint16_t raw_adc, ThermalState state);
     void SendThermalCalibration(const ThermalCalibrationInfo& calibration);
     void SendAudioCpuLoad(float average,

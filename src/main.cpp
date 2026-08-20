@@ -178,6 +178,8 @@ int main(void)
     uint8_t  last_sent_effect       = 0xffu;
     uint8_t  current_effect         = app::config::FX_TUNER;
     bool     previous_tuner_mode    = false;
+    uint32_t last_effect_tx         = 0;
+    uint32_t last_safety_tx         = 0;
     uint32_t last_pots_tx           = 0;
     uint32_t last_tuner_tx          = 0;
     uint32_t last_tuner_disabled_tx = 0;
@@ -205,6 +207,16 @@ int main(void)
                 else if(fault == app::ThermalFaultKind::Sensor)
                     telemetry.SendTemperatureSensorFault(
                         thermal_monitor.last_error_code());
+            }
+            if(fault != app::ThermalFaultKind::None
+               || (uint32_t)(now - last_safety_tx)
+                      >= app::config::kSafetyTelemetryHeartbeatMs)
+            {
+                last_safety_tx = now;
+                telemetry.SendSafetyState(
+                    thermal_monitor.state(),
+                    thermal_monitor.filtered_temperature_c(),
+                    thermal_monitor.last_error_code());
             }
             hw.SetLed(thermal_monitor.FaultLedOn(now));
             System::Delay(app::config::kThermalFaultLoopDelayMs);
@@ -249,14 +261,34 @@ int main(void)
         (void)last_thermal_debug_tx;
 #endif
 
+#if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+        if((uint32_t)(now - last_safety_tx)
+           >= app::config::kSafetyTelemetryHeartbeatMs)
+        {
+            last_safety_tx = now;
+            telemetry.SendSafetyState(thermal_monitor.state(),
+                                      thermal_monitor.filtered_temperature_c(),
+                                      thermal_monitor.last_error_code());
+        }
+#endif
+
 #if DIAG_SERVICE_CONTROLS
         const app::ControlTelemetryState state = controls.Process(hw, now);
         current_effect                         = state.effect;
         hw.SetLed(state.rotary_position == 1);
 
 #if DIAG_SEND_TELEMETRY
-        if(current_effect != last_sent_effect)
+        const bool effect_changed = current_effect != last_sent_effect;
+#if DIAG_STAGE == DIAG_STAGE_PRODUCTION
+        const bool effect_heartbeat_due
+            = (uint32_t)(now - last_effect_tx)
+              >= app::config::kEffectTelemetryHeartbeatMs;
+#else
+        const bool effect_heartbeat_due = false;
+#endif
+        if(effect_changed || effect_heartbeat_due)
         {
+            last_effect_tx   = now;
             last_sent_effect = current_effect;
             telemetry.SendEffect(last_sent_effect);
         }
@@ -350,6 +382,8 @@ int main(void)
 #endif
 
         (void)last_sent_effect;
+        (void)last_effect_tx;
+        (void)last_safety_tx;
         (void)last_pots_tx;
         (void)last_tuner_tx;
         (void)last_tuner_disabled_tx;

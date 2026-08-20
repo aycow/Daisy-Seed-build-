@@ -32,6 +32,8 @@ static constexpr uint16_t kParameterDeadbandU16 = 128;
 // Main-loop telemetry cadence. UART is never sent from the audio interrupt; these
 // periods control how often the foreground loop emits state when nothing changes.
 static constexpr uint32_t kPotTelemetryHeartbeatMs = 500;
+static constexpr uint32_t kEffectTelemetryHeartbeatMs = 1000;
+static constexpr uint32_t kSafetyTelemetryHeartbeatMs = 1000;
 static constexpr uint32_t kTunerAnalysisPeriodMs = 80;
 static constexpr uint32_t kTunerDisabledHeartbeatMs = 1000;
 static constexpr uint32_t kMainLoopDelayMs = 1;
@@ -101,9 +103,9 @@ static_assert((kTunerCaptureRingSize & (kTunerCaptureRingSize - 1)) == 0,
 enum EffectId : uint8_t
 {
     FX_TUNER = 0,
-    FX_CHORUS = 1,
+    FX_PHASER = 1,
     FX_REVERB = 2,
-    FX_CRUSHER = 3,
+    FX_PITCH_SHIFTER = 3,
     FX_GRANULAR_DELAY = 4,
     FX_COUNT = 5
 };

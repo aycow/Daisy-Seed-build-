@@ -1,6 +1,6 @@
 # project006
 
-Daisy Seed/Seed3 guitar-pedal firmware for tuner, chorus, reverb, crusher, granular delay, footswitch bypass, analog rotary selection, and UART telemetry to a Raspberry Pi.
+Daisy Seed/Seed3 guitar-pedal firmware for tuner, phaser, reverb, pitch shifter, granular delay, footswitch bypass, analog rotary selection, and UART telemetry to a Raspberry Pi.
 
 Compile-time audio-corruption isolation stages, build commands, and the hardware
 test sequence are documented in [DIAGNOSTICS.md](DIAGNOSTICS.md).
@@ -23,7 +23,7 @@ Control mailbox:
 
 Audio callback:
 - Consumes one valid snapshot at the start of each block.
-- Exclusively owns and mutates chorus, reverb, crusher, and granular-delay DSP objects after audio starts.
+- Exclusively owns and mutates phaser, reverb, pitch-shifter, and granular-delay DSP objects after audio starts.
 - Applies changed effect parameters only when the mailbox revision changes.
 - Performs effect/bypass transition ramps before skipping or switching DSP objects.
 - Processes real-time audio and captures tuner samples into a power-of-two ring.
@@ -32,9 +32,26 @@ Audio callback:
 
 Memory:
 - Granular-delay history is a plain 24000-sample float buffer in external SDRAM.
+- Pitch-shifter history is two CPU-owned 6000-sample float buffers in external SDRAM (48,000 bytes total).
 - Tuner capture, analysis, and source-window buffers are CPU-owned storage in ordinary cached SRAM.
 - LibDaisy audio and ADC DMA buffers remain in the first 32 KB of RAM_D2, which its MPU configuration marks non-cacheable.
 - Callback-critical ownership state remains in normal internal SRAM.
+
+Production effect IDs and controls:
+
+- `0` Tuner
+- `1` Phaser: Mix, Rate, Depth; Feedback remains at its default
+- `2` Reverb: existing controls unchanged
+- `3` Pitch Shifter: Semitone, Crossfade, Direction; Mode is fixed to Latch
+- `4` Granular Delay: existing controls unchanged
+
+The Phaser and Pitch Shifter are C++14 adaptations of BKShepherd
+`DaisySeedProjects` commit `80feee11f26a401ae324de75d9266e63ed82deb2`.
+Phaser uses the upstream four-stage `SimplePhaser` behavior with a local
+self-contained all-pass implementation; no `q`, `infra`, or `gcem` dependency
+is imported. Pitch Shifter uses the upstream modified dual-delay architecture,
+with all DSP state owned by `PitchShifterModule` and only its two large histories
+stored globally in SDRAM. Neither effect uses `DMA_BUFFER_MEM_SECTION`.
 
 Raspberry Pi:
 - Consumes the unchanged production UART protocol.
@@ -51,16 +68,19 @@ S,<down0or1>,<edge>,<press_count>
 T,<valid0or1>,<freq_mHz>,<note>,<cents_c>,<conf_m>
 ```
 
-`E,4` reports granular delay. `ROTARY_CALIBRATION_MODE=1` enables an additional debug-only `R,<raw_u16>,<position>` message. This message is disabled in normal production builds and reports the actual raw ADC value.
+`E,4` reports granular delay. Effect selection is sent immediately when it changes and is republished every `kEffectTelemetryHeartbeatMs` (1 second) while normal operation continues. The repeated record is only a state heartbeat; it does not retrigger effect selection or DSP state. `ROTARY_CALIBRATION_MODE=1` enables an additional debug-only `R,<raw_u16>,<position>` message. This message is disabled in normal production builds and reports the actual raw ADC value.
 
 Latched safety faults add:
 
 ```text
 F,THERMAL,<temperature_centi_c>
 F,TEMP_SENSOR,<error_code>
+F,STATE,NONE,0
+F,STATE,THERMAL,<temperature_centi_c>
+F,STATE,TEMP_SENSOR,<error_code>
 ```
 
-Each fault record is attempted once with the existing 10 ms UART timeout. Shutdown does not wait for a Raspberry Pi acknowledgment, and the Raspberry Pi parser must accept and preserve the new `F` prefix. With `THERMAL_DEBUG_TELEMETRY=1`, development builds also emit `D,TEMP,<temperature_centi_c>,<raw_adc>,<state>` at no more than two messages per second. After calibration validation, they emit one startup record `D,TEMP_CAL,<revision_hex>,<cal1_raw>,<cal2_raw>,<cal2_temp_c>`. `revision_hex` is the low 16-bit STM32 revision ID in uppercase hexadecimal, padded to at least four digits; the remaining fields are decimal integers.
+The first two records remain one-shot fault notifications. `F,STATE,...` reports current safety state every `kSafetyTelemetryHeartbeatMs` (1 second), including from inside the latched fault loop. `NONE` means no latched safety fault; a thermal or sensor state remains latched until reset or power cycle. Shutdown does not wait for a Raspberry Pi acknowledgment, and the parser must accept every documented `F` subtype. With `THERMAL_DEBUG_TELEMETRY=1`, development builds also emit `D,TEMP,<temperature_centi_c>,<raw_adc>,<state>` at no more than two messages per second. After calibration validation, they emit one startup record `D,TEMP_CAL,<revision_hex>,<cal1_raw>,<cal2_raw>,<cal2_temp_c>`. `revision_hex` is the low 16-bit STM32 revision ID in uppercase hexadecimal, padded to at least four digits; the remaining fields are decimal integers.
 
 ## Hardware Configuration
 
@@ -133,9 +153,9 @@ The rotary decoder supports six calibrated center values in logical throw order,
 
 Positions:
 - 1: tuner
-- 2: chorus
+- 2: phaser (Mix, Rate, Depth)
 - 3: reverb
-- 4: crusher
+- 4: pitch shifter (Semitone, Crossfade, Direction; Latch mode fixed)
 - 5: granular delay
 - 6: reserved, preserve current effect
 - 0: invalid/between detents, preserve current effect
@@ -154,29 +174,20 @@ The generated binary is `build/project006.bin`.
 ## Map File Memory Excerpts
 
 These excerpts are from the verified `DIAG_STAGE_PRODUCTION` map in
-`build_production_permanent/project006.map`, with exact symbol sizes confirmed
+`build_effect_production/project006.map`, with exact symbol sizes confirmed
 from:
 
 ```sh
-arm-none-eabi-nm -S --demangle build_production_permanent/project006.elf
+arm-none-eabi-nm -S --demangle build_effect_production/project006.elf
 ```
 
-SDRAM granular delay buffer:
+SDRAM pitch-shifter and granular-delay buffers:
 
 ```text
-6005: .sdram_bss      0xc0000000    0x17700
-6006:                 0xc0000000                . = ALIGN (0x4)
-6007:                 0xc0000000                _ssdram_bss = .
-6008:                 [!provide]                PROVIDE (__sdram_bss_start = _ssdram_bss)
-6009:  *(.sdram_bss)
-6010:  .sdram_bss     0xc0000000    0x17700 build_production_permanent/granulardelay_module.o
-6011:  *(.sdram_bss*)
-6012:                 0xc0017700                . = ALIGN (0x4)
-6013:                 0xc0017700                _esdram_bss = .
-```
-
-```text
-c0000000 00017700 b (anonymous namespace)::buffer_gran_delay
+.sdram_bss           0xc0000000-0xc0023280  size 0x23280 (144000)
+c0000000 00005dc0 b (anonymous namespace)::pitch_delay_buffer_b
+c0005dc0 00005dc0 b (anonymous namespace)::pitch_delay_buffer_a
+c000bb80 00017700 b (anonymous namespace)::buffer_gran_delay
 ```
 
 RAM_D2 DMA placement invariant:
@@ -202,17 +213,17 @@ expanding the MPU region or changing the linker script.
 Verified production cached-SRAM placement:
 
 ```text
-tuner_source_window       0x24067660  size 0x4000
-tuner_cmnd_buffer         0x2406b710  size 0x1000
-tuner_work_buffer         0x2406c710  size 0x1000
-tuner_capture_ring        0x2406d710  size 0x8000
-tuner_difference_buffer   0x24075710  size 0x1000
+tuner_source_window       0x24062c58  size 0x4000
+tuner_cmnd_buffer         0x24066d08  size 0x1000
+tuner_work_buffer         0x24067d08  size 0x1000
+tuner_capture_ring        0x24068d08  size 0x8000
+tuner_difference_buffer   0x24070d08  size 0x1000
 ```
 
 The callback/foreground thermal monitor object is small normal SRAM state:
 
 ```text
-240675a0 000000c0 b (anonymous namespace)::thermal_monitor
+24062b98 000000c0 b (anonymous namespace)::thermal_monitor
 ```
 
 Stack and heap symbols:
@@ -222,19 +233,19 @@ Stack and heap symbols:
 ```
 
 ```text
-6060: .heap           0x2407944c        0x0
-6061:                 0x2407944c                . = ALIGN (0x4)
+ .heap           0x24074a44        0x0
+                 0x24074a44                . = ALIGN (0x4)
 6062:                 [!provide]                PROVIDE (__heap_start__ = .)
 6063:  *(.heap)
-6064:                 0x2407944c                . = ALIGN (0x4)
+                 0x24074a44                . = ALIGN (0x4)
 6065:                 [!provide]                PROVIDE (__heap_end__ = .)
 
-6067: .reserved_for_stack
-6068:                 0x2407944c        0x0
-6069:                 0x2407944c                . = ALIGN (0x4)
+ .reserved_for_stack
+                 0x24074a44        0x0
+                 0x24074a44                . = ALIGN (0x4)
 6070:                 [!provide]                PROVIDE (__reserved_for_stack_start__ = .)
 6071:  *(.reserved_for_stack)
-6072:                 0x2407944c                . = ALIGN (0x4)
+                 0x24074a44                . = ALIGN (0x4)
 6073:                 [!provide]                PROVIDE (__reserved_for_stack_end__ = .)
 ```
 

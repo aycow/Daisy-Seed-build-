@@ -9,14 +9,14 @@ endif
 ifneq ($(DIAG_AUDIO_MODE),)
 C_DEFS += -DDIAG_AUDIO_MODE=$(DIAG_AUDIO_MODE)
 endif
-ifneq ($(DIAG_FX_CHORUS),)
-C_DEFS += -DDIAG_FX_CHORUS=$(DIAG_FX_CHORUS)
+ifneq ($(DIAG_FX_PHASER),)
+C_DEFS += -DDIAG_FX_PHASER=$(DIAG_FX_PHASER)
 endif
 ifneq ($(DIAG_FX_REVERB),)
 C_DEFS += -DDIAG_FX_REVERB=$(DIAG_FX_REVERB)
 endif
-ifneq ($(DIAG_FX_CRUSHER),)
-C_DEFS += -DDIAG_FX_CRUSHER=$(DIAG_FX_CRUSHER)
+ifneq ($(DIAG_FX_PITCH_SHIFTER),)
+C_DEFS += -DDIAG_FX_PITCH_SHIFTER=$(DIAG_FX_PITCH_SHIFTER)
 endif
 ifneq ($(DIAG_FX_GRANULAR),)
 C_DEFS += -DDIAG_FX_GRANULAR=$(DIAG_FX_GRANULAR)
@@ -33,9 +33,9 @@ src/tuner.cpp \
 src/telemetry.cpp \
 src/thermal_monitor.cpp \
 gml/GuitarPedal/Effect-Modules/base_effect_module.cpp \
-gml/GuitarPedal/Effect-Modules/chorus_module.cpp \
+gml/GuitarPedal/Effect-Modules/phaser_module.cpp \
 gml/GuitarPedal/Effect-Modules/reverb_module.cpp \
-gml/GuitarPedal/Effect-Modules/crusher_module.cpp \
+gml/GuitarPedal/Effect-Modules/pitch_shifter_module.cpp \
 gml/GuitarPedal/Effect-Modules/granulardelay_module.cpp \
 gml/GuitarPedal/Util/audio_utilities.cpp \
 gml/GuitarPedal/Util/granularplayermod.cpp \

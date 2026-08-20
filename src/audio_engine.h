@@ -6,14 +6,14 @@
 #include "tuner.h"
 
 #include "base_effect_module.h"
-#if DIAG_FX_CHORUS
-#include "chorus_module.h"
+#if DIAG_FX_PHASER
+#include "phaser_module.h"
 #endif
 #if DIAG_FX_REVERB
 #include "reverb_module.h"
 #endif
-#if DIAG_FX_CRUSHER
-#include "crusher_module.h"
+#if DIAG_FX_PITCH_SHIFTER
+#include "pitch_shifter_module.h"
 #endif
 #if DIAG_FX_GRANULAR
 #include "granulardelay_module.h"
@@ -90,14 +90,14 @@ class AudioEngine
 
     // Concrete effect instances live here so only the audio callback mutates or
     // processes them. The main loop never calls module setters directly.
-#if DIAG_FX_CHORUS
-    bkshepherd::ChorusModule chorus_;
+#if DIAG_FX_PHASER
+    bkshepherd::PhaserModule phaser_;
 #endif
 #if DIAG_FX_REVERB
     bkshepherd::ReverbModule reverb_;
 #endif
-#if DIAG_FX_CRUSHER
-    bkshepherd::CrusherModule crusher_;
+#if DIAG_FX_PITCH_SHIFTER
+    bkshepherd::PitchShifterModule pitch_shifter_;
 #endif
 #if DIAG_FX_GRANULAR
     bkshepherd::GranularDelayModule granular_delay_;
@@ -139,9 +139,13 @@ class AudioEngine
     float thermal_gain_step_;
 
 #if AUDIO_CPU_LOAD_DEBUG
+    void FinishCpuLoadMeasurement();
+
     daisy::CpuLoadMeter cpu_load_;
     float effect_peak_load_[config::FX_COUNT];
     uint32_t overrun_count_;
+    uint32_t cpu_block_start_ticks_;
+    float cpu_ticks_per_block_inv_;
 #endif
 };
 

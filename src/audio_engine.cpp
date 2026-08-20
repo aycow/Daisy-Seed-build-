@@ -5,17 +5,17 @@ namespace app
 AudioEngine::AudioEngine()
 : mailbox_(0),
   tuner_capture_(0)
-#if DIAG_FX_CHORUS
+#if DIAG_FX_PHASER
   ,
-  chorus_()
+  phaser_()
 #endif
 #if DIAG_FX_REVERB
   ,
   reverb_()
 #endif
-#if DIAG_FX_CRUSHER
+#if DIAG_FX_PITCH_SHIFTER
   ,
-  crusher_()
+  pitch_shifter_()
 #endif
 #if DIAG_FX_GRANULAR
   ,
@@ -25,8 +25,8 @@ AudioEngine::AudioEngine()
   effects_
 {
     0,
-#if DIAG_FX_CHORUS
-        &chorus_,
+#if DIAG_FX_PHASER
+        &phaser_,
 #else
         0,
 #endif
@@ -35,8 +35,8 @@ AudioEngine::AudioEngine()
 #else
         0,
 #endif
-#if DIAG_FX_CRUSHER
-        &crusher_,
+#if DIAG_FX_PITCH_SHIFTER
+        &pitch_shifter_,
 #else
         0,
 #endif
@@ -64,7 +64,8 @@ AudioEngine::AudioEngine()
 #if AUDIO_CPU_LOAD_DEBUG
         ,
     cpu_load_(), effect_peak_load_{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-    overrun_count_(0)
+    overrun_count_(0), cpu_block_start_ticks_(0),
+    cpu_ticks_per_block_inv_(0.0f)
 #endif
 {
 }
@@ -76,17 +77,17 @@ void AudioEngine::Init(float           sample_rate,
     mailbox_       = &mailbox;
     tuner_capture_ = &tuner_capture;
 
-#if DIAG_FX_CHORUS
-    chorus_.Init(sample_rate);
-    chorus_.SetEnabled(true);
+#if DIAG_FX_PHASER
+    phaser_.Init(sample_rate);
+    phaser_.SetEnabled(true);
 #endif
 #if DIAG_FX_REVERB
     reverb_.Init(sample_rate);
     reverb_.SetEnabled(true);
 #endif
-#if DIAG_FX_CRUSHER
-    crusher_.Init(sample_rate);
-    crusher_.SetEnabled(true);
+#if DIAG_FX_PITCH_SHIFTER
+    pitch_shifter_.Init(sample_rate);
+    pitch_shifter_.SetEnabled(true);
 #endif
 #if DIAG_FX_GRANULAR
     granular_delay_.Init(sample_rate);
@@ -96,9 +97,16 @@ void AudioEngine::Init(float           sample_rate,
     BuildParamMaps();
 #if AUDIO_CPU_LOAD_DEBUG
     cpu_load_.Init(sample_rate, config::kAudioBlockSize);
+    const float seconds_per_block
+        = static_cast<float>(config::kAudioBlockSize) / sample_rate;
+    cpu_ticks_per_block_inv_
+        = 1.0f
+          / (static_cast<float>(daisy::System::GetTickFreq())
+             * seconds_per_block);
     for(int i = 0; i < config::FX_COUNT; ++i)
         effect_peak_load_[i] = 0.0f;
-    overrun_count_ = 0;
+    overrun_count_         = 0;
+    cpu_block_start_ticks_ = 0;
 #endif
 #if DIAG_ENGINE_USE_MAILBOX
     ApplySnapshotIfChanged();
@@ -128,6 +136,7 @@ void AudioEngine::Process(daisy::AudioHandle::InputBuffer  in,
 {
 #if AUDIO_CPU_LOAD_DEBUG
     const uint8_t metered_effect = active_effect_;
+    cpu_block_start_ticks_       = daisy::System::GetTick();
     cpu_load_.OnBlockStart();
 #endif
 
@@ -143,7 +152,7 @@ void AudioEngine::Process(daisy::AudioHandle::InputBuffer  in,
         out[1][i]     = x;
     }
 #if AUDIO_CPU_LOAD_DEBUG
-    cpu_load_.OnBlockEnd();
+    FinishCpuLoadMeasurement();
 #endif
     return;
 #endif
@@ -157,7 +166,7 @@ void AudioEngine::Process(daisy::AudioHandle::InputBuffer  in,
             out[1][i] = 0.0f;
         }
 #if AUDIO_CPU_LOAD_DEBUG
-        cpu_load_.OnBlockEnd();
+        FinishCpuLoadMeasurement();
 #endif
         return;
     }
@@ -229,15 +238,28 @@ void AudioEngine::Process(daisy::AudioHandle::InputBuffer  in,
     }
 
 #if AUDIO_CPU_LOAD_DEBUG
-    cpu_load_.OnBlockEnd();
+    FinishCpuLoadMeasurement();
     const float peak = cpu_load_.GetMaxCpuLoad();
     if(metered_effect < config::FX_COUNT && peak == peak
        && peak > effect_peak_load_[metered_effect])
         effect_peak_load_[metered_effect] = peak;
-    if(peak > 1.0f)
-        ++overrun_count_;
 #endif
 }
+
+#if AUDIO_CPU_LOAD_DEBUG
+void AudioEngine::FinishCpuLoadMeasurement()
+{
+    // Preserve libDaisy's average/historical-maximum measurements, then use a
+    // separate current-block delta so one old peak cannot count repeatedly.
+    cpu_load_.OnBlockEnd();
+    const uint32_t elapsed_ticks
+        = daisy::System::GetTick() - cpu_block_start_ticks_;
+    const float current_block_load
+        = static_cast<float>(elapsed_ticks) * cpu_ticks_per_block_inv_;
+    if(current_block_load > 1.0f)
+        ++overrun_count_;
+}
+#endif
 
 // Case-insensitive substring helper used only while building parameter maps during initialization.
 bool AudioEngine::StringContainsCi(const char* haystack, const char* needle)
@@ -309,21 +331,14 @@ float AudioEngine::ClampOutput(float value)
 }
 
 // Map the three pots to the parameters that make sense for each effect.
-// Granular delay uses explicit parameter IDs so the mapping stays obvious.
+// New production effects use explicit parameter IDs; imported legacy effects
+// retain their existing name-based compatibility mapping.
 void AudioEngine::BuildParamMaps()
 {
-#if DIAG_FX_CHORUS
-    maps_[config::FX_CHORUS].p0
-        = FindParamByKeywords(&chorus_, "mix", "wet", 0);
-    maps_[config::FX_CHORUS].p1
-        = FindParamByKeywords(&chorus_, "rate", "speed", "freq");
-    maps_[config::FX_CHORUS].p2 = FindParamByKeywords(&chorus_, "depth", 0, 0);
-    if(maps_[config::FX_CHORUS].p0 < 0)
-        maps_[config::FX_CHORUS].p0 = FallbackParamForPot(&chorus_, 0);
-    if(maps_[config::FX_CHORUS].p1 < 0)
-        maps_[config::FX_CHORUS].p1 = FallbackParamForPot(&chorus_, 1);
-    if(maps_[config::FX_CHORUS].p2 < 0)
-        maps_[config::FX_CHORUS].p2 = FallbackParamForPot(&chorus_, 2);
+#if DIAG_FX_PHASER
+    maps_[config::FX_PHASER].p0 = bkshepherd::PhaserModule::MIX;
+    maps_[config::FX_PHASER].p1 = bkshepherd::PhaserModule::RATE;
+    maps_[config::FX_PHASER].p2 = bkshepherd::PhaserModule::DEPTH;
 #endif
 
 #if DIAG_FX_REVERB
@@ -341,19 +356,13 @@ void AudioEngine::BuildParamMaps()
         maps_[config::FX_REVERB].p2 = FallbackParamForPot(&reverb_, 2);
 #endif
 
-#if DIAG_FX_CRUSHER
-    maps_[config::FX_CRUSHER].p0
-        = FindParamByKeywords(&crusher_, "level", "gain", "volume");
-    maps_[config::FX_CRUSHER].p1
-        = FindParamByKeywords(&crusher_, "bits", "crush", "depth");
-    maps_[config::FX_CRUSHER].p2
-        = FindParamByKeywords(&crusher_, "cutoff", "filter", "tone");
-    if(maps_[config::FX_CRUSHER].p0 < 0)
-        maps_[config::FX_CRUSHER].p0 = FallbackParamForPot(&crusher_, 0);
-    if(maps_[config::FX_CRUSHER].p1 < 0)
-        maps_[config::FX_CRUSHER].p1 = FallbackParamForPot(&crusher_, 1);
-    if(maps_[config::FX_CRUSHER].p2 < 0)
-        maps_[config::FX_CRUSHER].p2 = FallbackParamForPot(&crusher_, 2);
+#if DIAG_FX_PITCH_SHIFTER
+    maps_[config::FX_PITCH_SHIFTER].p0
+        = bkshepherd::PitchShifterModule::SEMITONE;
+    maps_[config::FX_PITCH_SHIFTER].p1
+        = bkshepherd::PitchShifterModule::CROSSFADE;
+    maps_[config::FX_PITCH_SHIFTER].p2
+        = bkshepherd::PitchShifterModule::DIRECTION;
 #endif
 
 #if DIAG_FX_GRANULAR

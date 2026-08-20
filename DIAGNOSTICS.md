@@ -22,7 +22,7 @@ Always confirm the compiler message before flashing:
 
 ```text
 DIAG_STAGE=3 CONTROLS_INIT
-DIAG_AUDIO_MODE=0, FX[C,R,X,G]=0,0,0,0, FORCE=0, THERMAL_AUDIO=0
+DIAG_AUDIO_MODE=0, FX[P,R,S,G]=0,0,0,0, FORCE=0, THERMAL_AUDIO=0
 ```
 
 On Windows, the vendored `make clean` target requires Unix `rm`. If unavailable,
@@ -60,9 +60,9 @@ input block to the tuner capture ring.
 | 173 | `DIAG_STAGE_AUDIOENGINE_PROCESS_TRANSITION` | unchanged | unchanged | 172 plus wet-gain/transition path |
 | 174 | `DIAG_STAGE_AUDIOENGINE_PROCESS_THERMAL` | unchanged | latched thermal mode is published; thermal audio enforcement enabled | 173 plus thermal fade/mute handling |
 | 175 | `DIAG_STAGE_AUDIOENGINE_PROCESS_DISPATCH` | unchanged | thermal state still monitored/reported but not published to audio | transition/dispatch path; forced tuner/no effect call |
-| 180 | `DIAG_STAGE_FX_CHORUS` | chorus only | chorus init; CPU telemetry; thermal audio enforcement disabled | full engine, forced chorus only |
+| 180 | `DIAG_STAGE_FX_PHASER` | phaser only | phaser init; CPU telemetry; thermal audio enforcement disabled | full engine, forced phaser only |
 | 181 | `DIAG_STAGE_FX_REVERB` | reverb only | reverb init; CPU telemetry | full engine, forced reverb only |
-| 182 | `DIAG_STAGE_FX_CRUSHER` | crusher only | crusher init; CPU telemetry | full engine, forced crusher only |
+| 182 | `DIAG_STAGE_FX_PITCH_SHIFTER` | pitch shifter only plus 48,000-byte SDRAM history | pitch shifter init; CPU telemetry | full engine, forced pitch shifter only |
 | 183 | `DIAG_STAGE_FX_GRANULAR` | granular only plus SDRAM history | granular init; CPU telemetry | full engine, forced granular only |
 | 1000 | `DIAG_STAGE_PRODUCTION` | all production objects/effects | full production startup and foreground loop | full production AudioEngine |
 
@@ -72,11 +72,11 @@ Stages 15 and 16 default to no effect members. Enable exactly one member without
 changing the callback:
 
 ```powershell
-make BUILD_DIR=build_construct_chorus DIAG_STAGE=15 DIAG_FX_CHORUS=1
-make BUILD_DIR=build_init_chorus      DIAG_STAGE=16 DIAG_FX_CHORUS=1
+make BUILD_DIR=build_construct_phaser DIAG_STAGE=15 DIAG_FX_PHASER=1
+make BUILD_DIR=build_init_phaser      DIAG_STAGE=16 DIAG_FX_PHASER=1
 ```
 
-Replace the flag with `DIAG_FX_REVERB`, `DIAG_FX_CRUSHER`, or
+Replace the flag with `DIAG_FX_REVERB`, `DIAG_FX_PITCH_SHIFTER`, or
 `DIAG_FX_GRANULAR`. Disabled concrete members do not exist in `AudioEngine`,
 their dispatch slots are null, and their init/map/process code is not referenced.
 The granular implementation and SDRAM buffer are compiled out when granular is

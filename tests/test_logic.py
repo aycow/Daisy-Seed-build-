@@ -1,4 +1,6 @@
 import math
+import re
+from pathlib import Path
 
 
 ROTARY_CENTERS = [56173, 46811, 37449, 28086, 18724, 9362]
@@ -6,9 +8,9 @@ ROTARY_HYSTERESIS = 900
 ROTARY_MAX_CENTER_ERROR = 2800
 ROTARY_DEBOUNCE_MS = 20
 FX_TUNER = 0
-FX_CHORUS = 1
+FX_PHASER = 1
 FX_REVERB = 2
-FX_CRUSHER = 3
+FX_PITCH_SHIFTER = 3
 FX_GRANULAR_DELAY = 4
 FX_COUNT = 5
 RING_SIZE = 8192
@@ -20,6 +22,42 @@ THERMAL_CRITICAL = 100.0
 THERMAL_HYSTERESIS = 5.0
 THERMAL_FILTER_LENGTH = 4
 THERMAL_CONSECUTIVE = 3
+EFFECT_HEARTBEAT_MS = 1000
+SAFETY_HEARTBEAT_MS = 1000
+
+
+def binned_value(raw, count):
+    return min(count, max(1, int((raw + (0.5 - 1.0 / 128.0)) / (128.0 / count) + 1.0 / 128.0) + 1))
+
+
+def phaser_rate(normalized):
+    return 0.10 * (8.0 / 0.10) ** normalized
+
+
+def pitch_semitones(raw):
+    value = binned_value(raw, 8)
+    return 12 if value == 8 else value
+
+
+def pitch_delay_samples(semitones):
+    amount = min(1.0, max(0.0, (abs(semitones) - 1.0) / 11.0))
+    return round(2048 + (6000 - 2048) * amount)
+
+
+def heartbeat_due(now, last_tx, period):
+    return ((now - last_tx) & 0xFFFFFFFF) >= period
+
+
+def effect_send_due(now, last_tx, current, last_sent):
+    return current != last_sent or heartbeat_due(now, last_tx, EFFECT_HEARTBEAT_MS)
+
+
+def safety_state_packet(state, temperature_c=0.0, error_code=0):
+    if state == "thermal":
+        return f"F,STATE,THERMAL,{round(temperature_c * 100)}\n"
+    if state == "sensor":
+        return f"F,STATE,TEMP_SENSOR,{error_code}\n"
+    return "F,STATE,NONE,0\n"
 
 
 class ThermalPolicy:
@@ -112,7 +150,7 @@ class ThermalAudioModel:
         self.state = self.NORMAL
         self.gain = 1.0
         self.step = 1.0 / fade_samples
-        self.effect = FX_CHORUS
+        self.effect = FX_PHASER
         self.dsp_calls = 0
         self.tuner_writes = 0
 
@@ -406,12 +444,12 @@ def test_tuner_capture_wrap_order():
 
 def test_transition_fade_in_bypass_effect_change_and_tuner():
     model = TransitionModel()
-    model.request(FX_CHORUS)
-    assert model.active == FX_CHORUS and model.state == model.FADING_IN
+    model.request(FX_PHASER)
+    assert model.active == FX_PHASER and model.state == model.FADING_IN
     model.run()
     assert model.wet == 1.0 and model.state == model.STEADY
-    model.request(FX_CHORUS, True)
-    assert model.active == FX_CHORUS and model.state == model.FADING_OUT
+    model.request(FX_PHASER, True)
+    assert model.active == FX_PHASER and model.state == model.FADING_OUT
     model.run()
     assert model.wet == 0.0 and model.bypass is True
     model.request(FX_REVERB, False)
@@ -424,11 +462,11 @@ def test_transition_fade_in_bypass_effect_change_and_tuner():
 
 def test_transition_new_request_during_fadeout():
     model = TransitionModel()
-    model.request(FX_CHORUS)
+    model.request(FX_PHASER)
     model.run()
     model.request(FX_REVERB)
     model.step_once()
-    assert model.active == FX_CHORUS
+    assert model.active == FX_PHASER
     model.request(FX_GRANULAR_DELAY)
     model.run()
     assert model.active == FX_GRANULAR_DELAY
@@ -438,6 +476,69 @@ def test_transition_new_request_during_fadeout():
 def test_granular_parameter_mapping():
     maps = {FX_GRANULAR_DELAY: (0, 1, 2)}
     assert maps[FX_GRANULAR_DELAY] == (0, 1, 2)
+
+
+def test_production_effect_ids_remain_stable():
+    assert (FX_TUNER, FX_PHASER, FX_REVERB, FX_PITCH_SHIFTER, FX_GRANULAR_DELAY) == (0, 1, 2, 3, 4)
+
+
+def test_phaser_parameter_contract_and_mapping():
+    assert phaser_rate(0.0) == 0.10
+    assert abs(phaser_rate(1.0) - 8.0) < 1e-9
+    assert abs(phaser_rate(0.25) - 0.29906975624424414) < 1e-9
+    assert min(0.98, 1.0) == 0.98
+    defaults = (64 / 127.0, 32 / 127.0, 127 / 127.0, 32 / 127.0)
+    assert abs(defaults[0] - 0.5) < 0.004
+    assert abs(defaults[1] - 0.25) < 0.004
+    assert defaults[2] == 1.0
+    assert abs(defaults[3] - 0.25) < 0.004
+
+
+def test_pitch_semitone_and_direction_boundaries():
+    assert pitch_semitones(0) == 1
+    assert pitch_semitones(15) == 1
+    assert pitch_semitones(16) == 2
+    assert pitch_semitones(111) == 7
+    assert pitch_semitones(112) == 12
+    assert pitch_semitones(127) == 12
+    assert binned_value(0, 2) == 1
+    assert binned_value(63, 2) == 1
+    assert binned_value(64, 2) == 2
+    assert binned_value(127, 2) == 2
+    assert pitch_delay_samples(1) == 2048
+    assert pitch_delay_samples(12) == 6000
+
+
+def test_pitch_fixed_latch_and_initialization_order_source_contract():
+    root = Path(__file__).resolve().parents[1]
+    module = (root / "gml/GuitarPedal/Effect-Modules/pitch_shifter_module.cpp").read_text()
+    utility = (root / "gml/GuitarPedal/Util/pitch_shifter.h").read_text()
+    assert "latching_       = true;" in module
+    assert "GetParameterAsBinnedValue(MODE)" not in module
+    set_delay = utility.index("SetDelSize(delay_size_);")
+    quantize_init = re.search(
+        r"quantize_semitones_\s*=\s*quantize_semitones;", utility
+    )
+    pitch_init = re.search(r"pitch_shift_\s*=\s*1\.0f;", utility)
+    assert quantize_init is not None and quantize_init.start() < set_delay
+    assert pitch_init is not None and pitch_init.start() < set_delay
+
+
+def test_effect_diagnostic_profiles_are_exclusive():
+    root = Path(__file__).resolve().parents[1]
+    config = (root / "src/diagnostic_config.h").read_text()
+    assert "#define DIAG_STAGE_FX_PHASER 180" in config
+    assert "#define DIAG_STAGE_FX_PITCH_SHIFTER 182" in config
+    assert "DIAG_STAGE == DIAG_STAGE_FX_PHASER || DIAG_STAGE == DIAG_STAGE_PRODUCTION" in config
+    assert "DIAG_STAGE == DIAG_STAGE_FX_PITCH_SHIFTER" in config
+
+
+def test_cpu_overrun_counter_uses_current_block_not_historical_peak():
+    root = Path(__file__).resolve().parents[1]
+    engine = (root / "src/audio_engine.cpp").read_text()
+    assert "current_block_load > 1.0f" in engine
+    assert "if(peak > 1.0f)" not in engine
+    assert engine.count("FinishCpuLoadMeasurement();") == 3
 
 
 def test_decimation_filter_keeps_low_b_and_reduces_alias_band():
@@ -588,6 +689,42 @@ def test_thermal_shutdown_stops_tuner_scheduling():
     safety_latched = True
     tuner_analysis_scheduled = not safety_latched
     assert not tuner_analysis_scheduled
+
+
+def test_effect_telemetry_initial_change_and_heartbeat():
+    assert effect_send_due(10, 0, FX_TUNER, 0xFF)
+    assert not effect_send_due(999, 0, FX_TUNER, FX_TUNER)
+    assert effect_send_due(1000, 0, FX_TUNER, FX_TUNER)
+    assert effect_send_due(25, 20, FX_PHASER, FX_TUNER)
+
+    last_tx = 25
+    assert not effect_send_due(1024, last_tx, FX_PHASER, FX_PHASER)
+    assert effect_send_due(1025, last_tx, FX_PHASER, FX_PHASER)
+
+
+def test_telemetry_heartbeat_timer_wraparound():
+    last_tx = 0xFFFFFF00
+    assert not heartbeat_due(0x000002E7, last_tx, EFFECT_HEARTBEAT_MS)
+    assert heartbeat_due(0x000002E8, last_tx, EFFECT_HEARTBEAT_MS)
+
+
+def test_persistent_safety_state_packets():
+    assert safety_state_packet("normal") == "F,STATE,NONE,0\n"
+    assert safety_state_packet("thermal", 92.35) == "F,STATE,THERMAL,9235\n"
+    assert safety_state_packet("sensor", error_code=4) == "F,STATE,TEMP_SENSOR,4\n"
+
+
+def test_thermal_heartbeat_precedes_latched_loop_continue():
+    root = Path(__file__).resolve().parents[1]
+    main = (root / "src/main.cpp").read_text()
+    config = (root / "src/app_config.h").read_text()
+    latched = main.index("if(thermal_monitor.IsSafetyLatched())")
+    state_send = main.index("telemetry.SendSafetyState", latched)
+    loop_continue = main.index("continue;", latched)
+    assert latched < main.index("telemetry.SendThermalFault", latched) < loop_continue
+    assert latched < state_send < loop_continue
+    assert "kEffectTelemetryHeartbeatMs = 1000" in config
+    assert "kSafetyTelemetryHeartbeatMs = 1000" in config
 
 
 if __name__ == "__main__":
